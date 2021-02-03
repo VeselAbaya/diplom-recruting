@@ -24,7 +24,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(
     routes,
-    {onSameUrlNavigation: 'reload', paramsInheritanceStrategy: 'always', enableTracing: false}
+    { onSameUrlNavigation: 'reload', paramsInheritanceStrategy: 'always', enableTracing: false, relativeLinkResolution: 'legacy' }
   )],
   exports: [RouterModule]
 })
