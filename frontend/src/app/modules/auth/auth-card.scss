@@ -1,0 +1,31 @@
+.auth-card {
+  padding: 57px 142px 85px 51px;
+
+  &__title {
+    margin-bottom: 57px;
+  }
+}
+
+.auth-card__form {
+  display: flex;
+  flex-direction: column;
+
+  &-actions {
+    margin-top: 18px;
+  }
+
+  &-actions .mat-button-base {
+    width: 167px;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+  }
+
+  &-actions .mat-button-base:first-child {
+    margin-right: 24px;
+  }
+
+  &-field {
+    width: 420px;
+    margin-bottom: 14px;
+  }
+}

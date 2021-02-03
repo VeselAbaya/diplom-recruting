@@ -1,0 +1,23 @@
+<form>
+  <mat-form-field class="pn-no-subscript">
+    <input type="number"
+           matInput
+           [ngModel]="_min"
+           name="min"
+           (input)="onMinChange($event)"
+           step="0.01"
+           min="0"
+           [max]="_min">
+  </mat-form-field>
+  <div class="divider"></div>
+  <mat-form-field class="pn-no-subscript">
+    <input type="number"
+           [errorStateMatcher]="_maxErrorStateMatcher"
+           matInput
+           [ngModel]="_max"
+           name="max"
+           (input)="onMaxChange($event)"
+           step="0.01"
+           [min]="_min">
+  </mat-form-field>
+</form>

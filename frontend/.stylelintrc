@@ -1,0 +1,14 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "rules": {
+    "order/properties-alphabetical-order": null,
+    "number-leading-zero": null,
+    "function-parentheses-space-inside": null,
+    "selector-class-pattern": null,
+    "selector-pseudo-element-no-unknown": [
+      {
+        "ignorePseudoElements": ["ng-deep"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+@import '~@angular/material/theming';
+@import 'palettes';
+
+$pn-foreground: (
+  base:              black,
+  divider:           mat-color($pn-primary, 50),
+  dividers:          mat-color($pn-primary, 50),
+  disabled:          $dark-disabled-text,
+  disabled-button:   rgba(black, 0.26),
+  disabled-text:     $dark-disabled-text,
+  elevation:         black,
+  hint-text:         $dark-disabled-text,
+  secondary-text:    mat-color($pn-primary, 50),
+  icon:              rgba(black, 0.54),
+  icons:             rgba(black, 0.54),
+  text:              rgba(black, 0.87),
+  slider-min:        rgba(black, 0.87),
+  slider-off:        rgba(black, 0.26),
+  slider-off-active: rgba(black, 0.38),
+);
+
+$pn-theme: map-merge(
+  mat-light-theme(
+    $primary: $pn-primary,
+    $accent: $pn-accent,
+    $warn: $pn-warn
+  ),
+  (
+    foreground: $pn-foreground
+  )
+);

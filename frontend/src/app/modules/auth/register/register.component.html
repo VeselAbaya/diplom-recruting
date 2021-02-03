@@ -1,0 +1,36 @@
+<mat-card class="auth-card">
+  <mat-card-title class="auth-card__title">
+    <b>Sign up</b> to enhance your professional network
+  </mat-card-title>
+
+  <mat-card-content class="auth-card__content">
+    <form class="auth-card__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="auth-card__form-field">
+        <mat-label>First name</mat-label>
+        <input matInput formControlName="firstName" type="text">
+      </mat-form-field>
+
+      <mat-form-field class="auth-card__form-field">
+        <mat-label>Last name</mat-label>
+        <input matInput formControlName="lastName" type="text">
+      </mat-form-field>
+
+      <mat-form-field class="auth-card__form-field">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+        <mat-error *ngIf="form.controls.email.errors?.pattern">
+          Must be an email
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="auth-card__form-field">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password">
+      </mat-form-field>
+
+      <div class="auth-card__form-actions">
+        <button type="submit" class="auth-card__form-submit" mat-flat-button tabindex="0" color="primary">SIGN UP</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

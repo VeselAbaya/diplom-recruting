@@ -1,0 +1,63 @@
+@import '../shared/palettes';
+@import '../shared/theme';
+@import '../shared/typography';
+@import '../shared/variables';
+
+.mat-form-field.pn-no-subscript {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.mat-form-field.mat-form-field-appearance-outline {
+  $line-height: mat-line-height($pn-typography, input);
+  // The amount to scale the font for the floating label and subscript.
+  $subscript-font-scale: 0.75;
+  // The padding above and below the infix.
+  $infix-padding: .775em;
+  // The margin applied to the form-field-infix to reserve space for the floating label.
+  $infix-margin-top: 1em * $line-height * $subscript-font-scale;
+  // The space between the bottom of the .mat-form-field-flex area and the subscript wrapper.
+  // Mocks show half of the text size, but this margin is applied to an element with the subscript
+  // text font size, so we need to divide by the scale factor to make it half of the original text
+  // size.
+  $subscript-margin-top: 0.5em / $subscript-font-scale;
+  // The padding applied to the form-field-wrapper to reserve space for the subscript, since it's
+  // absolutely positioned. This is a combination of the subscript's margin and line-height, but we
+  // need to multiply by the subscript font scale factor since the wrapper has a larger font size.
+  $wrapper-padding-bottom: ($subscript-margin-top + $line-height) * $subscript-font-scale;
+  // The amount we offset the label from the input text in the outline appearance.
+  $outline-appearance-label-offset: -0.25em;
+
+  // stylelint-disable-next-line selector-max-compound-selectors
+  &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+  .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+    @include _mat-form-field-outline-label-floating(
+      $subscript-font-scale,
+      $infix-padding + $outline-appearance-label-offset,
+      $infix-margin-top
+    );
+  }
+
+  &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-outline {
+    color: mat-color($pn-foreground, divider);
+  }
+
+  &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-outline-thick {
+    color: mat-color($pn-foreground, divider);
+  }
+
+  &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-label {
+    color: mat-color($pn-foreground, secondary-text);
+  }
+
+  .mat-form-field-infix {
+    border-top-width: 1.1em;
+    padding: .5em 0 .75em;
+  }
+
+  .mat-form-field-label-wrapper {
+    top: -1.37em;
+    padding-top: 1.1em;
+  }
+}

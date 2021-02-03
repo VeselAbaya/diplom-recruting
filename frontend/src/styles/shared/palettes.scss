@@ -1,0 +1,38 @@
+@import '~@angular/material/theming';
+
+$text-color: #03030b;
+
+$pn-primary: mat-palette((
+  50: #c7c2f2,
+  100: #6f63ff,
+  500: #0336ff,
+  700: #0008ca,
+  contrast: (
+    50: $text-color,
+    100: $text-color,
+    500: #fff,
+    700: #fff
+  )
+));
+
+$pn-accent: mat-palette((
+  100: #ffff54,
+  500: #ffde03,
+  700: #c7ad00,
+  contrast: (
+    100: $text-color,
+    500: $text-color,
+    700: #fff
+  )
+));
+
+$pn-warn: mat-palette((
+  100: #ff615e,
+  500: #ff1203,
+  700: #cc0e04,
+  contrast: (
+    100: $text-color,
+    500: $text-color,
+    700: #fff,
+  )
+));

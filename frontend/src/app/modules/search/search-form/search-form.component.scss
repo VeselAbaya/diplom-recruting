@@ -1,0 +1,14 @@
+.search-form {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+
+  .mat-form-field {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+
+  mat-label {
+    align-self: center;
+    margin-right: 24px;
+  }
+}

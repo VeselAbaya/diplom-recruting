@@ -1,0 +1,10 @@
+@import '../shared/typography';
+
+:not(.mat-snack-bar-container) .mat-button-base {
+  --height: 40px;
+  height: var(--height);
+  border-radius: 20px;
+
+  line-height: var(--height);
+  letter-spacing: mat-letter-spacing($pn-typography, button);
+}

@@ -1,0 +1,36 @@
+<h1>Select filter parameters</h1>
+
+<form class="search-form">
+  <mat-form-field class="pn-no-subscript">
+    <mat-label>Search</mat-label>
+    <input type="text" matInput>
+  </mat-form-field>
+
+  <mat-label>Rate value</mat-label>
+  <app-range></app-range>
+
+  <mat-label>Network size</mat-label>
+  <mat-slider [min]="1"
+              [max]="5"
+              [thumbLabel]="true"
+              [tickInterval]="1"></mat-slider>
+
+  <mat-label>Experience</mat-label>
+  <mat-slider [min]="experienceSliderConfig.min"
+              [max]="experienceSliderConfig.max"
+              [displayWith]="experienceSliderConfig.displayWith"
+              [thumbLabel]="true"
+              [tickInterval]="1"></mat-slider>
+
+  <mat-form-field>
+    <mat-label>English</mat-label>
+    <mat-select>
+      <mat-option>A1</mat-option>
+      <mat-option>A2</mat-option>
+      <mat-option>B1</mat-option>
+      <mat-option>B2</mat-option>
+      <mat-option>C1</mat-option>
+      <mat-option>C2</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
