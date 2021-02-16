@@ -1,0 +1,29 @@
+@import '../shared/palettes';
+@import '../shared/variables';
+
+.mat-button-toggle-group {
+  padding: 4px 3px;
+  gap: 4px;
+}
+
+.mat-button-toggle {
+  flex-basis: 100%;
+
+  border-radius: 2px;
+  background-color: transparent;
+
+  transition: background-color $transition-duration, color $transition-duration;
+
+  .mat-button-toggle-label-content {
+    line-height: 34px;
+  }
+
+  + .mat-button-toggle {
+    border-left: 0;
+  }
+
+  &-checked {
+    background-color: mat-color($pn-accent, default);
+    color: mat-color($pn-accent, default-contrast);
+  }
+}

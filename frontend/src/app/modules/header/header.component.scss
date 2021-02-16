@@ -1,0 +1,21 @@
+@import '~src/styles/shared/palettes';
+@import '~src/styles/shared/variables';
+
+h1 {
+  color: mat-color($pn-primary, default-contrast);
+  margin-bottom: 0;
+}
+
+:host {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 0 $body-padding;
+  background-color: mat-color($pn-primary, default);
+}
+
+app-user-menu {
+  margin-left: auto;
+}

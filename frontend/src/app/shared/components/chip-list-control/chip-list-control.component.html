@@ -1,0 +1,35 @@
+<mat-form-field [class.mat-form-field-invalid]="ngControl?.invalid && ngControl?.touched"
+                [class.pn-no-subscript]="_noSubscript"
+                [ngClass]="[
+                  ngControl?.dirty ? 'ng-dirty' : '',
+                  ngControl?.pending ? 'ng-pending' : '',
+                  ngControl?.invalid ? 'ng-invalid' : '',
+                  ngControl?.valid ? 'ng-valid' : '',
+                  ngControl?.touched ? 'ng-touched' : '',
+                  ngControl?.untouched ? 'ng-untouched' : ''
+                ]">
+  <mat-label><ng-content></ng-content></mat-label>
+  <mat-chip-list #chipList [disabled]="disabled">
+    <mat-chip
+        *ngFor="let item of value, let i = index"
+        [disabled]="disabled"
+        [selectable]="false"
+        [removable]="true"
+        (removed)="remove(i)">
+      {{item}}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input #itemInput
+           appThinInput
+           (blur)="_onTouch()"
+           [disabled]="disabled"
+           [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           (matChipInputTokenEnd)="add($event)">
+  </mat-chip-list>
+  <div *ngIf="!_noSubscript && ngControl?.invalid && ngControl?.touched && ngControl?.errors"
+       [@transitionMessages]="_transitionState">
+    <ng-content select="mat-error"></ng-content>
+    <ng-content select="[slot='errors']"></ng-content>
+  </div>
+</mat-form-field>

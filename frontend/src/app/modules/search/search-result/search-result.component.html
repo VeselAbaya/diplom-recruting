@@ -1,0 +1,29 @@
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon svgIcon="result-list"></mat-icon>
+      Result list
+    </ng-template>
+
+    <div class="result-list-header">
+      <span class="result-list-header-text">Search result</span>
+
+      <mat-form-field class="pn-no-subscript">
+        <mat-label>Sort by</mat-label>
+        <mat-select>
+          <mat-option>Name</mat-option>
+          <mat-option>Network size</mat-option>
+          <mat-option>Rate value</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <app-search-result-list></app-search-result-list>
+    <mat-paginator [pageSizeOptions]="[15, 30, 50]"></mat-paginator>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon svgIcon="result-graph"></mat-icon>
+      Interactive map
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

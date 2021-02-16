@@ -1,0 +1,59 @@
+<div class="relation">
+  <app-profile-info avatarSrc="assets/default-user-avatar.svg"
+                    name="Antay Juskovets"
+                    email="vandervise465@gmail.com"
+                    [rate]="150"></app-profile-info>
+
+  <app-hidden-scroll-wrapper orientation="vertical">
+    <div class="arrows-wrapper" #arrowsWrapper cdkScrollable>
+      <div class="arrow-wrapper" *ngFor="let _ of [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; let i = index"
+           #arrowWrapper (click)="selectedI = i; onRelationSelect(arrowWrapper);">
+        <div class="arrow" [class.arrow--selected]="i === selectedI">
+          <span class="arrow-label">Works with</span>
+        </div>
+      </div>
+    </div>
+  </app-hidden-scroll-wrapper>
+
+  <app-profile-info avatarSrc="assets/default-user-avatar.svg"
+                    name="Boris Johnson"
+                    email="borisjohnson@ibm-rnd.com"
+                    [rate]="84"></app-profile-info>
+</div>
+
+<form class="form" [formGroup]="form" @fadeInOut *ngIf="showForm">
+  <mat-form-field class="small-field pn-no-subscript">
+    <mat-label>Relation type</mat-label>
+    <mat-select formControlName="type">
+      <mat-option [value]="RelationType.WorksWith">Works with</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="small-field pn-no-subscript"
+                  #matFormField
+                  [class.mat-form-field-invalid]="matFormField._control.errorState || form.errors?.startDateRequiredIfHasEndDate">
+    <mat-label>Dates</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate formControlName="start" placeholder="Start date">
+      <input matEndDate formControlName="end" placeholder="To present">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <mat-form-field class="pn-no-subscript">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" class="description-textarea" rows="8"></textarea>
+  </mat-form-field>
+
+  <div class="comment-block">
+    <mat-form-field class="pn-no-subscript" *ngIf="showComment">
+      <mat-label>Comment</mat-label>
+      <textarea matInput formControlName="comment" class="description-textarea" rows="5"></textarea>
+    </mat-form-field>
+
+    <div class="actions-wrapper">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,8 @@
+Hourly: $<input type="number"
+                [readOnly]="!_editable"
+                [attr.tabindex]="!_editable ? -1 : 0"
+                appThinInput
+                placeholder="Your rate"
+                [value]="rate"
+                (input)="onInput($event)"
+                (change)="onRateChange($any($event.target).value)">

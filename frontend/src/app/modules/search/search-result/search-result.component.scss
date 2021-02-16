@@ -1,0 +1,21 @@
+@import '~src/styles/shared/typography';
+@import '~src/styles/shared/variables';
+
+.result-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  &-text {
+    @include mat-typography-level-to-styles($pn-typography, display-1);
+  }
+}
+
+.mat-tab-group::ng-deep .mat-tab-body {
+  padding: 20px 0 $body-padding;
+}
+
+app-search-result-list {
+  margin-bottom: 4px;
+}

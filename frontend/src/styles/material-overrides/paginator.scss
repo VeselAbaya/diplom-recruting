@@ -1,0 +1,36 @@
+@import '../shared/typography';
+
+.mat-paginator {
+  @include mat-typography-level-to-styles($pn-typography, body-1);
+  background-color: transparent;
+
+  &-page-size {
+    align-items: center;
+  }
+
+  &-page-size-label {
+    margin-right: 8px;
+  }
+
+  &-navigation-previous .mat-button-wrapper,
+  &-navigation-next .mat-button-wrapper {
+    position: relative;
+    top: -2px;
+  }
+}
+
+.mat-paginator-page-size-select.mat-form-field {
+  margin: -4px 0;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-form-field-infix {
+    top: -.25em;
+  }
+
+  .mat-select-arrow-wrapper {
+    transform: none;
+  }
+}

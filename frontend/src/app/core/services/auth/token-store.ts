@@ -1,4 +1,4 @@
-import { ITokensDto } from '@monorepo/dto/auth/tokens.dto.interface';
+import { ITokensDto } from '@monorepo/types/auth/tokens.dto.interface';
 
 export class TokenStoreHelper {
   private readonly storageKey: string = 'currentUser';

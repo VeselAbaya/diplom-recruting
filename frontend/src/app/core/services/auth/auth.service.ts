@@ -4,9 +4,9 @@ import { Router, UrlTree } from '@angular/router';
 import { TokenStoreHelper } from './token-store';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, distinctUntilChanged, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
-import { ITokensDto } from '@monorepo/dto/auth/tokens.dto.interface';
-import { ILoginDto } from '@monorepo/dto/auth/login.dto.interface';
-import { IUserDto } from '@monorepo/dto/user.dto.interface';
+import { ITokensDto } from '@monorepo/types/auth/tokens.dto.interface';
+import { ILoginDto } from '@monorepo/types/auth/login.dto.interface';
+import { IUserDto } from '@monorepo/types/user.dto.interface';
 import { Path } from '@monorepo/routes';
 
 @Injectable({

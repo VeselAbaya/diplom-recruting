@@ -1,0 +1,59 @@
+@import '~src/styles/shared/theme';
+
+:host,
+:host ::ng-deep .mat-button-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+app-avatar {
+  --size: 31px;
+
+  ::ng-deep .mat-badge-content {
+    z-index: 1;
+  }
+}
+
+.user-name {
+  margin-right: 8px;
+  color: mat-color($pn-primary, default-contrast);
+}
+
+.user-profile {
+  display: flex;
+  padding: 0 16px;
+  margin: 8px 0 16px;
+
+  &__avatar {
+    --size: 89px;
+    margin-right: 14px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__email {
+    margin-bottom: 9px;
+    color: map-get($pn-foreground, secondary-text);
+  }
+}
+
+.relation-requests {
+  display: flex;
+  align-items: center;
+
+  &__badge {
+    $badge-size: 24px;
+    display: inline-block;
+    width: $badge-size;
+    height: $badge-size;
+    margin-left: 11px;
+    border-radius: 50%;
+    background-color: mat-color($pn-accent, default);
+    color: mat-color($pn-accent, default-contrast);
+    line-height: $badge-size;
+    text-align: center;
+  }
+}

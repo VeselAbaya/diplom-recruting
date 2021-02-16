@@ -1,0 +1,25 @@
+.pn-textarea-with-suffix.mat-form-field {
+  .mat-form-field-flex {
+    align-items: center;
+    padding-right: 2px;
+  }
+
+  .mat-form-field-infix {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    resize: none;
+    padding-right: 49px;
+    box-sizing: border-box;
+  }
+
+  .mat-form-field-suffix {
+    right: 51px;
+  }
+
+  .mat-form-field-wrapper {
+    border-radius: 4px;
+  }
+}

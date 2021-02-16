@@ -1361,6 +1361,13 @@
     "@types/source-list-map" "*"
     source-map "^0.6.1"
 
+"@w11k/ngx-componentdestroyed@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@w11k/ngx-componentdestroyed/-/ngx-componentdestroyed-5.0.2.tgz#ae175d250fa7ec0773bec6a0c7cbc86bb83b1854"
+  integrity sha512-njpK7h6hSpF8LQp2bayb47T7rTxOwx7745TOiUP88y8YAT2JOY5OeJpYqlK2WrQQBeD7CT+DxozD6yNBN283dA==
+  dependencies:
+    rxjs ">=6.5.0"
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"
@@ -1627,6 +1634,13 @@ alphanum-sort@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
+
+angular-cropperjs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/angular-cropperjs/-/angular-cropperjs-1.0.2.tgz#c5a69cae5946e7ce7deedfdf593c90d905f53dd2"
+  integrity sha512-S+fy+bJUdQ1BCcAJ1yQHxJiPM5yhfeQXzjvSjNqPfrvB/pWKXyDLtVu2jl5Z4QW6WhH/vQPu5wBn4/KxXIMdEw==
+  dependencies:
+    tslib "^1.9.0"
 
 ansi-colors@4.1.1:
   version "4.1.1"
@@ -2947,6 +2961,11 @@ critters@0.0.6:
     parse5 "^6.0.1"
     parse5-htmlparser2-tree-adapter "^6.0.1"
     pretty-bytes "^5.3.0"
+
+cropperjs@^1.5.9:
+  version "1.5.9"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.9.tgz#4ff9d31e02ad04d2fc5df0044207c2ad53d99da8"
+  integrity sha512-aPWlg43sLIcYN4GBXIdyvM09wNPgn1ug+vNVwV8jlb3dbgEX/B34Iw6hrjGSajkUDQBmaCi6uPOevFb7N0yUsw==
 
 cross-spawn@^6.0.0:
   version "6.0.5"
@@ -7960,7 +7979,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs@6.6.3, rxjs@^6.5.3, rxjs@^6.6.0, rxjs@~6.6.0:
+rxjs@6.6.3, rxjs@>=6.5.0, rxjs@^6.5.3, rxjs@^6.6.0, rxjs@~6.6.0:
   version "6.6.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
   integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==

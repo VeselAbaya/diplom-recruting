@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LoadingService } from '@core/services/loading.service';
+import { HeaderService } from '@modules/header/header.service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,5 @@ import { LoadingService } from '@core/services/loading.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  constructor(public readonly loading: LoadingService) {}
+  constructor(public readonly loading: LoadingService, public readonly header: HeaderService) {}
 }

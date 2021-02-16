@@ -1,0 +1,21 @@
+<app-hidden-scroll-wrapper orientation="vertical">
+  <div cdkScrollable class="relation-requests-wrapper">
+    <app-relations *ngFor="let relationReq of (route.data | async)?.relationRequests; let i = index"
+                   #relationRequest
+                   (click)="onRelationRequestSelect(i, relationRequest.elRef.nativeElement)"
+                   [ngSwitch]="(route.params | async)?.requestType"
+                   [disabled]="(route.params | async)?.requestType !== RelationRequestTypeEnum.FromMe"
+                   [class.selected]="selectedIndex === i"
+                   [showForm]="selectedIndex === i">
+      <ng-container *ngSwitchCase="RelationRequestTypeEnum.ToMe">
+        <button mat-stroked-button color="warn">Decline</button>
+        <button mat-stroked-button color="primary">
+          <mat-icon svgIcon="relationship" class="pn-icon-align"></mat-icon>
+          Create relation
+        </button>
+      </ng-container>
+
+      <button mat-stroked-button color="primary" *ngSwitchCase="RelationRequestTypeEnum.Declined">Reopen</button>
+    </app-relations>
+  </div>
+</app-hidden-scroll-wrapper>

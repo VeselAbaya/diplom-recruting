@@ -1,0 +1,32 @@
+@import 'requests.variables';
+@import '~src/styles/shared/variables';
+
+:host {
+  display: flex;
+}
+
+.relations-list {
+  max-width: 935px;
+}
+
+.mat-tab-nav-bar {
+  height: $nav-bar-height;
+}
+
+app-messages {
+  margin-left: 24px;
+
+  ::ng-deep app-avatar {
+    --size: 48px;
+  }
+
+  ::ng-deep .messages {
+    max-height: calc(100vh - #{2 * $body-padding} - #{$header-height} - 90px);
+    padding-bottom: 16px;
+  }
+
+  ::ng-deep app-hidden-scroll-wrapper {
+    --hidden-area-size: 70px;
+    --hidden-area-background: #{$body-background-color};
+  }
+}

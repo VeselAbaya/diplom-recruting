@@ -1,0 +1,72 @@
+@import '~src/styles/shared/theme';
+@import '~src/styles/shared/typography';
+
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 22px 52px 22px 17px;
+  border: 1px solid map-get($pn-foreground, divider);
+  border-radius: 4px;
+  background-color: map-get($pn-background, card);
+}
+
+app-hourly {
+  margin-bottom: 18px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-bottom: auto;
+
+  app-avatar {
+    margin-right: 14px;
+  }
+
+  // stylelint-disable value-no-vendor-prefix, property-no-vendor-prefix
+  &-name {
+    @include mat-typography-level-to-styles($pn-typography, headline);
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    color: mat-color($pn-primary, default);
+  }
+  // stylelint-enable value-no-vendor-prefix, property-no-vendor-prefix
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+
+  .mat-icon {
+    color: mat-color($pn-primary, lighter);
+    margin-right: 8px;
+  }
+
+  .network-size {
+    font-weight: mat-font-weight($pn-typography, button);
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: 9px;
+}
+
+.right-icons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 17px 8px 17px 4px;
+  gap: 4px;
+  box-sizing: border-box;
+  color: mat-color($pn-primary, default);
+}

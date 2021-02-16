@@ -13,7 +13,7 @@ $pn-primary: mat-palette((
     500: #fff,
     700: #fff
   )
-));
+), $lighter: 50, $default: 700);
 
 $pn-accent: mat-palette((
   100: #ffff54,

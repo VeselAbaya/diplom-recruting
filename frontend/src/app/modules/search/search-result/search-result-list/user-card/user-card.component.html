@@ -1,0 +1,36 @@
+<app-hourly [rate]="150"></app-hourly>
+
+<div class="user">
+  <app-avatar src="assets/default-user-avatar.svg"></app-avatar>
+  <span class="user-name">
+    Really very long User name text Box
+  </span>
+</div>
+
+<div class="user-info">
+  <mat-icon svgIcon="user"></mat-icon>
+  Job title
+</div>
+
+<div class="user-info">
+  <mat-icon svgIcon="users"></mat-icon>
+  Network size &nbsp; <span class="network-size">34</span>
+</div>
+
+<div class="buttons">
+  <button mat-stroked-button color="primary" (click)="openCreateRelationDialog()">
+    Add Relationship
+  </button>
+  <button matBadge="2" matBadgeColor="accent" mat-stroked-button mat-icon-button color="primary" class="pn-icon-align">
+    <mat-icon svgIcon="message"></mat-icon>
+  </button>
+</div>
+
+<div class="right-icons">
+  <button mat-icon-button color="primary" (click)="openEditRelationsDialog()">
+    <mat-icon svgIcon="relationship"></mat-icon>
+  </button>
+  <button mat-icon-button color="primary" (click)="openRelationsListDialog()" class="pn-icon-align">
+    <mat-icon svgIcon="relations-list"></mat-icon>
+  </button>
+</div>

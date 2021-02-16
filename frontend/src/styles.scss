@@ -16,11 +16,12 @@
 
 /* You can add global styles to this file, and also import other style files */
 @import 'styles/shared/palettes';
+@import 'styles/shared/variables';
 
 html,
 body {
   height: 100%;
-  background-color: #f4f5f7;
+  background-color: $body-background-color;
 }
 
 body {
@@ -31,4 +32,49 @@ body {
 
 .pn-body {
   @import 'styles/material-overrides';
+}
+
+input {
+  font: inherit;
+
+  &::placeholder {
+    color: map-get($pn-foreground, secondary-text);
+  }
+
+  // stylelint-disable property-no-vendor-prefix, selector-no-qualifying-type
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+  // stylelint-enable property-no-vendor-prefix, selector-no-qualifying-type
+}
+
+.pn-no-subscript.mat-form-field .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.pn-vertical-align.mat-form-field {
+  margin: -4px 0;
+
+  &.mat-form-field-type-mat-input .mat-form-field-infix,
+  &.mat-form-field-type-mat-select .mat-form-field-infix {
+    top: -.25em;
+  }
+
+  &.mat-form-field-type-mat-select .mat-select-arrow-wrapper {
+    transform: none;
+  }
+}
+
+.pn-icon-align.mat-icon,
+.pn-icon-align.mat-icon-button .mat-button-wrapper {
+  position: relative;
+  top: -2px;
 }

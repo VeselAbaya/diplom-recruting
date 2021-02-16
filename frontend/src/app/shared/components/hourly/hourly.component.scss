@@ -1,0 +1,8 @@
+@import '../../../../styles/shared/palettes';
+
+:host {
+  padding: 7px 16px;
+  border-radius: 4px;
+  background-color: mat-color($pn-accent, lighter);
+  color: mat-color($pn-accent, default-lighter);
+}

@@ -1,2 +1,3 @@
 <mat-progress-bar class="main-progress-bar" *ngIf="loading.active$ | async" mode="indeterminate"></mat-progress-bar>
+<app-header>{{header.title$ | async}}</app-header>
 <router-outlet></router-outlet>

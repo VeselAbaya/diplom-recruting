@@ -1,0 +1,64 @@
+@import '~src/styles/shared/theme';
+
+:host {
+  display: flex;
+  height: 350px;
+}
+
+.mat-card {
+  @include mat-elevation(4, map-get($pn-foreground, elevation));
+  position: relative;
+  width: 480px;
+  min-width: 470px;
+  margin-right: 18px;
+
+  &::before {
+    content: 'You can edit everything here';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: map-get($pn-foreground, secondary-text);
+  }
+}
+
+app-profile-info {
+  margin-bottom: 8px;
+}
+
+.mat-form-field.about-me {
+  width: 100%;
+
+  textarea {
+    resize: none;
+  }
+}
+
+app-chip-list-control {
+  display: block;
+  width: 345px;
+}
+
+$control-gap: 6px;
+
+form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: $control-gap;
+
+  ::ng-deep .mat-form-field {
+    width: 100%;
+  }
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  row-gap: $control-gap + 4px;
+  width: 345px;
+
+  mat-label {
+    align-self: center;
+    margin-right: 24px;
+  }
+}

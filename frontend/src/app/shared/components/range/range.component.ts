@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { identity } from 'rxjs';
-import { MaxErrorStateMatcher } from '@shared/range/max.error-state-matcher';
+import { MaxErrorStateMatcher } from '@shared/components/range/max.error-state-matcher';
+import { IRateRangeDto } from '@monorepo/types/search/search-params.dto.interface';
 
 @Component({
   selector: 'app-range',
@@ -19,19 +20,22 @@ export class RangeComponent implements ControlValueAccessor {
   public _max: number | null = null;
   public _maxErrorStateMatcher = new MaxErrorStateMatcher();
 
-  private _onChange: (val?: unknown) => unknown = identity;
-  private _onTouch: (val?: unknown) => unknown = identity;
+  _onChange: (val?: unknown) => unknown = identity;
+  _onTouch: (val?: unknown) => unknown = identity;
   registerOnChange(fn: (val?: unknown) => unknown): void { this._onChange = fn; }
   registerOnTouched(fn: (val?: unknown) => unknown): void { this._onTouch = fn; }
 
-  writeValue(val: {min: number, max: number | null} | null): void {
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  writeValue(val: IRateRangeDto | null): void {
     if (val) {
       this.min = val.min;
       this.max = val.max;
+      this.cdr.markForCheck();
     }
   }
 
-  get value(): {min: number, max: number | null} {
+  get value(): IRateRangeDto {
     return {
       min: this._min,
       max: this._max

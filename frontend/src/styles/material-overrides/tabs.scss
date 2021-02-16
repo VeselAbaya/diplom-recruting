@@ -1,0 +1,38 @@
+@import '../shared/palettes';
+@import '../shared/variables';
+@import '../shared/typography';
+
+.mat-tab-header {
+  border-bottom: 0;
+}
+
+.mat-tab-label,
+.mat-tab-link {
+  min-width: 280px;
+  height: 53px;
+  border-bottom: 3px solid mat-color($pn-primary, lighter);
+  font-size: mat-font-size($pn-typography, title);
+  font-weight: mat-font-weight($pn-typography, body-1);
+  color: $text-color;
+  opacity: 1;
+  transition: opacity $transition-duration, color $transition-duration;
+
+  &:not(:last-child) {
+    margin-right: 25px;
+  }
+
+  .mat-icon {
+    margin-right: 18px;
+    color: mat-color($pn-primary, lighter);
+    transition: color $transition-duration;
+  }
+
+  &-active,
+  &-active .mat-icon {
+    color: mat-color($pn-primary, default);
+  }
+}
+
+.mat-ink-bar {
+  height: 3px;
+}

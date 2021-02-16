@@ -1,0 +1,50 @@
+<div class="avatar-wrapper">
+  <app-avatar [src]="avatarSrc" rounded></app-avatar>
+
+  <ng-container *ngIf="_editable">
+    <input type="file" id="file" (change)="onAvatarFileOpen($any($event.target).files[0])" accept="image/*">
+    <label for="file">
+      <mat-icon svgIcon="upload"></mat-icon>
+    </label>
+  </ng-container>
+
+  <ng-template #cropperDialog>
+    <angular-cropper [cropperOptions]="{aspectRatio: 1}"
+                     [imageUrl]="_uploadedAvatarDataUrl"
+                     #cropperComponent></angular-cropper>
+    <button mat-stroked-button color="primary"
+            mat-dialog-close
+            class="cropper-save-button" (click)="onAvatarCrop(cropperComponent.cropper)">Save</button>
+  </ng-template>
+</div>
+
+<div class="user-info">
+  <ng-container *ngIf="_editable else notEditable">
+    <app-hourly class="user-info__rate"
+                editable
+                (rateChange)="onRateChange($event)"
+                [rate]="rate"></app-hourly>
+    <input class="user-info__name"
+           appThinInput
+           [value]="name"
+           placeholder="Your Name"
+           (change)="onChange('name', $event)">
+    <span class="user-info__email" *ngIf="email">
+      <mat-icon svgIcon="message"></mat-icon>
+      <input appThinInput
+             type="email"
+             placeholder="Your Email"
+             [value]="email"
+             (change)="onChange('email', $event)">
+    </span>
+  </ng-container>
+
+  <ng-template #notEditable>
+    <app-hourly class="user-info__rate" *ngIf="rate !== null && rate !== undefined" [rate]="rate"></app-hourly>
+    <span class="user-info__name" *ngIf="name">{{name}}</span>
+    <span class="user-info__email" *ngIf="email">
+      <mat-icon svgIcon="message"></mat-icon>
+      {{email}}
+    </span>
+  </ng-template>
+</div>

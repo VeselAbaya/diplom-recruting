@@ -4,9 +4,11 @@ import { SearchFormComponent } from './search-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSliderModule } from '@angular/material/slider';
-import { RangeModule } from '@shared/range/range.module';
-import { FormsModule } from '@angular/forms';
+import { RangeModule } from '@shared/components/range/range.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -17,7 +19,11 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatSliderModule,
     RangeModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatButtonToggleModule,
+    MatButtonModule
   ],
   exports: [SearchFormComponent]
 })

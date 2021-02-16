@@ -1,0 +1,26 @@
+<div class="relations-list">
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link [routerLink]="RelationRequestTypeEnum.ToMe"
+       routerLinkActive
+       #toMeRla="routerLinkActive"
+       [active]="toMeRla.isActive">
+      To me
+    </a>
+    <a mat-tab-link [routerLink]="RelationRequestTypeEnum.FromMe"
+       routerLinkActive
+       #fromMeRla="routerLinkActive"
+       [active]="fromMeRla.isActive">
+      From me
+    </a>
+    <a mat-tab-link [routerLink]="RelationRequestTypeEnum.Declined"
+       routerLinkActive
+       #declinedRla="routerLinkActive"
+       [active]="declinedRla.isActive">
+      Declined
+    </a>
+  </nav>
+
+  <router-outlet></router-outlet>
+</div>
+
+<app-messages></app-messages>

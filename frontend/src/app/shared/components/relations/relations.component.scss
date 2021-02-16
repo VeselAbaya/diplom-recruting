@@ -1,0 +1,142 @@
+@import '../../../../styles/shared/theme';
+@import '../../../../styles/shared/typography';
+@import '../../../../styles/shared/variables';
+
+:host {
+  display: block;
+  width: 935px;
+}
+
+.relation {
+  display: flex;
+  align-items: center;
+  height: 168px;
+  gap: 7px;
+
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+
+  app-profile-info {
+    @include mat-elevation(3, mat-color($pn-primary, default));
+    box-sizing: border-box;
+    flex-grow: 1;
+    height: 168px;
+    padding: 20px 20px 20px 16px;
+    border-radius: 4px;
+    background-color: map-get($pn-background, card);
+  }
+}
+
+.arrows-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 145px;
+  max-height: 168px;
+}
+
+.arrow-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 30px;
+  cursor: pointer;
+
+  &:first-child {
+    margin-top: 3px;
+  }
+
+  &:last-child {
+    margin-bottom: 3px;
+  }
+}
+
+.arrow {
+  --arrow-color: #{mat-color($pn-accent, lighter)};
+  $arrow-stroke-width: 2.5px;
+  @include mat-typography-level-to-styles($pn-typography, caption);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 135px;
+  height: $arrow-stroke-width;
+  background-color: var(--arrow-color);
+  text-align: center;
+  color: mat-color($pn-accent, lighter-contrast);
+  transition: color $transition-duration, background-color $transition-duration;
+
+  &--selected {
+    --arrow-color: #{mat-color($pn-primary, 500)};
+    color: mat-color($pn-primary, 500);
+  }
+
+  // TODO: add shadow to whole arrow
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    display: block;
+    width: 5px;
+    height: 5px;
+    padding: 3px;
+    border: solid var(--arrow-color);
+    border-width: 0 $arrow-stroke-width $arrow-stroke-width 0;
+    transition: border-color $transition-duration;
+  }
+
+  &::after {
+    right: 1px;
+    transform: translateY(-42%) rotate(-45deg);
+  }
+
+  &::before {
+    left: 1px;
+    transform: translateY(-42%) rotate(135deg);
+  }
+
+  &-label {
+    padding: 0 4px;
+    border-radius: 4px;
+    background-color: map-get($pn-background, card);
+  }
+}
+
+app-hidden-scroll-wrapper {
+  --hidden-area-size: 35px;
+  --hidden-area-background: #{map-get($pn-background, card)};
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: min-content 1fr;
+  column-gap: 24px;
+  row-gap: 14px;
+
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .mat-form-field.small-field {
+    width: 240px;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  .comment-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .actions-wrapper {
+    margin-top: auto;
+  }
+}

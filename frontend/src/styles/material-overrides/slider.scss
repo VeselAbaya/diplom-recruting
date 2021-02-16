@@ -1,0 +1,44 @@
+@import '../shared/theme';
+
+// all this magic in that file just to show thumb-label always;
+
+.mat-slider,
+.mat-slider.mat-slider-disabled {
+  .mat-slider-thumb-label {
+    display: flex;
+    border-radius: 50% 50% 0;
+    transform: rotate(45deg);
+  }
+
+  &:not(.cdk-focused) .mat-slider-thumb-label {
+    background-color: mat-color($pn-foreground, slider-off);
+  }
+
+  .mat-slider-thumb {
+    transform: scale(0);
+  }
+
+  .mat-slider-thumb-label-text,
+  .mat-slider-ticks-container .mat-slider-ticks {
+    opacity: 1;
+  }
+
+  &.mat-slider-horizontal .mat-slider-track-background::before {
+    $empty-space-width: 22px;
+    content: '';
+    position: absolute;
+    left: -$empty-space-width;
+    display: block;
+    width: $empty-space-width;
+    height: 2px;
+    background-color: map-get($pn-foreground, slider-off);
+  }
+
+  &.mat-slider-horizontal .mat-slider-wrapper {
+    top: 38px;
+  }
+}
+
+.mat-slider.mat-slider-disabled.cdk-focused .mat-slider-thumb-label {
+  background-color: mat-color($pn-foreground, slider-off);
+}

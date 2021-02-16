@@ -1,8 +1,24 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+
+  h1 {
+    margin-bottom: 0;
+  }
+
+  .reset-button {
+    margin-right: -12px;
+  }
+}
+
 .search-form {
   display: grid;
   grid-template-columns: max-content 1fr;
+  grid-row-gap: 8px;
 
-  .mat-form-field {
+  .full-row {
     grid-column-start: 1;
     grid-column-end: 3;
   }
@@ -10,5 +26,11 @@
   mat-label {
     align-self: center;
     margin-right: 24px;
+  }
+
+  [formControlName='english']::before {
+    content: '≥';
+    position: absolute;
+    left: -24px;
   }
 }

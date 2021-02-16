@@ -1,0 +1,23 @@
+@import '../shared/theme';
+@import '~@angular/material/core/style/variables';
+
+// TODO: Something here leads to the bug - Placeholders instantly disappears on (blur)
+.mat-date-range-input-hide-placeholders .mat-date-range-input-inner {
+  @include input-placeholder {
+    // Needs to be !important, because the placeholder will end up inheriting the
+    // input color in IE, if the consumer overrides it with a higher specificity.
+    color: mat-color($pn-primary, 50) !important;
+    -webkit-text-fill-color: mat-color($pn-primary, 50);
+    transition: color $swift-ease-out-duration $swift-ease-out-duration / 3
+      $swift-ease-out-timing-function;
+  }
+}
+
+.mat-form-field-invalid .mat-date-range-input-inner {
+  @include input-placeholder {
+    // Needs to be !important, because the placeholder will end up inheriting the
+    // input color in IE, if the consumer overrides it with a higher specificity.
+    color: mat-color($pn-warn, default) !important;
+    -webkit-text-fill-color: mat-color($pn-warn, default);
+  }
+}

@@ -1,6 +1,26 @@
+@import '~src/styles/shared/variables';
+
+:host {
+  height: 100%;
+}
+
 .main-progress-bar {
   left: 0;
   position: absolute;
   top: 0;
   z-index: 10001;
+}
+
+app-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: $header-height;
+}
+
+router-outlet::ng-deep + * {
+  box-sizing: border-box;
+  padding: $body-padding;
+  height: calc(100vh - #{$header-height});
+  overflow-y: auto;
 }

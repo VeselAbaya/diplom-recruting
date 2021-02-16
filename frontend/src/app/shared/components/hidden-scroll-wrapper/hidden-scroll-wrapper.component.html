@@ -1,0 +1,8 @@
+<div class="scroll-wrapper"
+     [class.scroll-wrapper--vertical]="orientation === 'vertical'"
+     [class.scroll-wrapper--horizontal]="orientation === 'horizontal'"
+     [class.scroll-wrapper--with-scroll]="hasScroll$ | async"
+     [class.scroll-wrapper--scrolled-close-to-begin]="scrolledCloseToBegin$ | async"
+     [class.scroll-wrapper--scrolled-close-to-end]="scrolledCloseToEnd$ | async">
+  <ng-content select="[cdkScrollable]"></ng-content>
+</div>

@@ -1,0 +1,17 @@
+@import '../../../../styles/shared/theme';
+
+form {
+  display: flex;
+  align-items: center;
+}
+
+.mat-form-field {
+  width: 52px;
+}
+
+.divider {
+  width: 12px;
+  height: 1px;
+  margin: 0 6px;
+  background-color: map-get($pn-foreground, divider);
+}

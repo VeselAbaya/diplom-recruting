@@ -1,36 +1,53 @@
-<h1>Select filter parameters</h1>
+<div class="header">
+  <h1>Select filter parameters</h1>
+  <button mat-button color="primary" class="reset-button" (click)="onReset()">Reset</button>
+</div>
 
-<form class="search-form">
-  <mat-form-field class="pn-no-subscript">
+<form class="search-form" [formGroup]="form">
+  <mat-form-field class="pn-no-subscript full-row">
     <mat-label>Search</mat-label>
-    <input type="text" matInput>
+    <input type="text" formControlName="search" matInput>
   </mat-form-field>
 
   <mat-label>Rate value</mat-label>
-  <app-range></app-range>
+  <app-range formControlName="rateRange"></app-range>
 
   <mat-label>Network size</mat-label>
-  <mat-slider [min]="1"
+  <mat-slider formControlName="networkSize"
+              [min]="1"
               [max]="5"
               [thumbLabel]="true"
               [tickInterval]="1"></mat-slider>
 
   <mat-label>Experience</mat-label>
-  <mat-slider [min]="experienceSliderConfig.min"
-              [max]="experienceSliderConfig.max"
-              [displayWith]="experienceSliderConfig.displayWith"
+  <mat-slider formControlName="experience"
+              [min]="ExperienceSliderConfig.min"
+              [max]="ExperienceSliderConfig.max"
+              [displayWith]="ExperienceSliderConfig.displayWith"
               [thumbLabel]="true"
               [tickInterval]="1"></mat-slider>
 
-  <mat-form-field>
-    <mat-label>English</mat-label>
-    <mat-select>
-      <mat-option>A1</mat-option>
-      <mat-option>A2</mat-option>
-      <mat-option>B1</mat-option>
-      <mat-option>B2</mat-option>
-      <mat-option>C1</mat-option>
-      <mat-option>C2</mat-option>
+  <mat-label>English</mat-label>
+  <mat-form-field class="pn-no-subscript pn-vertical-align">
+    <mat-select formControlName="english">
+      <mat-option [value]="EnglishLevel.A1">A1</mat-option>
+      <mat-option [value]="EnglishLevel.A2">A2</mat-option>
+      <mat-option [value]="EnglishLevel.B1">B1</mat-option>
+      <mat-option [value]="EnglishLevel.B2">B2</mat-option>
+      <mat-option [value]="EnglishLevel.C1">C1</mat-option>
+      <mat-option [value]="EnglishLevel.C2">C2</mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-label>Work schedule</mat-label>
+  <mat-button-toggle-group formControlName="workSchedule">
+    <mat-button-toggle [value]="WorkSchedule.Full">Full</mat-button-toggle>
+    <mat-button-toggle [value]="WorkSchedule.Part">Part</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <mat-label>Work</mat-label>
+  <mat-button-toggle-group formControlName="workType">
+    <mat-button-toggle [value]="WorkType.Office">Office</mat-button-toggle>
+    <mat-button-toggle [value]="WorkType.Remote">Remote</mat-button-toggle>
+  </mat-button-toggle-group>
 </form>

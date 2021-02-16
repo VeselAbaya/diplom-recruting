@@ -10,6 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AuthService } from '@core/services/auth/auth.service';
+import { MatIconService } from '@core/services/maticon.service';
+import { HeaderModule } from '@modules/header/header.module';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -23,18 +27,32 @@ import { AuthService } from '@core/services/auth/auth.service';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    HeaderModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
-      deps: [AuthService],
-      useFactory: (auth: AuthService) => () => auth.loadUser().subscribe(),
+      deps: [AuthService, MatIconService],
+      useFactory: (auth: AuthService, icons: MatIconService) => () => {
+        icons.init();
+        auth.loadUser().subscribe();
+      },
       multi: true
     },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {appearance: 'outline'}
+    },
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {
+        horizontalPosition: 'start',
+        verticalPosition: 'top',
+        duration: 5000
+      }
     }
   ],
   bootstrap: [AppComponent]

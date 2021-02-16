@@ -1,0 +1,58 @@
+<mat-card>
+  <app-profile-info avatarSrc="assets/default-user-avatar.svg"
+                    [name]="name"
+                    email="vandervise465@gmail.com"
+                    [editable]="!_disabled"
+                    (avatarChange)="onAvatarChange($event)"
+                    [rate]="150"></app-profile-info>
+  <mat-form-field class="pn-no-subscript about-me">
+    <mat-label>About me</mat-label>
+    <textarea matInput rows="11" [disabled]="_disabled"></textarea>
+  </mat-form-field>
+</mat-card>
+
+<form [formGroup]="form">
+  <app-chip-list-control class="pn-no-subscript" formControlName="keywords">
+    Keywords
+  </app-chip-list-control>
+
+  <mat-form-field class="pn-no-subscript">
+    <mat-label>Current job title</mat-label>
+    <input matInput>
+  </mat-form-field>
+
+  <mat-form-field class="pn-no-subscript">
+    <mat-label>English</mat-label>
+    <mat-select formControlName="english">
+      <mat-option [value]="EnglishLevel.A1">A1</mat-option>
+      <mat-option [value]="EnglishLevel.A2">A2</mat-option>
+      <mat-option [value]="EnglishLevel.B1">B1</mat-option>
+      <mat-option [value]="EnglishLevel.B2">B2</mat-option>
+      <mat-option [value]="EnglishLevel.C1">C1</mat-option>
+      <mat-option [value]="EnglishLevel.C2">C2</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="search-form">
+    <mat-label>Work schedule</mat-label>
+    <mat-button-toggle-group formControlName="workSchedule">
+      <mat-button-toggle [value]="WorkSchedule.Full">Full</mat-button-toggle>
+      <mat-button-toggle [value]="WorkSchedule.Part">Part</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-label>Work</mat-label>
+    <mat-button-toggle-group formControlName="workType">
+      <mat-button-toggle [value]="WorkType.Office">Office</mat-button-toggle>
+      <mat-button-toggle [value]="WorkType.Remote">Remote</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-label>Experience</mat-label>
+    <mat-slider formControlName="experience"
+                [min]="ExperienceSliderConfig.min"
+                [max]="ExperienceSliderConfig.max"
+                [displayWith]="ExperienceSliderConfig.displayWith"
+                [thumbLabel]="true"
+                [value]="3"
+                [tickInterval]="1"></mat-slider>
+  </div>
+</form>

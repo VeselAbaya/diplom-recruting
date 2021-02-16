@@ -1,0 +1,22 @@
+<button mat-button [matMenuTriggerFor]="menu">
+  <span class="user-name">Antay Juskovets</span>
+  <app-avatar matBadge="1" matBadgeColor="accent" src="assets/default-user-avatar.svg" rounded></app-avatar>
+</button>
+
+<mat-menu #menu="matMenu">
+  <div class="user-profile">
+    <app-avatar class="user-profile__avatar" src="assets/default-user-avatar.svg"></app-avatar>
+    <div class="user-profile__info">
+      <span>Antay Juskovets</span>
+      <span class="user-profile__email">vandervise465@gmail.com</span>
+      <a routerLink="/profile" mat-flat-button color="accent">Profile settings</a>
+    </div>
+  </div>
+
+  <a [routerLink]="['/search']" mat-menu-item>Search</a>
+  <a [routerLink]="['/requests']" mat-menu-item class="relation-requests">
+    <span>Relation requests</span>
+    <span class="relation-requests__badge">1</span>
+  </a>
+  <a [routerLink]="['/auth']" mat-menu-item>Logout</a>
+</mat-menu>

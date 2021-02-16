@@ -1,0 +1,73 @@
+@import '~src/styles/shared/variables';
+
+:host {
+  display: block;
+
+  ::ng-deep [cdkscrollable] {
+    overflow-y: auto;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.scroll-wrapper {
+  position: relative;
+
+  &--with-scroll::before,
+  &--with-scroll::after {
+    content: '';
+  }
+
+  &::before,
+  &::after {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity $transition-duration * .8 cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  &--horizontal::before,
+  &--horizontal::after {
+    width: var(--hidden-area-size, 70px);
+    height: 100%;
+  }
+
+  &--horizontal::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--hidden-area-background, #{$body-background-color}), transparent);
+  }
+
+  &--horizontal::after {
+    top: 0;
+    right: 0;
+    background: linear-gradient(-90deg, var(--hidden-area-background, #{$body-background-color}), transparent);
+  }
+
+  &--vertical::before,
+  &--vertical::after {
+    width: 100%;
+    height: var(--hidden-area-size, 70px);
+  }
+
+  &--vertical::before {
+    top: 0;
+    background: linear-gradient(180deg, var(--hidden-area-background, #{$body-background-color}), transparent);
+  }
+
+  &--vertical::after {
+    bottom: 0;
+    background: linear-gradient(0, var(--hidden-area-background, #{$body-background-color}), transparent);
+  }
+
+  &--scrolled-close-to-begin::before,
+  &--scrolled-close-to-end::after {
+    opacity: 0;
+  }
+}

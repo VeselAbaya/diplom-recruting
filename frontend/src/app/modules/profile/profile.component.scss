@@ -1,0 +1,33 @@
+@import '~src/styles/shared/typography';
+@import '~src/styles/shared/variables';
+
+$profile-form-shadow-offset: 7px;
+
+:host {
+  display: block;
+}
+
+.profile-form-wrapper {
+  margin-left: -$profile-form-shadow-offset;
+  margin-bottom: 18px - $profile-form-shadow-offset;
+}
+
+app-profile-form {
+  padding-left: $profile-form-shadow-offset;
+  padding-bottom: $profile-form-shadow-offset;
+}
+
+app-search-result {
+  position: relative;
+  display: block;
+
+  &::before {
+    @include mat-typography-level-to-styles($pn-typography, headline);
+    content: attr(data-whos-label);
+    position: absolute;
+    top: 11px;
+    left: 100%;
+    transform: translateX(-100%);
+    white-space: nowrap;
+  }
+}

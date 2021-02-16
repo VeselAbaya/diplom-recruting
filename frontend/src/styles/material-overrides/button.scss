@@ -1,4 +1,5 @@
 @import '../shared/typography';
+@import '../shared/palettes';
 
 :not(.mat-snack-bar-container) .mat-button-base {
   --height: 40px;
@@ -7,4 +8,18 @@
 
   line-height: var(--height);
   letter-spacing: mat-letter-spacing($pn-typography, button);
+}
+
+.mat-stroked-button:not(.mat-button-disabled) {
+  &.mat-primary {
+    border-color: mat-color($pn-primary, default);
+  }
+
+  &.mat-warn {
+    border-color: mat-color($pn-warn, default);
+  }
+
+  &.mat-accent {
+    border-color: mat-color($pn-accent, default);
+  }
 }
