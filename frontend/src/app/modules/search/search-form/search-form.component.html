@@ -40,13 +40,13 @@
   </mat-form-field>
 
   <mat-label>Work schedule</mat-label>
-  <mat-button-toggle-group formControlName="workSchedule">
+  <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workSchedule">
     <mat-button-toggle [value]="WorkSchedule.Full">Full</mat-button-toggle>
     <mat-button-toggle [value]="WorkSchedule.Part">Part</mat-button-toggle>
   </mat-button-toggle-group>
 
   <mat-label>Work</mat-label>
-  <mat-button-toggle-group formControlName="workType">
+  <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workType">
     <mat-button-toggle [value]="WorkType.Office">Office</mat-button-toggle>
     <mat-button-toggle [value]="WorkType.Remote">Remote</mat-button-toggle>
   </mat-button-toggle-group>

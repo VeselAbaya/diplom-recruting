@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@core/services/auth/auth.service';
 import { HeaderService } from '@modules/header/header.service';
+import { ErrorsService } from '@core/services/errors.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +22,19 @@ export class LoginComponent {
     password: new FormControl('', Validators.required)
   });
 
-  constructor(private readonly auth: AuthService, private readonly header: HeaderService) {
+  constructor(private readonly auth: AuthService,
+              private readonly header: HeaderService,
+              private readonly errors: ErrorsService,
+              private readonly router: Router) {
     header.setTitle('Sign in');
   }
 
   onSubmit(): void {
     if (this.form.valid) {
-      this.auth.login(this.form.value).subscribe();
+      this.auth.signin(this.form.value).subscribe({
+        next: () => this.router.navigateByUrl('/search'),
+        error: this.errors.handle
+      });
     }
   }
 }

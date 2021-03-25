@@ -1,2 +1,2 @@
 <h1><ng-content></ng-content></h1>
-<app-user-menu></app-user-menu>
+<app-user-menu *ngIf="(auth.user$ | async) as user" [user]="user"></app-user-menu>

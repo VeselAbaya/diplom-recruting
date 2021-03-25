@@ -1,5 +1,6 @@
 @import '~src/styles/shared/typography';
 @import '~src/styles/shared/variables';
+@import '~src/styles/shared/theme';
 
 .result-list-header {
   display: flex;
@@ -12,10 +13,21 @@
   }
 }
 
-.mat-tab-group::ng-deep .mat-tab-body {
-  padding: 20px 0 $body-padding;
+.mat-tab-group::ng-deep {
+  .mat-tab-body {
+    padding: 20px 0 $body-padding;
+  }
+
+  .mat-tab-body-content {
+    overflow: hidden;
+  }
 }
 
 app-search-result-list {
   margin-bottom: 4px;
+}
+
+app-search-result-graph {
+  border: 1px solid map-get($pn-foreground, divider);
+  border-radius: 4px;
 }

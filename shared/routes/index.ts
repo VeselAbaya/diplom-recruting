@@ -1,9 +1,13 @@
 import { Auth, register as registerAuth } from './auth';
 import { Users, register as registerUsers } from './users';
+import { RelationRequests, register as registerRelationRequests } from './relation-requests';
+import { Messages, register as registerMessages } from './messages';
 
 export interface Base {
   auth: Auth;
   users: Users;
+  relationRequests: RelationRequests;
+  messages: Messages;
   (): string;
 }
 
@@ -11,6 +15,8 @@ export interface Base {
 export const routes: Base = () => 'api';
 registerAuth(routes);
 registerUsers(routes);
+registerRelationRequests(routes);
+registerMessages(routes);
 
 // @ts-ignore
 const applyProxy = (fn, prefix = undefined) => new Proxy(fn, {

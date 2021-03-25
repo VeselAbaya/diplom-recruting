@@ -1,0 +1,19 @@
+@import '~src/styles/shared/palettes';
+
+:host {
+  display: block;
+}
+
+app-network-graph {
+  display: block;
+  width: 100%;
+  min-height: 700px;
+}
+
+app-avatar {
+  --size: 40px;
+}
+
+.avatar-backdrop {
+  fill: mat-color($pn-primary, lighter)
+}

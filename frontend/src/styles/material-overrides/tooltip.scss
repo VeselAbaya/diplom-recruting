@@ -1,0 +1,8 @@
+@import '../shared/theme';
+@import '../shared/typography';
+
+.mat-tooltip {
+  @include mat-typography-level-to-styles($pn-typography, body-2);
+  margin: 8px;
+  color: map-get($pn-foreground, secondary-text);
+}

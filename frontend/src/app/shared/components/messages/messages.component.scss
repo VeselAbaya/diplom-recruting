@@ -1,13 +1,17 @@
 @import '~src/styles/shared/theme';
 
-:host {
+:host,
+app-hidden-scroll-wrapper,
+:host app-hidden-scroll-wrapper::ng-deep .scroll-wrapper {
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 app-hidden-scroll-wrapper {
   --hidden-area-size: 40px;
   --hidden-area-background: #{map-get($pn-background, card)};
+  flex-grow: 1;
 }
 
 .messages {
@@ -36,7 +40,7 @@ app-avatar {
     background-color: map-get($pn-background, card);
   }
 
-  &--left {
+  &--reverse {
     flex-direction: row-reverse;
   }
 }

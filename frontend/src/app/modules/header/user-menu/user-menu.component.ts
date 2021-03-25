@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AuthService } from '@core/services/auth/auth.service';
+import { IUserDto } from '@monorepo/types/user/user.dto.interface';
 
 @Component({
   selector: 'app-user-menu',
@@ -6,4 +8,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./user-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserMenuComponent {}
+export class UserMenuComponent {
+  @Input() user!: IUserDto;
+  constructor(public readonly auth: AuthService) {}
+}

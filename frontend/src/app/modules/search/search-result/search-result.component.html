@@ -1,29 +1,45 @@
-<mat-tab-group>
+<mat-tab-group *ngIf="withGraphView else withoutGraph">
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon svgIcon="result-list"></mat-icon>
       Result list
     </ng-template>
 
-    <div class="result-list-header">
-      <span class="result-list-header-text">Search result</span>
-
-      <mat-form-field class="pn-no-subscript">
-        <mat-label>Sort by</mat-label>
-        <mat-select>
-          <mat-option>Name</mat-option>
-          <mat-option>Network size</mat-option>
-          <mat-option>Rate value</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <app-search-result-list></app-search-result-list>
-    <mat-paginator [pageSizeOptions]="[15, 30, 50]"></mat-paginator>
+    <ng-container *ngTemplateOutlet="resultList"></ng-container>
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon svgIcon="result-graph"></mat-icon>
       Interactive map
     </ng-template>
+
+    <app-search-result-graph></app-search-result-graph>
   </mat-tab>
 </mat-tab-group>
+
+<ng-template #withoutGraph>
+  <ng-container *ngTemplateOutlet="resultList"></ng-container>
+</ng-template>
+
+<ng-template #resultList>
+  <div class="result-list-header">
+    <span class="result-list-header-text">Search result</span>
+
+<!--    TODO: add sorting -->
+<!--    <mat-form-field class="pn-no-subscript">-->
+<!--      <mat-label>Sort by</mat-label>-->
+<!--      <mat-select>-->
+<!--        <mat-option>Name</mat-option>-->
+<!--        <mat-option>Network size</mat-option>-->
+<!--        <mat-option>Rate value</mat-option>-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+  </div>
+  <app-search-result-list></app-search-result-list>
+  <mat-paginator *ngIf="search.pagination$ | async as pagination"
+                 [pageSizeOptions]="LIMITS"
+                 [pageIndex]="pagination.page"
+                 [pageSize]="pagination.limit"
+                 [length]="pagination.total"
+                 (page)="onPageChange($event)"></mat-paginator>
+</ng-template>

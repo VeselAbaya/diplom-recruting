@@ -13,7 +13,7 @@
   }
 }
 
-.mat-form-field-invalid .mat-date-range-input-inner {
+.mat-form-field-invalid.mat-form-field-should-float .mat-date-range-input-inner {
   @include input-placeholder {
     // Needs to be !important, because the placeholder will end up inheriting the
     // input color in IE, if the consumer overrides it with a higher specificity.

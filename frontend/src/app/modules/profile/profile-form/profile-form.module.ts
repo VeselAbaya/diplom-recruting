@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
+import { ResettableButtonToggleGroupModule } from '@shared/directives/resettable-button-toggle-group/resettable-button-toggle-group.module';
 
 
 
@@ -28,7 +29,8 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatButtonToggleModule,
     MatSliderModule,
-    MatSelectModule
+    MatSelectModule,
+    ResettableButtonToggleGroupModule
   ]
 })
 export class ProfileFormModule { }

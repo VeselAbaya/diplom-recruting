@@ -1,5 +1,5 @@
 <button mat-button [matMenuTriggerFor]="menu">
-  <span class="user-name">Antay Juskovets</span>
+  <span class="user-name">{{user.firstName}} {{user.lastName}}</span>
   <app-avatar matBadge="1" matBadgeColor="accent" src="assets/default-user-avatar.svg" rounded></app-avatar>
 </button>
 
@@ -7,9 +7,9 @@
   <div class="user-profile">
     <app-avatar class="user-profile__avatar" src="assets/default-user-avatar.svg"></app-avatar>
     <div class="user-profile__info">
-      <span>Antay Juskovets</span>
-      <span class="user-profile__email">vandervise465@gmail.com</span>
-      <a routerLink="/profile" mat-flat-button color="accent">Profile settings</a>
+      <span>{{user.firstName}} {{user.lastName}}</span>
+      <span class="user-profile__email">{{user.email}}</span>
+      <a [routerLink]="['/', 'profile', user.id]" mat-flat-button color="accent">Profile settings</a>
     </div>
   </div>
 
@@ -18,5 +18,5 @@
     <span>Relation requests</span>
     <span class="relation-requests__badge">1</span>
   </a>
-  <a [routerLink]="['/auth']" mat-menu-item>Logout</a>
+  <button (click)="auth.logout()" mat-menu-item>Logout</button>
 </mat-menu>

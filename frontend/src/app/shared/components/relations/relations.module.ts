@@ -10,6 +10,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RelationsComponent } from '@shared/components/relations/relations.component';
+import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
+import { RelationTypeModule } from '@shared/pipes/relation-type/relation-type.module';
+import { IsBidirectionalModule } from '@shared/pipes/is-bidirectional/is-bidirectional.module';
 
 
 
@@ -28,7 +31,10 @@ import { RelationsComponent } from '@shared/components/relations/relations.compo
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FullNameModule,
+    RelationTypeModule,
+    IsBidirectionalModule
   ]
 })
 export class RelationsModule { }

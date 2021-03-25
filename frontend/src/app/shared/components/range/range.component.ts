@@ -1,24 +1,43 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component, forwardRef
+} from '@angular/core';
+import {
+  AbstractControl,
+  ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
+} from '@angular/forms';
 import { identity } from 'rxjs';
-import { MaxErrorStateMatcher } from '@shared/components/range/max.error-state-matcher';
-import { IRateRangeDto } from '@monorepo/types/search/search-params.dto.interface';
+
+export interface IRateRangeDto {
+  min: number;
+  max: number | null;
+}
 
 @Component({
   selector: 'app-range',
   templateUrl: './range.component.html',
   styleUrls: ['./range.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => RangeComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RangeComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => RangeComponent),
+      multi: true
+    }
+  ]
 })
-export class RangeComponent implements ControlValueAccessor {
-  public _min = 0;
-  public _max: number | null = null;
-  public _maxErrorStateMatcher = new MaxErrorStateMatcher();
+export class RangeComponent implements ControlValueAccessor, Validator {
+  _min = 0;
+  _max: number | null = null;
+  _isInvalid: ValidationErrors | null = null;
 
   _onChange: (val?: unknown) => unknown = identity;
   _onTouch: (val?: unknown) => unknown = identity;
@@ -56,7 +75,7 @@ export class RangeComponent implements ControlValueAccessor {
 
   onMaxChange(event: Event): void {
     const inputEl = event.target as HTMLInputElement;
-    const max = parseInt(inputEl.value, 10);
+    const max = parseFloat(inputEl.value);
     if (isNaN(max)) {
       this.max = null;
     }
@@ -68,7 +87,7 @@ export class RangeComponent implements ControlValueAccessor {
 
   onMinChange(event: Event): void {
     const inputEl = event.target as HTMLInputElement;
-    const min = parseInt(inputEl.value, 10);
+    const min = parseFloat(inputEl.value);
     if (isNaN(min)) {
       this.min = 0;
     }
@@ -81,5 +100,10 @@ export class RangeComponent implements ControlValueAccessor {
       this.min = min;
       inputEl.value = this._min.toString();
     }
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    const {min, max} = control.value;
+    return this._isInvalid = max !== null && min > (max || 0) ? {incorrectRangeError: true} : null;
   }
 }

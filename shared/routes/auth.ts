@@ -1,7 +1,8 @@
 import { Base } from './index';
 
 export interface Auth {
-  login: () => string;
+  signin: () => string;
+  signup: () => string;
   logout: () => string;
   refresh: () => string;
 
@@ -11,7 +12,8 @@ export interface Auth {
 export const register = (routes: Base) => {
   // @ts-ignore
   routes.auth = () => 'auth';
-  routes.auth.login = () => 'login';
+  routes.auth.signin = () => 'signin';
+  routes.auth.signup = () => 'signup';
   routes.auth.logout = () => 'logout';
   routes.auth.refresh = () => 'refresh';
 };

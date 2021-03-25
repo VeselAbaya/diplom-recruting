@@ -12,7 +12,7 @@
   min-width: 470px;
   margin-right: 18px;
 
-  &::before {
+  &.edit-hint::before {
     content: 'You can edit everything here';
     position: absolute;
     top: 16px;

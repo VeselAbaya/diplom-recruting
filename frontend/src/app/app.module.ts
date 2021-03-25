@@ -7,13 +7,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AuthService } from '@core/services/auth/auth.service';
 import { MatIconService } from '@core/services/maticon.service';
 import { HeaderModule } from '@modules/header/header.module';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LoadingInterceptor } from '@core/interceptors/loading.interceptor';
+import { BaseUrlInterceptor } from '@core/interceptors/base-url.interceptor';
+import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
+import { SocketIoModule } from 'ngx-socket-io';
+import { environment } from '@env';
 
 @NgModule({
   declarations: [
@@ -23,6 +28,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    SocketIoModule.forRoot({url: environment.baseUrl}),
     AppRoutingModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -40,6 +46,21 @@ import { MatDialogModule } from '@angular/material/dialog';
         icons.init();
         auth.loadUser().subscribe();
       },
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BaseUrlInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true
     },
     {

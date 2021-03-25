@@ -6,7 +6,7 @@
 }
 
 .relations-list {
-  max-width: 935px;
+  width: 935px;
 }
 
 .mat-tab-nav-bar {
@@ -14,6 +14,7 @@
 }
 
 app-messages {
+  flex-grow: 1;
   margin-left: 24px;
 
   ::ng-deep app-avatar {

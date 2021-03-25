@@ -1,0 +1,6 @@
+db:
+  scheme: 'neo4j'
+
+jwt:
+  accessExpiresIn: 900
+  refreshExpiresIn: 18000

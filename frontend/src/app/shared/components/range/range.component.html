@@ -1,5 +1,6 @@
 <form>
-  <mat-form-field class="pn-no-subscript pn-vertical-align">
+  <mat-form-field class="pn-no-subscript pn-vertical-align"
+                  [class.mat-form-field-invalid]="this._isInvalid">
     <input type="number"
            matInput
            [ngModel]="_min"
@@ -7,12 +8,12 @@
            (input)="onMinChange($event)"
            step="0.01"
            min="0"
-           [max]="_min">
+           [max]="_max">
   </mat-form-field>
   <div class="divider"></div>
-  <mat-form-field class="pn-no-subscript pn-vertical-align">
+  <mat-form-field class="pn-no-subscript pn-vertical-align"
+                  [class.mat-form-field-invalid]="this._isInvalid">
     <input type="number"
-           [errorStateMatcher]="_maxErrorStateMatcher"
            matInput
            [ngModel]="_max"
            name="max"

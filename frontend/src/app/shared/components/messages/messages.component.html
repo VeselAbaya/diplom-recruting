@@ -1,60 +1,24 @@
-<app-hidden-scroll-wrapper orientation="vertical">
-  <div class="messages" cdkScrollable>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat elit vitae justo aliquam posuere. In sit amet velit eleifend, pharetra nisi sit amet, porttitor augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; </div>
-    </div>
-    <div class="message message--left">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Nunc gravida lacus vitae diam tincidunt, in finibus diam lobortis. Vivamus molestie sollicitudin mauris, nec facilisis orci sagittis et. Aliquam sollicitudin est neque.  </div>
-    </div>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Mauris pretium sed dui eu hendrerit. Vivamus tempus consectetur aliquam. </div>
-    </div>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Phasellus vitae commodo eros.</div>
-    </div>
-    <div class="message message--left">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Nunc gravida lacus vitae diam tincidunt, in finibus diam lobortis. Vivamus molestie sollicitudin mauris, nec facilisis orci sagittis et. Aliquam sollicitudin est neque.  </div>
-    </div>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Phasellus vitae commodo eros.</div>
-    </div>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat elit vitae justo aliquam posuere. In sit amet velit eleifend, pharetra nisi sit amet, porttitor augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; </div>
-    </div>
-    <div class="message message--left">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Nunc gravida lacus vitae diam tincidunt, in finibus diam lobortis. Vivamus molestie sollicitudin mauris, nec facilisis orci sagittis et. Aliquam sollicitudin est neque.  </div>
-    </div>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Mauris pretium sed dui eu hendrerit. Vivamus tempus consectetur aliquam. </div>
-    </div>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Phasellus vitae commodo eros.</div>
-    </div>
-    <div class="message message--left">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Nunc gravida lacus vitae diam tincidunt, in finibus diam lobortis. Vivamus molestie sollicitudin mauris, nec facilisis orci sagittis et. Aliquam sollicitudin est neque.  </div>
-    </div>
-    <div class="message">
-      <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
-      <div class="message-text">Phasellus vitae commodo eros.</div>
-    </div>
-  </div>
-</app-hidden-scroll-wrapper>
+<ng-container *ngIf="auth.user$ | async as currentUser">
+  <ng-container *ngIf="messages.receiverUser$ | async as receiverUser">
+    <app-hidden-scroll-wrapper orientation="vertical">
+      <div class="messages" cdkScrollable>
+        <div class="message" *ngFor="let message of messages.list$ | async"
+             [class.message--reverse]="message.fromUserId === currentUser.id"
+             #message>
+          <app-avatar [src]="(message.fromUserId !== currentUser.id ? receiverUser : currentUser).avatarSrc"
+                      rounded>
+          </app-avatar>
+          <div class="message-text">{{message.text}}</div>
+        </div>
+      </div>
+    </app-hidden-scroll-wrapper>
 
-<mat-form-field class="message-form pn-no-subscript pn-vertical-align pn-textarea-with-suffix">
-  <textarea matInput rows="3"></textarea>
-  <button mat-icon-button matSuffix color="primary">
-    <mat-icon svgIcon="send"></mat-icon>
-  </button>
-</mat-form-field>
+    <mat-form-field class="message-form pn-no-subscript pn-vertical-align pn-textarea-with-suffix">
+      <textarea matInput rows="3" [(ngModel)]="text" (keypress)="onTextareaKeyPress($event)"></textarea>
+      <button mat-icon-button matSuffix color="primary" (click)="onSendMessage()">
+        <mat-icon svgIcon="send"></mat-icon>
+      </button>
+    </mat-form-field>
+  </ng-container>
+</ng-container>
 

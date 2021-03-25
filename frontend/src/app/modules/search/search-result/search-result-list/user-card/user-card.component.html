@@ -1,36 +1,51 @@
-<app-hourly [rate]="150"></app-hourly>
+<app-hourly *ngIf="user.hourlyRate !== null" [rate]="user.hourlyRate"></app-hourly>
 
 <div class="user">
   <app-avatar src="assets/default-user-avatar.svg"></app-avatar>
-  <span class="user-name">
-    Really very long User name text Box
-  </span>
+  <a [routerLink]="['/', 'profile', user.id]" class="user-name">
+    {{user.firstName}} {{user.lastName}}
+  </a>
 </div>
 
 <div class="user-info">
-  <mat-icon svgIcon="user"></mat-icon>
-  Job title
+  <mat-icon svgIcon="message"></mat-icon>
+  {{user.email}}
 </div>
 
 <div class="user-info">
   <mat-icon svgIcon="users"></mat-icon>
-  Network size &nbsp; <span class="network-size">34</span>
+  Network size &nbsp; <span class="network-size">{{'{user.networkSize}'}}</span>
 </div>
 
-<div class="buttons">
+<div class="buttons" *ngIf="(auth.user$ | async)?.id !== user.id">
   <button mat-stroked-button color="primary" (click)="openCreateRelationDialog()">
     Add Relationship
   </button>
-  <button matBadge="2" matBadgeColor="accent" mat-stroked-button mat-icon-button color="primary" class="pn-icon-align">
+  <button [matBadge]="user.notifications" [matBadgeHidden]="!user.notifications" matBadgeColor="accent"
+          mat-stroked-button mat-icon-button color="primary" class="pn-icon-align"
+          (click)="messages.openChatWithUser(user)">
     <mat-icon svgIcon="message"></mat-icon>
   </button>
 </div>
 
 <div class="right-icons">
-  <button mat-icon-button color="primary" (click)="openEditRelationsDialog()">
+  <button mat-icon-button
+          *ngIf="user.relationsCount > 0"
+          (click)="openEditRelationsDialog()"
+          matTooltip="Yours and {{user.firstName}}'s relations"
+          matTooltipPosition="left"
+          color="primary">
     <mat-icon svgIcon="relationship"></mat-icon>
   </button>
-  <button mat-icon-button color="primary" (click)="openRelationsListDialog()" class="pn-icon-align">
-    <mat-icon svgIcon="relations-list"></mat-icon>
-  </button>
+
+  <ng-container *ngIf="search.selectedUser$ | async as selectedUser">
+    <button mat-icon-button color="primary"
+            *ngIf="!(profileGuard.isMyProfile$ | async)"
+            (click)="openRelationsListDialog()"
+            matTooltip="{{selectedUser.firstName}}'s and {{user.firstName}}'s relations"
+            matTooltipPosition="left"
+            class="pn-icon-align">
+      <mat-icon svgIcon="relations-list"></mat-icon>
+    </button>
+  </ng-container>
 </div>

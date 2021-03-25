@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RequestsComponent } from '@modules/requests/requests.component';
 import { RequestsTabComponent } from '@modules/requests/requests-tab/requests-tab.component';
 import { RequestsResolver } from '@modules/requests/requests.resolver';
-import { RelationRequestTypeEnum } from '@modules/requests/relation-request-type.enum';
+import { RelationRequestType } from '@modules/requests/relation-request-type.enum';
 
 const routes: Routes = [
   {
@@ -13,14 +13,15 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: RelationRequestTypeEnum.ToMe
+        redirectTo: RelationRequestType.ToMe
       },
       {
         path: ':requestType',
         component: RequestsTabComponent,
         resolve: {
           relationRequests: RequestsResolver
-        }
+        },
+        runGuardsAndResolvers: 'always'
       }
     ]
   }

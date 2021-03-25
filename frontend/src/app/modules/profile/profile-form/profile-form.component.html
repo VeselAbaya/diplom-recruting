@@ -1,14 +1,17 @@
-<mat-card>
-  <app-profile-info avatarSrc="assets/default-user-avatar.svg"
-                    [name]="name"
-                    email="vandervise465@gmail.com"
-                    [editable]="!_disabled"
-                    (avatarChange)="onAvatarChange($event)"
-                    [rate]="150"></app-profile-info>
-  <mat-form-field class="pn-no-subscript about-me">
-    <mat-label>About me</mat-label>
-    <textarea matInput rows="11" [disabled]="_disabled"></textarea>
-  </mat-form-field>
+<mat-card [class.edit-hint]="guard.isMyProfile$ | async">
+  <ng-container *ngIf="(search.selectedUser$ | async) as user">
+    <app-profile-info [avatarSrc]="user.avatarSrc"
+                      [name]="user.firstName + ' ' + user.lastName"
+                      [hourlyRate]="user.hourlyRate"
+                      [email]="user.email"
+                      [editable]="!_disabled"
+                      (avatarChange)="onAvatarChange($event)"
+                      (infoChange)="onProfileInfoChange($event)"></app-profile-info>
+    <mat-form-field class="pn-no-subscript about-me" [formGroup]="form">
+      <mat-label>About me</mat-label>
+      <textarea matInput rows="11" formControlName="about"></textarea>
+    </mat-form-field>
+  </ng-container>
 </mat-card>
 
 <form [formGroup]="form">
@@ -17,8 +20,8 @@
   </app-chip-list-control>
 
   <mat-form-field class="pn-no-subscript">
-    <mat-label>Current job title</mat-label>
-    <input matInput>
+    <mat-label>Phone number</mat-label>
+    <input formControlName="phone" matInput>
   </mat-form-field>
 
   <mat-form-field class="pn-no-subscript">
@@ -35,13 +38,13 @@
 
   <div class="search-form">
     <mat-label>Work schedule</mat-label>
-    <mat-button-toggle-group formControlName="workSchedule">
+    <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workSchedule">
       <mat-button-toggle [value]="WorkSchedule.Full">Full</mat-button-toggle>
       <mat-button-toggle [value]="WorkSchedule.Part">Part</mat-button-toggle>
     </mat-button-toggle-group>
 
     <mat-label>Work</mat-label>
-    <mat-button-toggle-group formControlName="workType">
+    <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workType">
       <mat-button-toggle [value]="WorkType.Office">Office</mat-button-toggle>
       <mat-button-toggle [value]="WorkType.Remote">Remote</mat-button-toggle>
     </mat-button-toggle-group>
@@ -52,7 +55,6 @@
                 [max]="ExperienceSliderConfig.max"
                 [displayWith]="ExperienceSliderConfig.displayWith"
                 [thumbLabel]="true"
-                [value]="3"
                 [tickInterval]="1"></mat-slider>
   </div>
 </form>

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@core/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeaderService } from '@modules/header/header.service';
+import { ErrorsService } from '@core/services/errors.service';
 
 @Component({
   selector: 'app-register',
@@ -25,14 +26,21 @@ export class RegisterComponent {
 
   constructor(private readonly auth: AuthService,
               private readonly snackBar: MatSnackBar,
+              private readonly errors: ErrorsService,
               private readonly header: HeaderService) {
     header.setTitle('Sign up');
   }
 
   onSubmit(): void {
     if (this.form.valid) {
-      this.snackBar.open(`Check your ${this.form.value.email} for Verification Link`, 'Yeah!', {duration: undefined});
-      this.auth.login(this.form.value).subscribe();
+      this.auth.signup(this.form.value).subscribe({
+        next: () => this.snackBar.open(
+          `Check your ${this.form.value.email} for Verification Link`,
+          'Yeah!',
+          {duration: undefined}
+        ),
+        error: this.errors.handle
+      });
     }
   }
 }

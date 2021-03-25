@@ -23,10 +23,6 @@ app-relations {
     height: var(--opened-height);
   }
 
-  &:not(.selected) {
-    cursor: pointer;
-  }
-
   &:first-child {
     margin-top: $relation-requests-gap;
   }
@@ -39,4 +35,8 @@ app-relations {
     margin-left: 18px;
     min-width: 132px;
   }
+}
+
+.hint {
+  color: map-get($pn-foreground, secondary-text);
 }

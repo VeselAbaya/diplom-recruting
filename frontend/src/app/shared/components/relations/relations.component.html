@@ -1,31 +1,46 @@
 <div class="relation">
   <app-profile-info avatarSrc="assets/default-user-avatar.svg"
-                    name="Antay Juskovets"
-                    email="vandervise465@gmail.com"
-                    [rate]="150"></app-profile-info>
+                    [name]="fromUser | fullName"
+                    [email]="fromUser.email"
+                    [hourlyRate]="fromUser.hourlyRate"></app-profile-info>
 
   <app-hidden-scroll-wrapper orientation="vertical">
     <div class="arrows-wrapper" #arrowsWrapper cdkScrollable>
-      <div class="arrow-wrapper" *ngFor="let _ of [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; let i = index"
-           #arrowWrapper (click)="selectedI = i; onRelationSelect(arrowWrapper);">
-        <div class="arrow" [class.arrow--selected]="i === selectedI">
-          <span class="arrow-label">Works with</span>
+      <ng-container *ngIf="requests.length else requestCreation">
+        <div class="arrow-wrapper" *ngFor="let request of requests; let i = index"
+             #arrowWrapper (click)="onRelationSelect(request, arrowWrapper);">
+          <div class="arrow"
+               [class.arrow--selected]="request.id === (facade.selectedRequest$ | async)?.id"
+               [class.arrow--right]="!(request.type | isBidirectional) && request.fromUserId === fromUser.id"
+               [class.arrow--left]="!(request.type | isBidirectional) && request.fromUserId !== fromUser.id">
+            <span class="arrow-label">{{request.type | relationType}}</span>
+          </div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #requestCreation>
+        <div class="arrow-wrapper">
+          <div class="arrow arrow--selected" [class.arrow--right]="form.value.type && !(form.value.type | isBidirectional)">
+            <span class="arrow-label">{{form.value.type ? (form.value.type | relationType) : 'Choose type'}}</span>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </app-hidden-scroll-wrapper>
 
   <app-profile-info avatarSrc="assets/default-user-avatar.svg"
-                    name="Boris Johnson"
-                    email="borisjohnson@ibm-rnd.com"
-                    [rate]="84"></app-profile-info>
+                    [name]="toUser | fullName"
+                    [email]="toUser.email"
+                    [hourlyRate]="toUser.hourlyRate"></app-profile-info>
 </div>
 
-<form class="form" [formGroup]="form" @fadeInOut *ngIf="showForm">
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" @fadeInOut *ngIf="showForm">
   <mat-form-field class="small-field pn-no-subscript">
     <mat-label>Relation type</mat-label>
     <mat-select formControlName="type">
-      <mat-option [value]="RelationType.WorksWith">Works with</mat-option>
+      <mat-option *ngFor="let entry of RelationType | keyvalue"
+                  [value]="entry.value">
+        {{entry.value | relationType}}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -34,8 +49,8 @@
                   [class.mat-form-field-invalid]="matFormField._control.errorState || form.errors?.startDateRequiredIfHasEndDate">
     <mat-label>Dates</mat-label>
     <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate formControlName="start" placeholder="Start date">
-      <input matEndDate formControlName="end" placeholder="To present">
+      <input matStartDate formControlName="startAt" placeholder="Start date">
+      <input matEndDate formControlName="endAt" placeholder="To present">
     </mat-date-range-input>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>

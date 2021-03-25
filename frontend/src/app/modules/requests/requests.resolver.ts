@@ -1,20 +1,40 @@
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { IRelationRequestDto } from '@monorepo/types/relations/relation-request.dto.interface';
 import { Observable, of } from 'rxjs';
-import { RelationType } from '@monorepo/types/relations/relation-type.enum';
+import { RelationRequestType } from '@modules/requests/relation-request-type.enum';
+import { RequestsService } from '@modules/requests/requests.service';
+import { Injectable } from '@angular/core';
+import { AuthService } from '@core/services/auth/auth.service';
+import { switchMap, take } from 'rxjs/operators';
+import { IGetRelationRequestsDto } from '@monorepo/types/relations/get-relation-requests.dto.interface';
 
-export class RequestsResolver implements Resolve<IRelationRequestDto[]> {
-  resolve(route: ActivatedRouteSnapshot): Observable<IRelationRequestDto[]> {
-    return of(new Array<IRelationRequestDto>(10).fill({
-      id: 0,
-      declined: false,
-      type: RelationType.WorksWith,
-      start: 19343423,
-      end: null,
-      comment: 'Comment',
-      description: 'Description',
-      toUser: {id: 0},
-      fromUser: {id: 0}
-    }));
+@Injectable()
+export class RequestsResolver implements Resolve<IGetRelationRequestsDto[]> {
+  constructor(private readonly requests: RequestsService, private readonly auth: AuthService) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IGetRelationRequestsDto[]> {
+    switch (route.params.requestType) {
+      case RelationRequestType.ToMe:
+        return this.auth.user$.pipe(
+          take(1),
+          switchMap(user => this.requests.get({
+            toUserId: user?.id,
+            declined: false
+          }))
+        );
+
+      case RelationRequestType.FromMe:
+        return this.auth.user$.pipe(
+          take(1),
+          switchMap(user => this.requests.get({
+            fromUserId: user?.id,
+            declined: false
+          }))
+        );
+
+      case RelationRequestType.Declined:
+        return this.requests.get({declined: true});
+
+      default: return of([]);
+    }
   }
 }

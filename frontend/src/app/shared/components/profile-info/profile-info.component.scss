@@ -1,6 +1,6 @@
-@import '../../../../styles/shared/typography';
-@import '../../../../styles/shared/theme';
-@import '../../../../styles/shared/variables';
+@import '~src/styles/shared/typography';
+@import '~src/styles/shared/theme';
+@import '~src/styles/shared/variables';
 
 :host,
 .user-info {
@@ -17,7 +17,7 @@ $avatar-size: 110px;
   position: relative;
   width: $avatar-size;
   height: $avatar-size;
-  margin-right: 20px;
+  margin-right: 16px;
 
   label {
     position: absolute;
@@ -60,7 +60,8 @@ app-avatar {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: 100%;
+  overflow: hidden;
+  max-width: 100%;
 
   &__rate {
     margin-bottom: 16px;
@@ -68,12 +69,24 @@ app-avatar {
 
   &__name {
     @include mat-typography-level-to-styles($pn-typography, title);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
   }
 
   &__email {
     display: flex;
     align-items: center;
+    max-width: 100%;
     color: mat-color($pn-primary, default);
+  }
+
+  &__email-value {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__email input {
@@ -81,6 +94,7 @@ app-avatar {
   }
 
   &__email .mat-icon {
+    flex-shrink: 0;
     margin-right: 4px;
   }
 }

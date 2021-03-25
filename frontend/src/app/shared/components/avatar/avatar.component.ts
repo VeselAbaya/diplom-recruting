@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, Renderer2 } from '@angular/core';
-
-export const DEFAULT_AVATAR_SRC = 'assets/default-user-avatar.svg';
+import { DEFAULT_AVATAR_URL } from '@monorepo/constants';
 
 @Component({
   selector: 'app-avatar',
@@ -9,7 +8,7 @@ export const DEFAULT_AVATAR_SRC = 'assets/default-user-avatar.svg';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarComponent {
-  @Input() src = DEFAULT_AVATAR_SRC;
+  @Input() src = DEFAULT_AVATAR_URL;
   @Input() set rounded(_: string) {
     this.renderer.setAttribute(this.elRef.nativeElement, 'rounded', 'true');
   }

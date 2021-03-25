@@ -1,8 +1,10 @@
-@import '../../../../styles/shared/theme';
-@import '../../../../styles/shared/typography';
-@import '../../../../styles/shared/variables';
+@import '~src/styles/shared/theme';
+@import '~src/styles/shared/typography';
+@import '~src/styles/shared/variables';
+@import '~src/styles/shared/palettes';
 
 :host {
+  --material-disabled-text-color: #{$text-color};
   display: block;
   width: 935px;
 }
@@ -20,7 +22,8 @@
   app-profile-info {
     @include mat-elevation(3, mat-color($pn-primary, default));
     box-sizing: border-box;
-    flex-grow: 1;
+    flex-basis: 100%;
+    max-width: 364px;
     height: 168px;
     padding: 20px 20px 20px 16px;
     border-radius: 4px;
@@ -97,6 +100,11 @@
   &::before {
     left: 1px;
     transform: translateY(-42%) rotate(135deg);
+  }
+
+  &--left::after,
+  &--right::before {
+    content: unset;
   }
 
   &-label {

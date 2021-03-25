@@ -1,6 +1,10 @@
 <h1 mat-dialog-title>Create Relation</h1>
-<app-relations [showForm]="true">
-  <button class="save-button" mat-stroked-button color="primary">
+<app-relations [showForm]="true"
+               [fromUser]="data.fromUser"
+               [toUser]="data.toUser"
+               (formSubmit)="onSubmit($event)"
+               #relations>
+  <button class="save-button" mat-stroked-button color="primary" [disabled]="relations.form.invalid">
     <mat-icon svgIcon="relationship" class="pn-icon-align"></mat-icon>
     Create Relation
   </button>

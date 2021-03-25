@@ -1,7 +1,19 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { RelationRequestTypeEnum } from '@modules/requests/relation-request-type.enum';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RelationRequestType } from '@modules/requests/relation-request-type.enum';
 import { CdkScrollable } from '@angular/cdk/overlay';
+import { RequestsService } from '@modules/requests/requests.service';
+import { ErrorsService } from '@core/services/errors.service';
+import { distinctUntilChanged, map, pluck, switchMap, take, tap } from 'rxjs/operators';
+import { RelationsFacade } from '@shared/components/relations/relations.facade';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { Observable } from 'rxjs';
+import { IUpdateRelationRequestDto } from '@monorepo/types/relations/update-relation-request.dto.interface';
+import { AuthService } from '@core/services/auth/auth.service';
+import { MessagesService } from '@shared/components/messages/messages.service';
+import { IGetRelationRequestsDto } from '@monorepo/types/relations/get-relation-requests.dto.interface';
 
 @Component({
   selector: 'app-requests-tab',
@@ -9,14 +21,31 @@ import { CdkScrollable } from '@angular/cdk/overlay';
   styleUrls: ['./requests-tab.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RequestsTabComponent {
-  readonly RelationRequestTypeEnum = RelationRequestTypeEnum;
+export class RequestsTabComponent extends OnDestroyMixin {
+  readonly RelationRequestTypeEnum = RelationRequestType;
   @ViewChild(CdkScrollable, {static: true}) relationRequestsContainer: CdkScrollable | null = null;
   selectedIndex: number | null = null;
 
-  constructor(public readonly route: ActivatedRoute) {}
+  constructor(public readonly route: ActivatedRoute,
+              public readonly requests: RequestsService,
+              public readonly facade: RelationsFacade,
+              public readonly auth: AuthService,
+              private readonly messages: MessagesService,
+              private readonly router: Router,
+              private readonly errors: ErrorsService,
+              private readonly snackbar: MatSnackBar) {
+    super();
+    this.route.params.pipe(
+      untilComponentDestroyed(this),
+      map(params => params.requestType),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.selectedIndex = null;
+      this.facade.select(null);
+    });
+  }
 
-  onRelationRequestSelect(i: number, el: HTMLElement): void {
+  onRelationRequestSelect(i: number, {toUser, fromUser}: IGetRelationRequestsDto, el: HTMLElement): void {
     if (this.selectedIndex === i) {
       return;
     }
@@ -33,6 +62,69 @@ export class RequestsTabComponent {
       });
     }
 
+    this.auth.user$.pipe(
+      take(1),
+      isNotNullOrUndefined(),
+      map(user => user.id !== toUser.id ? toUser : fromUser)
+    ).subscribe(receiverUser => this.messages.openChatWithUser(receiverUser));
+
     this.selectedIndex = i;
+  }
+
+  onRelationRequestChange(updateDto: IUpdateRelationRequestDto): void {
+    this.selectedRequestId$.pipe(
+      switchMap(requestId => this.requests.update(requestId, updateDto)),
+    ).subscribe({
+      next: () => {
+        this.snackbar.open('Request has been updated', 'Close', {panelClass: 'primary'});
+        this.router.navigate(['.'], {relativeTo: this.route});
+      },
+      error: this.errors.handle
+    });
+  }
+
+  onDeclineClick(): void {
+    this.selectedRequestId$.pipe(
+      switchMap(requestId => this.requests.decline(requestId))
+    ).subscribe(({
+      next: () => {
+        this.snackbar.open('Request has been declined', 'Close', {panelClass: 'primary'});
+        this.selectedIndex = null;
+        this.router.navigate(['.'], {relativeTo: this.route});
+      },
+      error: this.errors.handle
+    }));
+  }
+
+  onReopenClick(): void {
+    this.selectedRequestId$.pipe(
+      switchMap(requestId => this.requests.reopen(requestId))
+    ).subscribe({
+      next: () => {
+        this.snackbar.open('Request has been reopened', 'Close', {panelClass: 'primary'});
+        this.router.navigate(['.'], {relativeTo: this.route});
+      },
+      error: this.errors.handle
+    });
+  }
+
+  onCreateRelationClick(): void {
+    this.selectedRequestId$.pipe(
+      switchMap(requestId => this.requests.accept(requestId))
+    ).subscribe({
+      next: () => {
+        this.snackbar.open('Relationship has been created', 'Close', {panelClass: 'primary'});
+        this.router.navigate(['.'], {relativeTo: this.route});
+      },
+      error: this.errors.handle
+    });
+  }
+
+  private get selectedRequestId$(): Observable<string> {
+    return this.facade.selectedRequest$.pipe(
+      take(1),
+      isNotNullOrUndefined(),
+      pluck('id')
+    );
   }
 }

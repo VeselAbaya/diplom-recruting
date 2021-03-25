@@ -23,7 +23,7 @@
     <app-hourly class="user-info__rate"
                 editable
                 (rateChange)="onRateChange($event)"
-                [rate]="rate"></app-hourly>
+                [rate]="hourlyRate"></app-hourly>
     <input class="user-info__name"
            appThinInput
            [value]="name"
@@ -40,11 +40,11 @@
   </ng-container>
 
   <ng-template #notEditable>
-    <app-hourly class="user-info__rate" *ngIf="rate !== null && rate !== undefined" [rate]="rate"></app-hourly>
+    <app-hourly class="user-info__rate" *ngIf="hourlyRate !== null && hourlyRate !== undefined" [rate]="hourlyRate"></app-hourly>
     <span class="user-info__name" *ngIf="name">{{name}}</span>
     <span class="user-info__email" *ngIf="email">
       <mat-icon svgIcon="message"></mat-icon>
-      {{email}}
+      <span class="user-info__email-value">{{email}}</span>
     </span>
   </ng-template>
 </div>

@@ -17,6 +17,12 @@ import { RelationsModule } from '@shared/components/relations/relations.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CreateRelationDialogComponent } from './search-result-list/user-card/create-relation-dialog/create-relation-dialog.component';
 import { EditRelationsDialogComponent } from './search-result-list/user-card/edit-relations-dialog/edit-relations-dialog.component';
+import { RouterModule } from '@angular/router';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { NetworkGraphComponent } from './search-result-graph/network-graph/network-graph.component';
+import { ProfileInfoModule } from '@shared/components/profile-info/profile-info.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -26,7 +32,8 @@ import { EditRelationsDialogComponent } from './search-result-list/user-card/edi
     SearchResultComponent,
     RelationsListDialogComponent,
     CreateRelationDialogComponent,
-    EditRelationsDialogComponent
+    EditRelationsDialogComponent,
+    NetworkGraphComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +46,12 @@ import { EditRelationsDialogComponent } from './search-result-list/user-card/edi
     AvatarModule,
     HourlyModule,
     RelationsModule,
-    MatDialogModule
+    MatDialogModule,
+    RouterModule,
+    NgxGraphModule,
+    ProfileInfoModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ],
   exports: [SearchResultListComponent, SearchResultGraphComponent, SearchResultComponent]
 })

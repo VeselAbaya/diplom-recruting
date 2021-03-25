@@ -1,4 +1,20 @@
-.mat-snack-bar-container .mat-button-base {
-  --height: 36px;
-  border-radius: 4px;
+@import '../shared/palettes';
+
+.mat-snack-bar-container {
+  .mat-button-base {
+    --height: 36px;
+    border-radius: 4px;
+  }
+
+  &.primary .mat-button-base {
+    color: mat-color($pn-primary, default);
+  }
+
+  &.accent .mat-button-base {
+    color: mat-color($pn-accent, default);
+  }
+
+  &.warn .mat-button-base {
+    color: mat-color($pn-warn, default);
+  }
 }

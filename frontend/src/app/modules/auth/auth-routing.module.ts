@@ -12,16 +12,16 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'signin',
         pathMatch: 'full'
       },
       {
-        path: 'login',
+        path: 'signin',
         component: LoginComponent,
         canActivate: [LoginGuard]
       },
       {
-        path: 'register',
+        path: 'signup',
         component: RegisterComponent
       }
     ]

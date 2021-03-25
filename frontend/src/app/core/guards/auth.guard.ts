@@ -14,10 +14,10 @@ export class AuthGuard implements CanActivate {
               state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.auth.user$.pipe(
       map(user => {
-        // if (!user) {
-        //   this.auth.redirectTo(state.url);
-        //   return this.router.parseUrl('auth/login');
-        // }
+        if (!user) {
+          this.auth.redirectTo(state.url);
+          return this.router.parseUrl('auth/signin');
+        }
 
         return true;
       })

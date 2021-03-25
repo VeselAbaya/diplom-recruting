@@ -1,21 +1,44 @@
 <app-hidden-scroll-wrapper orientation="vertical">
   <div cdkScrollable class="relation-requests-wrapper">
-    <app-relations *ngFor="let relationReq of (route.data | async)?.relationRequests; let i = index"
-                   #relationRequest
-                   (click)="onRelationRequestSelect(i, relationRequest.elRef.nativeElement)"
+    <app-relations *ngFor="let relationReq of requests.list$ | async; let i = index"
+                   #relationRequestComponent
+                   [fromUser]="relationReq.fromUser"
+                   [toUser]="relationReq.toUser"
+                   [requests]="relationReq.requests"
+                   (requestSelect)="onRelationRequestSelect(i, relationReq, relationRequestComponent.elRef.nativeElement)"
+                   (formSubmit)="onRelationRequestChange($event)"
                    [ngSwitch]="(route.params | async)?.requestType"
                    [disabled]="(route.params | async)?.requestType !== RelationRequestTypeEnum.FromMe"
                    [class.selected]="selectedIndex === i"
                    [showForm]="selectedIndex === i">
       <ng-container *ngSwitchCase="RelationRequestTypeEnum.ToMe">
-        <button mat-stroked-button color="warn">Decline</button>
-        <button mat-stroked-button color="primary">
+        <button mat-stroked-button type="button" color="warn" (click)="onDeclineClick()">Decline</button>
+        <button mat-stroked-button type="button" color="primary" (click)="onCreateRelationClick()">
           <mat-icon svgIcon="relationship" class="pn-icon-align"></mat-icon>
           Create relation
         </button>
       </ng-container>
 
-      <button mat-stroked-button color="primary" *ngSwitchCase="RelationRequestTypeEnum.Declined">Reopen</button>
+      <ng-container *ngSwitchCase="RelationRequestTypeEnum.FromMe">
+        <button mat-stroked-button type="button" color="warn" (click)="onDeclineClick()">Cancel</button>
+        <button mat-stroked-button color="primary" type="button" (click)="relationRequestComponent.onSubmit()"
+                [disabled]="relationRequestComponent.form.pristine">
+          Save
+        </button>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="RelationRequestTypeEnum.Declined">
+        <ng-container *ngIf="(auth.user$ | async)?.id as currentUserId">
+          <button *ngIf="currentUserId === (facade.selectedRequest$ | async)?.declinedBy else declinedByAnotherUser"
+                  mat-stroked-button color="primary" type="button"
+                  (click)="onReopenClick()">Reopen</button>
+          <ng-template #declinedByAnotherUser>
+            <span class="hint">
+              Request declined by {{relationReq[relationReq.fromUser.id === currentUserId ? 'toUser' : 'fromUser'].firstName}}
+            </span>
+          </ng-template>
+        </ng-container>
+      </ng-container>
     </app-relations>
   </div>
 </app-hidden-scroll-wrapper>
