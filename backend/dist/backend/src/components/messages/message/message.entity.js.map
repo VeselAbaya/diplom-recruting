@@ -1,1 +1,0 @@
-{"version":3,"file":"message.entity.js","sourceRoot":"","sources":["../../../../../../src/components/messages/message/message.entity.ts"],"names":[],"mappings":";;;AAAA,qGAA4E;AAC5E,iDAAiD;AAEjD,MAAa,aAAa;IACxB,YAAY,YAA6C;QACvD,KAAK,MAAM,CAAC,GAAG,EAAE,GAAG,CAAC,IAAI,MAAM,CAAC,OAAO,CAAC,YAAY,CAAC,EAAE;YAErD,IAAI,CAAC,GAAG,CAAC,GAAG,GAAG,CAAC;SACjB;IACH,CAAC;CAOF;AAbD,sCAaC"}
