@@ -13,6 +13,7 @@ import { IGraphSearchParamsDto } from '@monorepo/types/relations/graph-search-pa
 import { RelationsListDialogComponent } from '@modules/search/search-result/search-result-list/user-card/relations-list-dialog/relations-list-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserListItem } from '@monorepo/types/with-notification.interface';
+import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 interface INgxGraph extends IGraphDto {
   nodes: (IUserListItem & Node)[];
@@ -25,7 +26,7 @@ interface INgxGraph extends IGraphDto {
   styleUrls: ['./search-result-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchResultGraphComponent {
+export class SearchResultGraphComponent extends OnDestroyMixin {
   layout = new Layout();
   NODE_SIZE = GRAPH.NODE_SIZE;
   DEFAULT_AVATAR_URL = DEFAULT_AVATAR_URL;
@@ -37,6 +38,7 @@ export class SearchResultGraphComponent {
   private mouseMovedDistance = 0;
 
   graph$ = this.search.params$.pipe(
+    untilComponentDestroyed(this),
     filter(params => !!params.fromUserId),
     switchMap(params => this.relations.getGraph(params as IGraphSearchParamsDto)),
     map(graph => {
@@ -56,7 +58,9 @@ export class SearchResultGraphComponent {
   constructor(private readonly search: SearchService,
               private readonly dialog: MatDialog,
               private readonly snackbar: MatSnackBar,
-              private readonly relations: RelationsService) {}
+              private readonly relations: RelationsService) {
+    super();
+  }
 
   onNodeClick(event: MouseEvent, selectedNode: IUserListItem): void {
     if (this.mouseMovedDistance <= 15) {
