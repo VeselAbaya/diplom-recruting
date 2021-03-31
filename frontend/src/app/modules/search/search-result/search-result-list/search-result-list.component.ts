@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SearchService } from '@modules/search/search.service';
-import { ProfileGuard } from '@modules/profile/profile.guard';
 import { RelationsService } from '@modules/search/relations.service';
 
 @Component({
@@ -11,6 +10,5 @@ import { RelationsService } from '@modules/search/relations.service';
 })
 export class SearchResultListComponent {
   constructor(public readonly search: SearchService,
-              public readonly profileGuard: ProfileGuard,
               public readonly relations: RelationsService) {}
 }

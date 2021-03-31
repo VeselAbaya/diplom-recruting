@@ -1,4 +1,4 @@
-<ng-container *ngIf="(profileGuard.isMyProfile$ | async)
+<ng-container *ngIf="(search.selectedUser$ | async) !== null
                         ? (relations.result$ | async)?.nodes
                         : search.result$ | async
                       as users">
