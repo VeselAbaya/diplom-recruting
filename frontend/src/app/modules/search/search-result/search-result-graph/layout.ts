@@ -8,6 +8,7 @@ import {
   toD3Node
 } from '@swimlane/ngx-graph';
 import { forceCollide, forceLink, forceManyBody, forceSimulation } from 'd3-force';
+import { Observable } from 'rxjs';
 
 export const GRAPH = {
   NODE_SIZE: 60,
@@ -59,6 +60,45 @@ export class Layout extends D3ForceDirectedLayout {
       .id(node => node.id || '')
       .distance(() => GRAPH.NODES_DISTANCE)
   };
+
+  run(graph: Graph): Observable<Graph> {
+    this.inputGraph = graph;
+    this.d3Graph = {
+      nodes: [...this.inputGraph.nodes.map(n => {
+        const prevNodes = this.outputGraph?.nodes || [];
+        const prevNodeWithSameId = prevNodes.find(prevNode => prevNode.id === n.id);
+        if (prevNodeWithSameId?.position) {
+          const {x, y} = prevNodeWithSameId.position;
+          return {
+            ...n,
+            position: { x, y },
+            x, y
+          };
+        }
+        return {...n};
+      })] as D3Node[],
+      edges: [...this.inputGraph.edges.map(e => ({ ...e }))] as D3Edge[]
+    };
+    this.outputGraph = {
+      nodes: [],
+      edges: [],
+      edgeLabels: []
+    };
+    this.outputGraph$.next(this.outputGraph);
+    this.settings = Object.assign({}, this.defaultSettings, this.settings);
+    if (this.settings.force) {
+      this.settings.force
+        .nodes(this.d3Graph.nodes)
+        .force('link', this.settings.forceLink.links(this.d3Graph.edges))
+        .alpha(0.5)
+        .restart()
+        .on('tick', () => {
+          this.outputGraph$.next(this.d3GraphToOutputGraph(this.d3Graph));
+        });
+    }
+
+    return this.outputGraph$.asObservable();
+  }
 
   d3GraphToOutputGraph(d3Graph: D3Graph): Graph {
     // @ts-ignore

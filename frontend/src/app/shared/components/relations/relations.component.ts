@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter, HostBinding,
+  Input,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StartDateRequiredIfHasEndDate } from '@shared/components/relations/start-date-required-if-has-end-date.validator';
@@ -7,11 +15,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Subject } from 'rxjs';
 import { ICreateRelationDto } from '@monorepo/types/relations/create-relation.dto.interface';
 import { IRelationBase } from '@monorepo/types/relations/relation.base.interface';
-import { IRelationRequestDto } from '@monorepo/types/relations/relation-request.dto.interface';
-import { RelationsFacade } from '@shared/components/relations/relations.facade';
 import { OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 import { IRelationRequestUserDto } from '@monorepo/types/relations/relation-request-user.dto.interface';
-import { map, take } from 'rxjs/operators';
+import { IRelationshipDto } from '@monorepo/types/relationships/relationship.dto.interface';
 
 @Component({
   selector: 'app-relations',
@@ -42,7 +48,7 @@ export class RelationsComponent extends OnDestroyMixin {
 
   @Input() fromUser!: IRelationRequestUserDto;
   @Input() toUser!: IRelationRequestUserDto;
-  @Input() showForm = false;
+  @Input() @HostBinding('class.show-form') showForm = false;
   @Input() showComment = true;
   @Input() set disabled(isDisabled: boolean) {
     if (isDisabled) {
@@ -51,32 +57,35 @@ export class RelationsComponent extends OnDestroyMixin {
       this.form.enable();
     }
   }
-  private _requests: IRelationRequestDto[] = [];
-  @Input() set requests(newRequests: IRelationRequestDto[]) {
-    this._requests = newRequests;
-    this.facade.selectedRequest$.pipe(
-      take(1),
-      map(selected => newRequests.find(req => req.id === selected?.id))
-    ).subscribe(request => request && this.form.reset(request, {emitEvent: false}));
-  }
-  get requests(): IRelationRequestDto[] {
-    return this._requests;
+
+  _selectedRelationId?: string;
+  @Input() set selectedRelationId(relationId: string | undefined) {
+    this._selectedRelationId = relationId;
+    this.updateFormWithSelectedRelation();
+
   }
 
+  private _relations: IRelationshipDto[] = [];
+  @Input() set relations(newRequests: IRelationshipDto[]) {
+    this._relations = newRequests;
+    this.updateFormWithSelectedRelation();
+  }
+  get relations(): IRelationshipDto[] {
+    return this._relations;
+  }
 
   @Output() readonly formSubmit = new Subject<ICreateRelationDto>();
-  @Output() readonly requestSelect = new Subject<IRelationRequestDto>();
+  @Output() readonly relationSelect = new EventEmitter<IRelationshipDto>();
 
   @ViewChild('arrowsWrapper', {read: CdkScrollable, static: true}) arrowsWrapper: CdkScrollable | null = null;
 
-  constructor(public readonly elRef: ElementRef, public readonly facade: RelationsFacade) {
+  constructor(public readonly elRef: ElementRef) {
     super();
   }
 
-  onRelationSelect(request: IRelationRequestDto, arrowWrapperEl: HTMLElement): void {
+  onRelationSelect(request: IRelationshipDto, arrowWrapperEl: HTMLElement): void {
     this.form.reset(request, {emitEvent: false});
-    this.facade.select(request);
-    this.requestSelect.next(request);
+    this.relationSelect.next(request);
 
     if (!this.arrowsWrapper) {
       console.error('Something went wrong: can not scroll to clicked relation');
@@ -95,6 +104,13 @@ export class RelationsComponent extends OnDestroyMixin {
         fromUserId: this.fromUser.id,
         toUserId: this.toUser.id,
       });
+    }
+  }
+
+  private updateFormWithSelectedRelation(): void {
+    const selectedRequest = this._relations.find(rel => rel.id === this._selectedRelationId);
+    if (selectedRequest) {
+      this.form.reset(selectedRequest, {emitEvent: false});
     }
   }
 }

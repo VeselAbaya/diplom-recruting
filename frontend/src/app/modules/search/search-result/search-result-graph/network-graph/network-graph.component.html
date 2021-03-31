@@ -64,7 +64,7 @@
       </g>
 
       <g class="links">
-        <g #linkElement *ngFor="let link of graph.edges; trackBy: trackLinkBy" class="link-group" [id]="link.id">
+        <g #linkElement *ngFor="let link of graph.edges; trackBy: trackLinkBy" class="link-group" id="EDGE{{link.id}}">
           <ng-container
               *ngIf="linkTemplate"
               [ngTemplateOutlet]="linkTemplate"
@@ -80,7 +80,7 @@
           *ngFor="let node of graph.nodes; trackBy: trackNodeBy"
           class="node-group"
           [class.old-node]="animate && oldNodes.has(node.id)"
-          [id]="node.id"
+          id="NODE{{node.id}}"
           [attr.transform]="node.transform"
           (click)="onClick(node)"
           (mousedown)="onNodeMouseDown($event, node)"

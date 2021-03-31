@@ -1,5 +1,5 @@
 <mat-card [class.edit-hint]="guard.isMyProfile$ | async">
-  <ng-container *ngIf="(search.selectedUser$ | async) as user">
+  <ng-container *ngIf="(profileUser$ | async) as user">
     <app-profile-info [avatarSrc]="user.avatarSrc"
                       [name]="user.firstName + ' ' + user.lastName"
                       [hourlyRate]="user.hourlyRate"

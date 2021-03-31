@@ -6,11 +6,11 @@
 
   <app-hidden-scroll-wrapper orientation="vertical">
     <div class="arrows-wrapper" #arrowsWrapper cdkScrollable>
-      <ng-container *ngIf="requests.length else requestCreation">
-        <div class="arrow-wrapper" *ngFor="let request of requests; let i = index"
+      <ng-container *ngIf="relations.length else requestCreation">
+        <div class="arrow-wrapper" *ngFor="let request of relations; let i = index"
              #arrowWrapper (click)="onRelationSelect(request, arrowWrapper);">
           <div class="arrow"
-               [class.arrow--selected]="request.id === (facade.selectedRequest$ | async)?.id"
+               [class.arrow--selected]="request.id === _selectedRelationId"
                [class.arrow--right]="!(request.type | isBidirectional) && request.fromUserId === fromUser.id"
                [class.arrow--left]="!(request.type | isBidirectional) && request.fromUserId !== fromUser.id">
             <span class="arrow-label">{{request.type | relationType}}</span>

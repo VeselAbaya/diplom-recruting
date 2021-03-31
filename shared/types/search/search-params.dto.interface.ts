@@ -23,7 +23,7 @@ export interface ISearchParamsDto extends IPaginationParamsDto {
   search?: string;
   hourlyRateMin?: number;
   hourlyRateMax?: number | null;
-  networkSize?: 1 | 2 | 3 | 4 | 5;
+  networkSize?: 1 | 2 | 3;
   experience?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   english?: EnglishLevel | null;
   workSchedule?: WorkSchedule | null;

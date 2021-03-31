@@ -1,3 +1,8 @@
-<app-page-with-search>
-  <app-search-result></app-search-result>
-</app-page-with-search>
+<div class="left-side">
+  <app-search-form></app-search-form>
+  <app-messages *ngIf="messages.receiverUser$ | async"></app-messages>
+</div>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

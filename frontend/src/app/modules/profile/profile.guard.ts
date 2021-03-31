@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
-import { catchError, distinctUntilChanged, map, mapTo, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, mapTo, take, tap } from 'rxjs/operators';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { AuthService } from '@core/services/auth/auth.service';
 
@@ -10,7 +10,7 @@ import { AuthService } from '@core/services/auth/auth.service';
   providedIn: 'root'
 })
 export class ProfileGuard implements CanActivate, CanDeactivate<ProfileComponent> {
-  private readonly isMyProfile = new BehaviorSubject<boolean>(false);
+  private readonly isMyProfile = new BehaviorSubject<boolean | null>(null); // null when user not on any profile
   readonly isMyProfile$ = this.isMyProfile.pipe(distinctUntilChanged());
 
   constructor(private readonly search: SearchService, private readonly auth: AuthService) {}
@@ -33,7 +33,7 @@ export class ProfileGuard implements CanActivate, CanDeactivate<ProfileComponent
       tap(params => {
         this.search.setParams({...params, fromUserId: undefined});
         this.search.setSelectedUser(null);
-        this.isMyProfile.next(false);
+        this.isMyProfile.next(null);
       }),
       mapTo(true)
     );

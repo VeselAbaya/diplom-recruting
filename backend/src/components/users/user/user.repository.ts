@@ -7,8 +7,6 @@ import { SigninDto } from '../../auth/dto/signin.dto';
 import { SearchParamsDto } from '../dto/search-params.dto';
 import { EnglishLevel } from '@monorepo/types/search/search-params.dto.interface';
 import { int } from 'neo4j-driver';
-import { IPagination } from '@monorepo/types/pagination/pagination.interface';
-import { IUserListItem } from '@monorepo/types/with-notification.interface';
 import { UserListItemDto } from '@components/users/dto/user-list-item.dto';
 import { PaginationDto } from '@shared/pagination.dto';
 
@@ -57,7 +55,7 @@ export class UserRepository {
     const res = await this.db.read(`
       CALL db.index.fulltext.queryNodes("usersSearch", $search) YIELD node as u, score
       WHERE (CASE WHEN $fromUserId IS NOT NULL
-                    THEN EXISTS((u)-[:RELATIONSHIP]-(:User {id: $fromUserId}))
+                    THEN EXISTS((u)-[:RELATIONSHIP*1..${params.networkSize || 1}]-(:User {id: $fromUserId}))
                   ELSE true END)
         AND ($workSchedule IS NULL OR u.workSchedule = $workSchedule)
         AND ($workType IS NULL OR u.workType = $workType)

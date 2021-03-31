@@ -1,2 +1,9 @@
-<h1 mat-dialog-title>Someone and Someone relations</h1>
-<app-relations [showForm]="true" [showComment]="false" [disabled]="true"></app-relations>
+<h1 mat-dialog-title>{{data.fromUser.firstName}}'s and {{data.toUser.firstName}}'s relations</h1>
+<app-relations [showForm]="!!selectedRelation"
+               [showComment]="false"
+               [fromUser]="data.fromUser"
+               [toUser]="data.toUser"
+               [relations]="data.relations"
+               [selectedRelationId]="selectedRelation?.id"
+               (relationSelect)="selectedRelation = $event"
+               [disabled]="true"></app-relations>

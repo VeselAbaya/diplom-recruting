@@ -1,8 +1,6 @@
-<app-page-with-search>
-  <app-hidden-scroll-wrapper orientation="horizontal" class="profile-form-wrapper">
-    <app-profile-form cdkScrollable [disabled]="!(guard.isMyProfile$ | async)"></app-profile-form>
-  </app-hidden-scroll-wrapper>
-  <app-search-result [withGraphView]="true"
-                     [attr.data-whos-label]="whoseNetworkLabel$ | async">
-  </app-search-result>
-</app-page-with-search>
+<app-hidden-scroll-wrapper orientation="horizontal" class="profile-form-wrapper">
+  <app-profile-form cdkScrollable [disabled]="!(guard.isMyProfile$ | async)"></app-profile-form>
+</app-hidden-scroll-wrapper>
+<app-search-result [withGraphView]="true"
+                   [attr.data-whos-label]="whoseNetworkLabel$ | async">
+</app-search-result>

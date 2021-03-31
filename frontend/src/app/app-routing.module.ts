@@ -20,13 +20,6 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always'
   },
   {
-    path: 'profile/:id',
-    loadChildren: () => import('./modules/profile/profile.module').then(m => m.ProfileModule),
-    canActivate: [AuthGuard, ProfileGuard],
-    canDeactivate: [ProfileGuard],
-    runGuardsAndResolvers: 'always'
-  },
-  {
     path: 'requests',
     loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule),
     canActivate: [AuthGuard],

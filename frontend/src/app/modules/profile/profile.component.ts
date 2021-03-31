@@ -6,6 +6,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { ProfileGuard } from '@modules/profile/profile.guard';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
 
 @Component({
   selector: 'app-profile',
@@ -16,10 +17,10 @@ import { ProfileGuard } from '@modules/profile/profile.guard';
 export class ProfileComponent {
   whoseNetworkLabel$ = combineLatest([
     this.guard.isMyProfile$,
-    this.search.selectedUser$
+    this.search.selectedUser$.pipe(isNotNullOrUndefined())
   ]).pipe(map(([isMyProfile, user]) => isMyProfile
     ? 'Your network'
-    : `${user?.firstName}'s network`
+    : `${user.firstName}'s network`
   ));
 
   constructor(public readonly auth: AuthService,

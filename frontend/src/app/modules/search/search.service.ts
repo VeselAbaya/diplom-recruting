@@ -94,14 +94,7 @@ export class SearchService extends OnDestroyMixin {
   getUserAndSetAsSelected(id: string): Observable<IUserDto> {
     this.usersLoading.next(true);
     return this.http.get<IUserDto>(Path.users.user(id)).pipe(
-      tap(user => {
-        this.setSelectedUser(user);
-        this.params.next({
-          ...this.params.getValue(),
-          fromUserId: id
-        });
-        this.getUsers(this.params.getValue()).subscribe();
-      }),
+      tap(user => this.setSelectedUser(user)),
       finalize(() => this.usersLoading.next(false))
     );
   }

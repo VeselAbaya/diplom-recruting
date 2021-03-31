@@ -1,26 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRelationshipDto } from './dto/create-relationship.dto';
-import { UpdateRelationshipDto } from './dto/update-relationship.dto';
+import { RelationshipEntity } from '@components/relationships/relationship/relationship.entity';
+import { RelationshipRepository } from '@components/relationships/relationship/relationship.repository';
+import { GraphDto } from '@components/relationships/dto/graph.dto';
+import { GraphSearchParamsDto } from '@components/relationships/dto/graph-search-params.dto';
 
 @Injectable()
 export class RelationshipsService {
-  create(createRelationshipDto: CreateRelationshipDto) {
-    return 'This action adds a new relationship';
+  constructor(private readonly relationships: RelationshipRepository) {}
+
+  get(fromUserId: string, toUserId: string): Promise<RelationshipEntity[]> {
+    return this.relationships.getRelationships(fromUserId, toUserId);
   }
 
-  findAll() {
-    return `This action returns all relationships`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} relationship`;
-  }
-
-  update(id: number, updateRelationshipDto: UpdateRelationshipDto) {
-    return `This action updates a #${id} relationship`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} relationship`;
+  getGraph(searcherUserId: string, params: GraphSearchParamsDto): Promise<GraphDto> {
+    return this.relationships.getGraph(searcherUserId, params);
   }
 }

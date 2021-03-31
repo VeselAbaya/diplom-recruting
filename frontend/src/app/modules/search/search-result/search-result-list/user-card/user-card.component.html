@@ -2,7 +2,7 @@
 
 <div class="user">
   <app-avatar src="assets/default-user-avatar.svg"></app-avatar>
-  <a [routerLink]="['/', 'profile', user.id]" class="user-name">
+  <a [routerLink]="['/', 'search', user.id]" class="user-name">
     {{user.firstName}} {{user.lastName}}
   </a>
 </div>
@@ -17,7 +17,7 @@
   Network size &nbsp; <span class="network-size">{{'{user.networkSize}'}}</span>
 </div>
 
-<div class="buttons" *ngIf="(auth.user$ | async)?.id !== user.id">
+<div class="buttons" *ngIf="(auth.user$ | async)?.id !== user.id else itsCurrentUser">
   <button mat-stroked-button color="primary" (click)="openCreateRelationDialog()">
     Add Relationship
   </button>
@@ -27,6 +27,9 @@
     <mat-icon svgIcon="message"></mat-icon>
   </button>
 </div>
+<ng-template #itsCurrentUser>
+  <span class="pn-hint">It's you</span>
+</ng-template>
 
 <div class="right-icons">
   <button mat-icon-button

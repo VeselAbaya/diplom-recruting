@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor, Controller, Get, Param, Query, UseGuards, UseInterceptors, UsePipes, ValidationPipe
+} from '@nestjs/common';
 import { RelationshipsService } from './relationships.service';
-import { CreateRelationshipDto } from './dto/create-relationship.dto';
-import { UpdateRelationshipDto } from './dto/update-relationship.dto';
+import { SubPath } from '@monorepo/routes';
+import { AuthGuard } from '@nestjs/passport';
+import { RelationshipEntity } from '@components/relationships/relationship/relationship.entity';
+import { GraphSearchParamsDto } from '@components/relationships/dto/graph-search-params.dto';
+import { GraphDto } from '@components/relationships/dto/graph.dto';
+import { User } from '@components/users/user/user.decorator';
 
-@Controller('relationships')
+@Controller(SubPath.relationships())
 export class RelationshipsController {
-  constructor(private readonly relationshipsService: RelationshipsService) {}
+  constructor(private readonly relationships: RelationshipsService) {}
 
-  @Post()
-  create(@Body() createRelationshipDto: CreateRelationshipDto) {
-    return this.relationshipsService.create(createRelationshipDto);
+  @Get(SubPath.relationships.ofUsers())
+  @UseGuards(AuthGuard())
+  findAll(@Param('fromUser') fromUserId: string,
+          @Param('toUser') toUserId: string): Promise<RelationshipEntity[]> {
+    return this.relationships.get(fromUserId, toUserId);
   }
 
-  @Get()
-  findAll() {
-    return this.relationshipsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.relationshipsService.findOne(+id);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateRelationshipDto: UpdateRelationshipDto) {
-    return this.relationshipsService.update(+id, updateRelationshipDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.relationshipsService.remove(+id);
+  @Get(SubPath.relationships.graph())
+  @UseGuards(AuthGuard())
+  @UsePipes(new ValidationPipe({transform: true, transformOptions: {enableImplicitConversion: true}}))
+  @UseInterceptors(ClassSerializerInterceptor)
+  getUsers(@Query() searchParamsDto: GraphSearchParamsDto, @User('id') userId: string): Promise<GraphDto> {
+    return this.relationships.getGraph(userId, searchParamsDto);
   }
 }

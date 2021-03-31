@@ -4,13 +4,13 @@
                    #relationRequestComponent
                    [fromUser]="relationReq.fromUser"
                    [toUser]="relationReq.toUser"
-                   [requests]="relationReq.requests"
-                   (requestSelect)="onRelationRequestSelect(i, relationReq, relationRequestComponent.elRef.nativeElement)"
+                   [relations]="relationReq.requests"
+                   (relationSelect)="onRelationRequestSelect(i, relationReq, $event, relationRequestComponent.elRef.nativeElement)"
                    (formSubmit)="onRelationRequestChange($event)"
                    [ngSwitch]="(route.params | async)?.requestType"
                    [disabled]="(route.params | async)?.requestType !== RelationRequestTypeEnum.FromMe"
-                   [class.selected]="selectedIndex === i"
-                   [showForm]="selectedIndex === i">
+                   [selectedRelationId]="(facade.selected$ | async)?.id"
+                   [showForm]="selectedRelationsBlockIndex === i">
       <ng-container *ngSwitchCase="RelationRequestTypeEnum.ToMe">
         <button mat-stroked-button type="button" color="warn" (click)="onDeclineClick()">Decline</button>
         <button mat-stroked-button type="button" color="primary" (click)="onCreateRelationClick()">
@@ -20,7 +20,7 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="RelationRequestTypeEnum.FromMe">
-        <button mat-stroked-button type="button" color="warn" (click)="onDeclineClick()">Cancel</button>
+        <button mat-stroked-button type="button" color="warn" (click)="onDeclineClick()">Decline</button>
         <button mat-stroked-button color="primary" type="button" (click)="relationRequestComponent.onSubmit()"
                 [disabled]="relationRequestComponent.form.pristine">
           Save
@@ -29,11 +29,11 @@
 
       <ng-container *ngSwitchCase="RelationRequestTypeEnum.Declined">
         <ng-container *ngIf="(auth.user$ | async)?.id as currentUserId">
-          <button *ngIf="currentUserId === (facade.selectedRequest$ | async)?.declinedBy else declinedByAnotherUser"
+          <button *ngIf="currentUserId === $any((facade.selected$ | async))?.declinedBy else declinedByAnotherUser"
                   mat-stroked-button color="primary" type="button"
                   (click)="onReopenClick()">Reopen</button>
           <ng-template #declinedByAnotherUser>
-            <span class="hint">
+            <span class="pn-hint">
               Request declined by {{relationReq[relationReq.fromUser.id === currentUserId ? 'toUser' : 'fromUser'].firstName}}
             </span>
           </ng-template>

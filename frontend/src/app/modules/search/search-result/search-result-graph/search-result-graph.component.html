@@ -1,14 +1,18 @@
-<app-network-graph [draggingEnabled]="true"
+<app-network-graph *ngIf="graph$ | async as graph"
+                   [draggingEnabled]="true"
                    [layout]="layout"
-                   [links]="links"
-                   [nodes]="nodes"
+                   [links]="graph.edges"
+                   [nodes]="graph.nodes"
                    [panToNode$]="selectedUserId$"
                    [minZoomLevel]=".5"
                    [maxZoomLevel]="1.5" xmlns:svg="http://www.w3.org/2000/svg">
   <ng-template #nodeTemplate let-node>
-    <svg:g class="node" #nodeElement (mousedown)="mouseMoveStartPoint = $event"
-                                     (mousemove)="onNodeMousemove($event)"
-                                     (click)="onNodeClick($event)">
+    <svg:g class="node"
+           [class.selected]="node.id === (selectedUserId$ | async)"
+           #nodeElement
+           (mousedown)="mouseMoveStartPoint = $event"
+           (mousemove)="onNodeMousemove($event)"
+           (click)="onNodeClick($event, node)">
       <svg:clipPath id="round-clip">
         <svg:circle [attr.cx]="(node.dimension?.width || 0) / 2"
                     [attr.cy]="(node.dimension?.height || 0) / 2"
@@ -28,7 +32,7 @@
   </ng-template>
 
   <ng-template #linkTemplate let-link>
-    <svg:g class="edge">
+    <svg:g class="edge" (click)="onEdgeClick(link)">
       <svg:marker id="arrow_{{link.id}}" viewBox="0 -5 10 10"
                   [attr.refX]="NODE_SIZE / 2 + 10"
                   [attr.refY]="link.refY"
@@ -43,7 +47,7 @@
       <svg:text class="edge-label" text-anchor="middle">
         <svg:textPath class="text-path" attr.href="#_{{link.id}}" [attr.data-antay]="link.textTransform"
                   dominant-baseline="text-after-edge" startOffset="50%">
-          {{link.id}}
+          {{link.type | relationType}}
         </svg:textPath>
       </svg:text>
     </svg:g>
@@ -51,8 +55,9 @@
 </app-network-graph>
 
 <ng-template #nodeContextMenu>
-  <app-profile-info [avatarSrc]="DEFAULT_AVATAR_URL"
-                    [hourlyRate]="40"
-                    name="Anray Juskovets"
-                    email="vandervise465@gmail.com"></app-profile-info>
+  <app-profile-info *ngIf="selectedNode"
+                    [avatarSrc]="DEFAULT_AVATAR_URL"
+                    [hourlyRate]="selectedNode.hourlyRate"
+                    [name]="selectedNode | fullName"
+                    [email]="selectedNode.email"></app-profile-info>
 </ng-template>

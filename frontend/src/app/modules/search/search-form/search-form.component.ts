@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { EnglishLevel, WorkSchedule, WorkType } from '@monorepo/types/search/search-params.dto.interface';
+import {
+  EnglishLevel,
+  ISearchParamsDto,
+  WorkSchedule,
+  WorkType
+} from '@monorepo/types/search/search-params.dto.interface';
 import { SearchService } from '@modules/search/search.service';
-import { debounceTime, filter, switchMap, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, take } from 'rxjs/operators';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ExperienceSliderConfig } from '@shared/experience-slider.config';
-import { combineLatest, forkJoin, of } from 'rxjs';
+import { Subject } from 'rxjs';
+import { equals } from 'ramda';
 
 @Component({
   selector: 'app-search-form',
@@ -18,6 +24,8 @@ export class SearchFormComponent extends OnDestroyMixin {
   readonly WorkType = WorkType;
   readonly EnglishLevel = EnglishLevel;
   readonly ExperienceSliderConfig = ExperienceSliderConfig;
+
+  @Output() readonly valueChanges = new Subject<Omit<ISearchParamsDto, 'fromUserId'>>();
 
   form = new FormGroup({
     search: new FormControl(''),
@@ -35,13 +43,8 @@ export class SearchFormComponent extends OnDestroyMixin {
       untilComponentDestroyed(this),
       debounceTime(500),
       filter(() => this.form.valid),
-      switchMap(formValue => forkJoin([
-        of(formValue),
-        search.pagination$.pipe(take(1)),
-        search.params$.pipe(take(1))
-      ])),
-      switchMap(([formValue, {page, limit}, params]) => search.getUsers({
-        ...params, page, limit,
+      distinctUntilChanged((a, b) => equals(a, b)),
+      map(formValue => ({
         search: formValue.search,
         hourlyRateMin: formValue.rateRange.min,
         hourlyRateMax: formValue.rateRange.max,
@@ -49,11 +52,10 @@ export class SearchFormComponent extends OnDestroyMixin {
         experience: formValue.experience,
         english: formValue.english,
         workSchedule: formValue.workSchedule,
-        workType: formValue.workType,
+        workType: formValue.workType
       }))
-    ).subscribe();
+    ).subscribe(params => this.valueChanges.next(params));
 
-    console.log('here');
     search.params$.pipe(
       take(1),
       untilComponentDestroyed(this)

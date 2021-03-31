@@ -5,8 +5,20 @@
 
 :host {
   --material-disabled-text-color: #{$text-color};
+  --closed-height: 216px;
+  --opened-height: 462px;
   display: block;
   width: 935px;
+
+  box-sizing: border-box;
+  height: var(--closed-height);
+  overflow: hidden;
+  transition: height $transition-duration;
+  will-change: height;
+  // stylelint-disable-next-line selector-no-qualifying-type
+  &.show-form {
+    height: var(--opened-height);
+  }
 }
 
 .relation {
@@ -23,7 +35,6 @@
     @include mat-elevation(3, mat-color($pn-primary, default));
     box-sizing: border-box;
     flex-basis: 100%;
-    max-width: 364px;
     height: 168px;
     padding: 20px 20px 20px 16px;
     border-radius: 4px;

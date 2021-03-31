@@ -9,6 +9,8 @@ import {
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Edge, GraphComponent, Node } from '@swimlane/ngx-graph';
 import { LayoutService } from '@swimlane/ngx-graph/lib/graph/layouts/layout.service';
+import { select } from 'd3-selection';
+import { easeSinInOut } from 'd3-ease';
 
 
 @Component({
@@ -36,6 +38,33 @@ export class NetworkGraphComponent extends GraphComponent {
     edge.oldLine = edge.line;
   }
 
+  redrawLines(_animate = this.animate): void {
+    this.linkElements.map(linkEl => {
+      const edge = this.graph.edges.find(lin => lin.id === linkEl.nativeElement.id);
+
+      if (edge) {
+        const linkSelection = select(linkEl.nativeElement).select('.line');
+        linkSelection
+          .attr('d', edge.oldLine)
+          .transition()
+          .ease(easeSinInOut)
+          .duration(_animate ? 500 : 0)
+          .attr('d', edge.line || '');
+
+        const textPathSelection = select(this._el.nativeElement).select(`#EDGE${edge.id}`);
+        textPathSelection
+          .attr('d', edge.oldTextPath || '')
+          .transition()
+          .ease(easeSinInOut)
+          .duration(_animate ? 500 : 0)
+          .attr('d', edge.textPath || '');
+
+        // @ts-ignore
+        this.updateMidpointOnEdge(edge, edge.points);
+      }
+    });
+  }
+
   private getTranslateString = (n: Pick<Node, 'position' | 'dimension'>) =>
     `translate(${(n.position?.x || 0) - (n.dimension?.width || 0) / 2 || 0},
                ${(n.position?.y || 0) - (n.dimension?.height || 0) / 2 || 0})`
@@ -48,7 +77,6 @@ export class NetworkGraphComponent extends GraphComponent {
       if (!n.data) {
         n.data = {};
       }
-      n.data.color = this.colors.getColor(this.groupResultsBy(n));
       oldNodes.add(n.id);
     });
 
@@ -58,7 +86,6 @@ export class NetworkGraphComponent extends GraphComponent {
       if (!n.data) {
         n.data = {};
       }
-      n.data.color = this.colors.getColor(this.groupResultsBy(n));
       oldClusters.add(n.id);
     });
 

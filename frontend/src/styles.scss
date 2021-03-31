@@ -77,3 +77,11 @@ input {
   position: relative;
   top: -2px;
 }
+
+.pn-dialog-overflow-visible .mat-dialog-container {
+  overflow: visible;
+}
+
+.pn-hint {
+  color: map-get($pn-foreground, secondary-text);
+}

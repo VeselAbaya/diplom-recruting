@@ -23,6 +23,8 @@ import { NetworkGraphComponent } from './search-result-graph/network-graph/netwo
 import { ProfileInfoModule } from '@shared/components/profile-info/profile-info.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RelationTypeModule } from '@shared/pipes/relation-type/relation-type.module';
+import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
 
 @NgModule({
   declarations: [
@@ -34,8 +36,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CreateRelationDialogComponent,
     EditRelationsDialogComponent,
     NetworkGraphComponent
-  ],
-  imports: [
+  ], imports: [
     CommonModule,
     MatIconModule,
     MatButtonModule,
@@ -51,7 +52,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     NgxGraphModule,
     ProfileInfoModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    RelationTypeModule,
+    FullNameModule
   ],
   exports: [SearchResultListComponent, SearchResultGraphComponent, SearchResultComponent]
 })

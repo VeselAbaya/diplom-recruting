@@ -2,16 +2,16 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EnglishLevel, WorkSchedule, WorkType } from '@monorepo/types/search/search-params.dto.interface';
 import { ExperienceSliderConfig } from '@shared/experience-slider.config';
-import { AuthService } from '@core/services/auth/auth.service';
 import { catchError, skip, switchMap, take, tap } from 'rxjs/operators';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ProfileService } from '@modules/profile/profile.service';
 import { IProfileInfoChangeEvent } from '@shared/components/profile-info/profile-info.component';
 import { ErrorsService } from '@core/services/errors.service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ProfileGuard } from '@modules/profile/profile.guard';
 import { SearchService } from '@modules/search/search.service';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { IUserDto } from '@monorepo/types/user/user.dto.interface';
 
 @Component({
   selector: 'app-profile-form',
@@ -39,17 +39,16 @@ export class ProfileFormComponent extends OnDestroyMixin {
     experience: new FormControl(null),
   }, {updateOn: 'blur'});
 
+  profileUser$: Observable<IUserDto> = this.search.selectedUser$.pipe(
+    isNotNullOrUndefined(),
+    tap(user => this.form.reset(user, {emitEvent: false}))
+  );
+
   constructor(public readonly search: SearchService,
               public readonly guard: ProfileGuard,
               private readonly profile: ProfileService,
               private readonly errors: ErrorsService) {
     super();
-    this.search.selectedUser$.pipe(
-      untilComponentDestroyed(this),
-      isNotNullOrUndefined(),
-      tap(user => this.form.reset(user, {emitEvent: false}))
-    ).subscribe();
-
     this.form.valueChanges.pipe(
       untilComponentDestroyed(this),
       skip(1),

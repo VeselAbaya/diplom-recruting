@@ -36,8 +36,8 @@ export class SearchParamsDto implements ISearchParamsDto {
   hourlyRateMax?: number;
 
   @IsOptional()
-  @IsIn([1, 2, 3, 4, 5])
-  networkSize?: 1 | 2 | 3 | 4 | 5;
+  @IsIn([1, 2, 3])
+  networkSize?: 1 | 2 | 3;
 
   @IsOptional()
   @IsIn([-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])

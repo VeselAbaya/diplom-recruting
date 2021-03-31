@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SearchService } from '@modules/search/search.service';
+import { ProfileGuard } from '@modules/profile/profile.guard';
+import { RelationsService } from '@modules/search/relations.service';
 
 @Component({
   selector: 'app-search-result-list',
@@ -8,5 +10,7 @@ import { SearchService } from '@modules/search/search.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultListComponent {
-  constructor(public readonly search: SearchService) {}
+  constructor(public readonly search: SearchService,
+              public readonly profileGuard: ProfileGuard,
+              public readonly relations: RelationsService) {}
 }

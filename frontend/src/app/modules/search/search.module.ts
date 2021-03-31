@@ -5,7 +5,8 @@ import { SearchRoutingModule } from '@modules/search/search-routing.module';
 import { SearchResultModule } from '@modules/search/search-result/search-result.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
-import { PageWithSearchModule } from '@shared/components/page-with-search/page-with-search.module';
+import { SearchFormModule } from '@modules/search/search-form/search-form.module';
+import { MessagesModule } from '@shared/components/messages/messages.module';
 
 @NgModule({
   declarations: [SearchComponent],
@@ -15,7 +16,8 @@ import { PageWithSearchModule } from '@shared/components/page-with-search/page-w
     SearchResultModule,
     MatTabsModule,
     MatIconModule,
-    PageWithSearchModule
+    SearchFormModule,
+    MessagesModule
   ]
 })
 export class SearchModule { }

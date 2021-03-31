@@ -14,6 +14,7 @@ import { IUpdateRelationRequestDto } from '@monorepo/types/relations/update-rela
 import { AuthService } from '@core/services/auth/auth.service';
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { IGetRelationRequestsDto } from '@monorepo/types/relations/get-relation-requests.dto.interface';
+import { IRelationshipDto } from '@monorepo/types/relationships/relationship.dto.interface';
 
 @Component({
   selector: 'app-requests-tab',
@@ -24,7 +25,7 @@ import { IGetRelationRequestsDto } from '@monorepo/types/relations/get-relation-
 export class RequestsTabComponent extends OnDestroyMixin {
   readonly RelationRequestTypeEnum = RelationRequestType;
   @ViewChild(CdkScrollable, {static: true}) relationRequestsContainer: CdkScrollable | null = null;
-  selectedIndex: number | null = null;
+  selectedRelationsBlockIndex: number | null = null;
 
   constructor(public readonly route: ActivatedRoute,
               public readonly requests: RequestsService,
@@ -40,13 +41,17 @@ export class RequestsTabComponent extends OnDestroyMixin {
       map(params => params.requestType),
       distinctUntilChanged()
     ).subscribe(() => {
-      this.selectedIndex = null;
+      this.selectedRelationsBlockIndex = null;
       this.facade.select(null);
     });
   }
 
-  onRelationRequestSelect(i: number, {toUser, fromUser}: IGetRelationRequestsDto, el: HTMLElement): void {
-    if (this.selectedIndex === i) {
+  onRelationRequestSelect(relationsBlockIndex: number,
+                          {toUser, fromUser}: IGetRelationRequestsDto,
+                          relation: IRelationshipDto,
+                          el: HTMLElement): void {
+    this.facade.select(relation);
+    if (this.selectedRelationsBlockIndex === relationsBlockIndex) {
       return;
     }
 
@@ -55,7 +60,7 @@ export class RequestsTabComponent extends OnDestroyMixin {
       const openedHeight = parseInt(styles.getPropertyValue('--opened-height'), 10);
       const closedHeight = parseInt(styles.getPropertyValue('--closed-height'), 10);
       const openedClosedHeightDelta = openedHeight - closedHeight;
-      const offsetTop = this.selectedIndex !== null && i > this.selectedIndex ? el.offsetTop - openedClosedHeightDelta : el.offsetTop;
+      const offsetTop = this.selectedRelationsBlockIndex !== null && relationsBlockIndex > this.selectedRelationsBlockIndex ? el.offsetTop - openedClosedHeightDelta : el.offsetTop;
       this.relationRequestsContainer.scrollTo({
         top: offsetTop + openedHeight / 2 - (el.parentElement?.offsetHeight || 0) / 2,
         behavior: 'smooth'
@@ -68,7 +73,7 @@ export class RequestsTabComponent extends OnDestroyMixin {
       map(user => user.id !== toUser.id ? toUser : fromUser)
     ).subscribe(receiverUser => this.messages.openChatWithUser(receiverUser));
 
-    this.selectedIndex = i;
+    this.selectedRelationsBlockIndex = relationsBlockIndex;
   }
 
   onRelationRequestChange(updateDto: IUpdateRelationRequestDto): void {
@@ -89,7 +94,7 @@ export class RequestsTabComponent extends OnDestroyMixin {
     ).subscribe(({
       next: () => {
         this.snackbar.open('Request has been declined', 'Close', {panelClass: 'primary'});
-        this.selectedIndex = null;
+        this.selectedRelationsBlockIndex = null;
         this.router.navigate(['.'], {relativeTo: this.route});
       },
       error: this.errors.handle
@@ -121,7 +126,7 @@ export class RequestsTabComponent extends OnDestroyMixin {
   }
 
   private get selectedRequestId$(): Observable<string> {
-    return this.facade.selectedRequest$.pipe(
+    return this.facade.selected$.pipe(
       take(1),
       isNotNullOrUndefined(),
       pluck('id')

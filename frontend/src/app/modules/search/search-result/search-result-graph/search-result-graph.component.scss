@@ -15,5 +15,14 @@ app-avatar {
 }
 
 .avatar-backdrop {
-  fill: mat-color($pn-primary, lighter)
+  fill: mat-color($pn-primary, lighter);
+}
+
+.node.selected .avatar-backdrop {
+  fill: mat-color($pn-primary);
+}
+
+.node,
+.edge {
+  cursor: pointer;
 }
