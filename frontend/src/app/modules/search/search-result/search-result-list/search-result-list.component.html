@@ -1,7 +1,4 @@
-<ng-container *ngIf="(search.selectedUser$ | async) !== null
-                        ? (relations.result$ | async)?.nodes
-                        : search.result$ | async
-                      as users">
+<ng-container *ngIf="usersList$ | async as users">
   <ng-container *ngIf="users.length else noUsers">
     <app-user-card *ngFor="let user of users" [user]="user"
                    [class.loading-opacity]="search.usersLoading$ | async"></app-user-card>
