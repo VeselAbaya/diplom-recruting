@@ -25,6 +25,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelationTypeModule } from '@shared/pipes/relation-type/relation-type.module';
 import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
+import { IsBidirectionalModule } from '@shared/pipes/is-bidirectional/is-bidirectional.module';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
     MatProgressSpinnerModule,
     MatTooltipModule,
     RelationTypeModule,
-    FullNameModule
+    FullNameModule,
+    IsBidirectionalModule
   ],
   exports: [SearchResultListComponent, SearchResultGraphComponent, SearchResultComponent]
 })

@@ -157,7 +157,7 @@ export class Layout extends D3ForceDirectedLayout {
         target: target.id as string,
         line: arcData.path,
         reversed: arcData.reversed,
-        refY: (edge.sameLowerHalf === edge.isFromLeftToRight ? 1 : -1) * edge.sameIndexCorrected * (edge.sameUneven ? 2.5 : 2),
+        refY: (edge.sameLowerHalf === edge.isFromLeftToRight ? 1 : -1) * edge.sameIndexCorrected * (edge.sameUneven ? 3.3 : 2),
         points: [
           { x: source.x, y: source.y },
           { x: target.x, y: target.y }

@@ -41,9 +41,21 @@
                   [attr.orient]="link.reversed ? 'auto-start-reverse' : 'auto'">
         <svg:path d="M0,-5L10,0L0,5" stroke-width="2" fill="#666" class="arrow-head" />
       </svg:marker>
+      <svg:marker id="arrow-reverse_{{link.id}}" viewBox="0 -5 10 10"
+                  [attr.refX]="NODE_SIZE / 2 + 10"
+                  [attr.refY]="-link.refY"
+                  markerWidth="5"
+                  markerHeight="5"
+                  orient="auto-start-reverse">
+        <svg:path d="M0,-5L10,0L0,5" stroke-width="2" fill="#666" class="arrow-head" />
+      </svg:marker>
       <svg:path [attr.d]="link.line" id="_{{link.id}}" class="line" stroke-width="2"
-                [attr.marker-start]="link.reversed ? 'url(#arrow_' + link.id + ')' : null"
-                [attr.marker-end]="link.reversed ? null : 'url(#arrow_' + link.id + ')'"/>
+                [attr.marker-start]="link.reversed
+                  ? 'url(#arrow_' + link.id + ')'
+                  : (link.type | isBidirectional) ? 'url(#arrow-reverse_' + link.id + ')' : null"
+                [attr.marker-end]="!link.reversed
+                  ? 'url(#arrow_' + link.id + ')'
+                  : (link.type | isBidirectional) ? 'url(#arrow-reverse_' + link.id + ')' : null"/>
       <svg:text class="edge-label" text-anchor="middle">
         <svg:textPath class="text-path" attr.href="#_{{link.id}}" [attr.data-antay]="link.textTransform"
                   dominant-baseline="text-after-edge" startOffset="50%">
