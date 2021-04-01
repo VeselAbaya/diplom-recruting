@@ -1,4 +1,5 @@
 import { IPaginationParamsDto } from '../pagination/pagination-params.dto.interface';
+import { RelationType } from '../relations/relation-type.enum';
 
 export enum EnglishLevel { // must be a number enum to compare english levels
   A1,
@@ -24,6 +25,7 @@ export interface ISearchParamsDto extends IPaginationParamsDto {
   hourlyRateMin?: number;
   hourlyRateMax?: number | null;
   networkSize?: 1 | 2 | 3;
+  relationTypes?: RelationType[];
   experience?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   english?: EnglishLevel | null;
   workSchedule?: WorkSchedule | null;

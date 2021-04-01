@@ -6,7 +6,7 @@ import { Path } from '@monorepo/routes';
 import { IGraphDto } from '@monorepo/types/relations/graph.dto.interface';
 import { SearchService } from '@modules/search/search.service';
 import { distinctUntilChanged, tap } from 'rxjs/operators';
-import { prepareGetParams } from '@shared/utils/prepareGetParams.util';
+import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
 import { IGraphSearchParamsDto } from '@monorepo/types/relations/graph-search-params.dto.interface';
 
 @Injectable({

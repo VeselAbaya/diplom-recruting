@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { Path } from '@monorepo/routes';
 import { IPagination, IPaginationMeta } from '@monorepo/types/pagination/pagination.interface';
 import { LIMITS } from '@monorepo/types/pagination/limits';
-import { prepareGetParams } from '@shared/utils/prepareGetParams.util';
+import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
 import { IUserListItem } from '@monorepo/types/with-notification.interface';
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -22,6 +22,7 @@ export const DEFAULT_SEARCH_PARAMS: Required<ISearchParamsDto> = {
   hourlyRateMin: 0,
   hourlyRateMax: null,
   networkSize: 1,
+  relationTypes: [],
   experience: 0,
   english: EnglishLevel.A1,
   workSchedule: null,

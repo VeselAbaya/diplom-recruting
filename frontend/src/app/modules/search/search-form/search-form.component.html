@@ -12,12 +12,21 @@
   <mat-label>Rate value</mat-label>
   <app-range formControlName="rateRange"></app-range>
 
-  <mat-label>Network size</mat-label>
-  <mat-slider formControlName="networkSize"
-              [min]="1"
-              [max]="3"
-              [thumbLabel]="true"
-              [tickInterval]="1"></mat-slider>
+  <ng-container *ngIf="(search.selectedUser$ | async) !== null">
+    <mat-label>Network size</mat-label>
+    <mat-slider formControlName="networkSize"
+                [min]="1"
+                [max]="3"
+                [thumbLabel]="true"
+                [tickInterval]="1"></mat-slider>
+
+    <mat-label>Relation types</mat-label>
+    <mat-form-field class="pn-no-subscript pn-vertical-align">
+      <mat-select formControlName="relationTypes" multiple>
+        <mat-option *ngFor="let pair of RelationType | keyvalue" [value]="pair.value">{{pair.value | relationType}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
 
   <mat-label>Experience</mat-label>
   <mat-slider formControlName="experience"

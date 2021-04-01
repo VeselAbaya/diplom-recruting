@@ -57,6 +57,7 @@ export class RelationshipRepository {
       CALL {
         WITH u
         MATCH (u)-[r:RELATIONSHIP*1..${params.networkSize || 1}]-(fromUser:User {id: $fromUserId})
+        WHERE all(rel IN r WHERE rel.type IN $relationTypes)
         RETURN fromUser, collect(r) as pathRelationships
       }
       RETURN apoc.coll.toSet(apoc.coll.flatten(collect(pathRelationships), true)) as edges,
@@ -72,6 +73,7 @@ export class RelationshipRepository {
         workSchedule: params.workSchedule || null,
         workType: params.workType || null,
         fromUserId: params.fromUserId || null,
+        relationTypes: params.relationTypes,
         searcherUserId
       }
     );

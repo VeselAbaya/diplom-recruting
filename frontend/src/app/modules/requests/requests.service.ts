@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Path } from '@monorepo/routes';
 import { IRelationRequestDto } from '@monorepo/types/relations/relation-request.dto.interface';
 import { IGetRelationRequestsParamsDto } from '@monorepo/types/relations/get-relation-requests-params.dto.interface';
-import { prepareGetParams } from '@shared/utils/prepareGetParams.util';
+import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
 import { IGetRelationRequestsDto } from '@monorepo/types/relations/get-relation-requests.dto.interface';
 import { distinctUntilChanged, tap } from 'rxjs/operators';
 import { IUpdateRelationRequestDto } from '@monorepo/types/relations/update-relation-request.dto.interface';

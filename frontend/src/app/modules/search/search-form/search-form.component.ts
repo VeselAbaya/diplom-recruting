@@ -12,6 +12,7 @@ import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdest
 import { ExperienceSliderConfig } from '@shared/experience-slider.config';
 import { Subject } from 'rxjs';
 import { equals } from 'ramda';
+import { RelationType } from '@monorepo/types/relations/relation-type.enum';
 
 @Component({
   selector: 'app-search-form',
@@ -20,6 +21,7 @@ import { equals } from 'ramda';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchFormComponent extends OnDestroyMixin {
+  readonly RelationType = RelationType;
   readonly WorkSchedule = WorkSchedule;
   readonly WorkType = WorkType;
   readonly EnglishLevel = EnglishLevel;
@@ -31,13 +33,14 @@ export class SearchFormComponent extends OnDestroyMixin {
     search: new FormControl(''),
     rateRange: new FormControl({min: 0, max: null}),
     networkSize: new FormControl(1),
+    relationTypes: new FormControl([]),
     experience: new FormControl(0),
     english: new FormControl(EnglishLevel.A1),
     workSchedule: new FormControl(null),
     workType: new FormControl(null)
   });
 
-  constructor(private readonly search: SearchService) {
+  constructor(public readonly search: SearchService) {
     super();
     this.form.valueChanges.pipe(
       untilComponentDestroyed(this),
@@ -49,6 +52,7 @@ export class SearchFormComponent extends OnDestroyMixin {
         hourlyRateMin: formValue.rateRange.min,
         hourlyRateMax: formValue.rateRange.max,
         networkSize: formValue.networkSize,
+        relationTypes: formValue.relationTypes,
         experience: formValue.experience,
         english: formValue.english,
         workSchedule: formValue.workSchedule,
@@ -64,6 +68,7 @@ export class SearchFormComponent extends OnDestroyMixin {
         search: params.search,
         rateRange: {min: params.hourlyRateMin, max: params.hourlyRateMax},
         networkSize: params.networkSize,
+        relationTypes: params.relationTypes,
         experience: params.experience,
         english: params.english,
         workSchedule: params.workSchedule,
@@ -77,6 +82,7 @@ export class SearchFormComponent extends OnDestroyMixin {
       search: '',
       rateRange: {min: 0, max: null},
       networkSize: 1,
+      relationTypes: [],
       experience: 0,
       english: EnglishLevel.A1,
       workSchedule: null,
