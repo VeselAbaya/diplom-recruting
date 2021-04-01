@@ -77,18 +77,22 @@ export class UserRepository {
       CALL {
         WITH u
         MATCH (:User {id: $searcherUserId})<-[:RECEIVED_BY]-(m:Message {read: false, fromUserId: u.id})
-        WITH collect(m) as messages
-        WITH size(messages) as messagesCount
+        WITH size(collect(m)) as messagesCount
         RETURN messagesCount
       }
       CALL {
         WITH u
         MATCH (:User {id: $searcherUserId})-[relation:RELATIONSHIP]-(u)
-        WITH collect(relation) as relations
-        WITH size(relations) as relationsCount
+        WITH size(collect(relation)) as relationsCount
         RETURN relationsCount
       }
-      RETURN u, total, messagesCount, relationsCount
+      CALL {
+        WITH u
+        MATCH (relatedUser:User)-[:RELATIONSHIP]-(u)
+        WITH size(apoc.coll.toSet(collect(relatedUser))) as networkSize
+        RETURN networkSize
+      }
+      RETURN u, total, messagesCount, relationsCount, networkSize
       SKIP $page
       LIMIT $limit`,
       {
@@ -109,7 +113,8 @@ export class UserRepository {
       res.records.map(record => new UserListItemDto(
         record.get('u').properties,
         record.get('messagesCount') || 0,
-        record.get('relationsCount') || 0
+        record.get('relationsCount') || 0,
+        record.get('networkSize') || 0
       )),
       params.limit,
       params.page,

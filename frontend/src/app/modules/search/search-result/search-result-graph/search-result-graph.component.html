@@ -43,7 +43,7 @@
       </svg:marker>
       <svg:marker id="arrow-reverse_{{link.id}}" viewBox="0 -5 10 10"
                   [attr.refX]="NODE_SIZE / 2 + 10"
-                  [attr.refY]="-link.refY"
+                  [attr.refY]="-(link.refY || 0)"
                   markerWidth="5"
                   markerHeight="5"
                   orient="auto-start-reverse">

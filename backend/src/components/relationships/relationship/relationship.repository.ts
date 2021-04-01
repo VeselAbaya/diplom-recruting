@@ -8,6 +8,7 @@ import { GraphDto } from '@components/relationships/dto/graph.dto';
 import { Relationship } from 'neo4j-driver';
 import { ExcludeFunctions } from '@shared/utils';
 import { UserListItemDto } from '@components/users/dto/user-list-item.dto';
+import { RelationType } from '@monorepo/types/relations/relation-type.enum';
 
 @Injectable()
 export class RelationshipRepository {
@@ -28,7 +29,7 @@ export class RelationshipRepository {
     await this.users.getUserOrThrowError(params.fromUserId);
 
     const res = await this.db.read(`
-      CALL db.index.fulltext.queryNodes("usersSearch", $search) YIELD node as u, score
+      CALL db.index.fulltext.queryNodes("usersSearch", $search) YIELD node as u
       WHERE ($workSchedule IS NULL OR u.workSchedule = $workSchedule)
         AND ($workType IS NULL OR u.workType = $workType)
         AND (CASE WHEN u.english IS NOT NULL THEN u.english >= $english
@@ -44,26 +45,33 @@ export class RelationshipRepository {
                   ELSE true END)
       CALL {
         WITH u
-        MATCH (:User {id: $searcherUserId})<-[:RECEIVED_BY]-(m:Message {read: false, fromUserId: u.id})
-        WITH size(collect(m)) as messagesCount
-        RETURN messagesCount
-      }
-      CALL {
-        WITH u
-        MATCH (:User {id: $searcherUserId})-[relation:RELATIONSHIP]-(u)
-        WITH size(collect(relation)) as relationsCount
-        RETURN relationsCount
-      }
-      CALL {
-        WITH u
         MATCH (u)-[r:RELATIONSHIP*1..${params.networkSize || 1}]-(fromUser:User {id: $fromUserId})
         WHERE all(rel IN r WHERE rel.type IN $relationTypes)
         RETURN fromUser, collect(r) as pathRelationships
       }
-      RETURN apoc.coll.toSet(apoc.coll.flatten(collect(pathRelationships), true)) as edges,
+      WITH collect(u) + fromUser as users, apoc.coll.toSet(apoc.coll.flatten(collect(pathRelationships), true)) as edges
+      UNWIND users as user
+      CALL {
+        WITH user
+        MATCH (:User {id: $searcherUserId})<-[:RECEIVED_BY]-(m:Message {read: false, fromUserId: user.id})
+        WITH size(collect(m)) as messagesCount
+        RETURN messagesCount
+      }
+      CALL {
+        WITH user
+        MATCH (:User {id: $searcherUserId})-[relation:RELATIONSHIP]-(user)
+        WITH size(collect(relation)) as relationsCount
+        RETURN relationsCount
+      }
+      CALL {
+        WITH user
+        MATCH (relatedUser:User)-[:RELATIONSHIP]-(user)
+        WITH size(apoc.coll.toSet(collect(relatedUser))) as networkSize
+        RETURN networkSize
+      }
+      RETURN edges,
              apoc.coll.toSet(
-               collect(u{.*, relationsCount: relationsCount, messagesCount: messagesCount}) +
-               fromUser{.*, relationsCount: 0, messagesCount: 0}
+               collect(user{.*, relationsCount: relationsCount, messagesCount: messagesCount, networkSize: networkSize})
              ) as nodes`,
       {
         ...params,
@@ -82,7 +90,8 @@ export class RelationshipRepository {
       res.records[0].get('nodes').map((node: ExcludeFunctions<UserListItemDto>) => new UserListItemDto(
         node,
         node.notifications,
-        node.relationsCount
+        node.relationsCount,
+        node.networkSize
       )),
       res.records[0].get('edges').map((edge: Relationship) => new RelationshipEntity(
         edge.properties as ExcludeFunctions<RelationshipEntity>
@@ -96,5 +105,15 @@ export class RelationshipRepository {
     //   nodes: res.records.map(record => new UserEntity(record.get('u').properties)),
     //   edges: res.records.map()
     // };
+  }
+
+  async getUserRelationTypes(userId: string): Promise<RelationType[]> {
+    await this.users.getUserOrThrowError(userId);
+    const res = await this.db.write(`
+      MATCH (:User {id: $userId})-[r:RELATIONSHIP]-(:User)
+      RETURN DISTINCT r.type as relationType
+    `, {userId});
+
+    return res.records.map(record => record.get('relationType'));
   }
 }

@@ -12,7 +12,7 @@ import { Edge, Node } from '@swimlane/ngx-graph';
 import { IGraphSearchParamsDto } from '@monorepo/types/relations/graph-search-params.dto.interface';
 import { RelationsListDialogComponent } from '@modules/search/search-result/search-result-list/user-card/relations-list-dialog/relations-list-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IUserListItem } from '@monorepo/types/with-notification.interface';
+import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 interface INgxGraph extends IGraphDto {

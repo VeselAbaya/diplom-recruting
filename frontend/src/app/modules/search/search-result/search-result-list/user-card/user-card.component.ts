@@ -6,7 +6,7 @@ import { EditRelationsDialogComponent } from '@modules/search/search-result/sear
 import { AuthService } from '@core/services/auth/auth.service';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { MessagesService } from '@shared/components/messages/messages.service';
-import { IUserListItem } from '@monorepo/types/with-notification.interface';
+import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { ProfileGuard } from '@modules/profile/profile.guard';
 import { SearchService } from '@modules/search/search.service';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';

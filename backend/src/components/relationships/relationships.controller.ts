@@ -1,5 +1,13 @@
 import {
-  ClassSerializerInterceptor, Controller, Get, Param, Query, UseGuards, UseInterceptors, UsePipes, ValidationPipe
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param, ParseUUIDPipe,
+  Query,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+  ValidationPipe
 } from '@nestjs/common';
 import { RelationshipsService } from './relationships.service';
 import { SubPath } from '@monorepo/routes';
@@ -8,6 +16,7 @@ import { RelationshipEntity } from '@components/relationships/relationship/relat
 import { GraphSearchParamsDto } from '@components/relationships/dto/graph-search-params.dto';
 import { GraphDto } from '@components/relationships/dto/graph.dto';
 import { User } from '@components/users/user/user.decorator';
+import { RelationType } from '@monorepo/types/relations/relation-type.enum';
 
 @Controller(SubPath.relationships())
 export class RelationshipsController {
@@ -15,8 +24,8 @@ export class RelationshipsController {
 
   @Get(SubPath.relationships.ofUsers())
   @UseGuards(AuthGuard())
-  findAll(@Param('fromUser') fromUserId: string,
-          @Param('toUser') toUserId: string): Promise<RelationshipEntity[]> {
+  findAll(@Param('fromUser', ParseUUIDPipe) fromUserId: string,
+          @Param('toUser', ParseUUIDPipe) toUserId: string): Promise<RelationshipEntity[]> {
     return this.relationships.get(fromUserId, toUserId);
   }
 
@@ -26,5 +35,11 @@ export class RelationshipsController {
   @UseInterceptors(ClassSerializerInterceptor)
   getUsers(@Query() searchParamsDto: GraphSearchParamsDto, @User('id') userId: string): Promise<GraphDto> {
     return this.relationships.getGraph(userId, searchParamsDto);
+  }
+
+  @Get(SubPath.relationships.userRelationTypes())
+  @UseGuards(AuthGuard())
+  getUserRelationTypes(@Param('user', ParseUUIDPipe) userId: string): Promise<RelationType[]> {
+    return this.relationships.getUserRelationTypes(userId);
   }
 }

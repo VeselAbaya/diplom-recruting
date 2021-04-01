@@ -13,6 +13,7 @@ import { ExperienceSliderConfig } from '@shared/experience-slider.config';
 import { Subject } from 'rxjs';
 import { equals } from 'ramda';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
+import { RelationsService } from '@modules/search/relations.service';
 
 @Component({
   selector: 'app-search-form',
@@ -40,7 +41,7 @@ export class SearchFormComponent extends OnDestroyMixin {
     workType: new FormControl(null)
   });
 
-  constructor(public readonly search: SearchService) {
+  constructor(public readonly search: SearchService, public readonly relations: RelationsService) {
     super();
     this.form.valueChanges.pipe(
       untilComponentDestroyed(this),

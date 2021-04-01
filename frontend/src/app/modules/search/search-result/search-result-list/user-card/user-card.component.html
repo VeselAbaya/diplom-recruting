@@ -14,7 +14,7 @@
 
 <div class="user-info">
   <mat-icon svgIcon="users"></mat-icon>
-  Network size &nbsp; <span class="network-size">{{'{user.networkSize}'}}</span>
+  Network size <span class="network-size">{{user.networkSize}}</span>
 </div>
 
 <div class="buttons" *ngIf="(auth.user$ | async)?.id !== user.id else itsCurrentUser">

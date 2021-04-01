@@ -23,7 +23,10 @@
     <mat-label>Relation types</mat-label>
     <mat-form-field class="pn-no-subscript pn-vertical-align">
       <mat-select formControlName="relationTypes" multiple>
-        <mat-option *ngFor="let pair of RelationType | keyvalue" [value]="pair.value">{{pair.value | relationType}}</mat-option>
+        <mat-option *ngFor="let relationType of relations.userFirstLevelRelationTypes$ | async"
+                    [value]="relationType">
+          {{relationType | relationType}}
+        </mat-option>
       </mat-select>
     </mat-form-field>
   </ng-container>

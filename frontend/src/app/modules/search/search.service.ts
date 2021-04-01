@@ -11,7 +11,7 @@ import { Path } from '@monorepo/routes';
 import { IPagination, IPaginationMeta } from '@monorepo/types/pagination/pagination.interface';
 import { LIMITS } from '@monorepo/types/pagination/limits';
 import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
-import { IUserListItem } from '@monorepo/types/with-notification.interface';
+import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
