@@ -44,20 +44,4 @@ export class RequestsService {
   accept(requestId: string): Promise<RelationshipEntity> {
     return this.requests.accept(requestId);
   }
-
-  // findAll() {
-  //   return `This action returns all requests`;
-  // }
-  //
-  // findOne(id: number) {
-  //   return `This action returns a #${id} request`;
-  // }
-  //
-  // update(id: number, updateRequestDto: UpdateRequestDto) {
-  //   return `This action updates a #${id} request`;
-  // }
-  //
-  // remove(id: number) {
-  //   return `This action removes a #${id} request`;
-  // }
 }

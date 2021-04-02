@@ -5,8 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ErrorsService } from '@core/services/errors.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
-import { tap } from 'rxjs/operators';
-import { MessagesService } from '@shared/components/messages/messages.service';
 
 @Component({
   selector: 'app-create-relation-dialog',
@@ -19,7 +17,6 @@ export class CreateRelationDialogComponent {
               private readonly snackbar: MatSnackBar,
               private readonly errors: ErrorsService,
               private readonly dialog: MatDialogRef<CreateRelationDialogComponent>,
-              private readonly messages: MessagesService,
               @Inject(MAT_DIALOG_DATA) public readonly data: {fromUser: IUserDto, toUser: IUserDto}) {}
 
   onSubmit(createRelationDto: ICreateRelationDto): void {
