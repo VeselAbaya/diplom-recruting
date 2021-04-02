@@ -14,6 +14,7 @@ import { RelationsListDialogComponent } from '@modules/search/search-result/sear
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 interface INgxGraph extends IGraphDto {
   nodes: (IUserListItem & Node)[];
@@ -24,13 +25,22 @@ interface INgxGraph extends IGraphDto {
   selector: 'app-search-result-graph',
   templateUrl: './search-result-graph.component.html',
   styleUrls: ['./search-result-graph.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [trigger('nodeOverlayFade', [
+    transition(':enter', [
+      style({opacity: 0, transform: 'scale(0.1)'}),
+      animate('150ms cubic-bezier(0, 0, 0.2, 1)', style({transform: 'none', opacity: 1}))
+    ]),
+    transition(':leave',
+      animate('75ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({opacity: 0, transform: 'scale(0.7)'}))
+    ),
+  ])]
 })
 export class SearchResultGraphComponent extends OnDestroyMixin {
   layout = new Layout();
   NODE_SIZE = GRAPH.NODE_SIZE;
   DEFAULT_AVATAR_URL = DEFAULT_AVATAR_URL;
-  selectedNode: IUserListItem | null = null;
+  nodeWithOverlay: IUserListItem | null = null;
 
   @ViewChild('nodeContextMenu', {static: true, read: TemplateRef}) nodeContextMenuRef!: TemplateRef<void>;
 
@@ -53,7 +63,11 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
     shareReplay(1)
   );
 
-  selectedUserId$ = this.search.selectedUser$.pipe(isNotNullOrUndefined(), pluck('id'));
+  selectedUserId$ = this.search.selectedUser$.pipe(
+    tap(() => this.nodeWithOverlay = null),
+    isNotNullOrUndefined(),
+    pluck('id')
+  );
 
   constructor(private readonly search: SearchService,
               private readonly dialog: MatDialog,
@@ -63,12 +77,8 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
   }
 
   onNodeClick(event: MouseEvent, selectedNode: IUserListItem): void {
-    if (this.mouseMovedDistance <= 15) {
-      this.selectedNode = selectedNode;
-      this.dialog.open(this.nodeContextMenuRef, {
-        backdropClass: 'cdk-overlay-transparent-backdrop',
-        position: {top: `${event.clientY}px`, left: `${event.clientX}px`}
-      }).afterClosed().subscribe(() => this.selectedNode = null);
+    if (this.mouseMovedDistance <= 15 && this.nodeWithOverlay !== selectedNode) {
+      this.nodeWithOverlay = selectedNode;
     }
     this.mouseMovedDistance = 0;
     this.mouseMoveStartPoint = {x: 0, y: 0};

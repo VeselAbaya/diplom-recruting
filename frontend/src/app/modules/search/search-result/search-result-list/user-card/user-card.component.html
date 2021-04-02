@@ -41,11 +41,11 @@
     <mat-icon svgIcon="relationship"></mat-icon>
   </button>
 
-  <ng-container *ngIf="search.selectedUser$ | async as selectedUser">
+  <ng-container *ngIf="(search.selectedUser$ | async)?.id !== user.id">
     <button mat-icon-button color="primary"
             *ngIf="!(profileGuard.isMyProfile$ | async)"
             (click)="openRelationsListDialog()"
-            matTooltip="{{selectedUser.firstName}}'s and {{user.firstName}}'s relations"
+            matTooltip="{{(search.selectedUser$ | async)?.firstName}}'s and {{user.firstName}}'s relations"
             matTooltipPosition="left"
             class="pn-icon-align">
       <mat-icon svgIcon="relations-list"></mat-icon>

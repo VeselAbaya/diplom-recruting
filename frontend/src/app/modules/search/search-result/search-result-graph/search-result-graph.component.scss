@@ -1,4 +1,5 @@
 @import '~src/styles/shared/palettes';
+@import '~@angular/material/theming';
 
 :host {
   display: block;
@@ -25,4 +26,12 @@ app-avatar {
 .node,
 .edge {
   cursor: pointer;
+}
+
+app-user-card {
+  @include mat-elevation(16, mat-color($pn-primary));
+
+  ::ng-deep .user {
+    margin-bottom: 26px;
+  }
 }

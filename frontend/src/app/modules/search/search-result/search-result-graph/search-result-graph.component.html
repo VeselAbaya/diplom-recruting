@@ -8,8 +8,9 @@
                    [maxZoomLevel]="1.5" xmlns:svg="http://www.w3.org/2000/svg">
   <ng-template #nodeTemplate let-node>
     <svg:g class="node"
+           cdkOverlayOrigin
            [class.selected]="node.id === (selectedUserId$ | async)"
-           #nodeElement
+           #nodeOverlayOrigin="cdkOverlayOrigin"
            (mousedown)="mouseMoveStartPoint = $event"
            (mousemove)="onNodeMousemove($event)"
            (click)="onNodeClick($event, node)">
@@ -29,6 +30,15 @@
                  [attr.width]="node.dimension.width * 0.8"
                  clip-path="url(#round-clip)"/>
     </svg:g>
+
+    <ng-template #nodeContextMenu
+                 cdkConnectedOverlay
+                 [cdkConnectedOverlayOpen]="nodeWithOverlay?.id === node.id"
+                 [cdkConnectedOverlayOrigin]="nodeOverlayOrigin"
+                 (overlayOutsideClick)="nodeWithOverlay = null">
+      <app-user-card @nodeOverlayFade
+                     [user]="node"></app-user-card>
+    </ng-template>
   </ng-template>
 
   <ng-template #linkTemplate let-link>
@@ -65,11 +75,3 @@
     </svg:g>
   </ng-template>
 </app-network-graph>
-
-<ng-template #nodeContextMenu>
-  <app-profile-info *ngIf="selectedNode"
-                    [avatarSrc]="DEFAULT_AVATAR_URL"
-                    [hourlyRate]="selectedNode.hourlyRate"
-                    [name]="selectedNode | fullName"
-                    [email]="selectedNode.email"></app-profile-info>
-</ng-template>

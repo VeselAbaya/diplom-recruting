@@ -26,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelationTypeModule } from '@shared/pipes/relation-type/relation-type.module';
 import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
 import { IsBidirectionalModule } from '@shared/pipes/is-bidirectional/is-bidirectional.module';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -51,12 +52,12 @@ import { IsBidirectionalModule } from '@shared/pipes/is-bidirectional/is-bidirec
     MatDialogModule,
     RouterModule,
     NgxGraphModule,
-    ProfileInfoModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     RelationTypeModule,
     FullNameModule,
-    IsBidirectionalModule
+    IsBidirectionalModule,
+    OverlayModule
   ],
   exports: [SearchResultListComponent, SearchResultGraphComponent, SearchResultComponent]
 })

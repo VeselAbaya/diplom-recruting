@@ -82,6 +82,10 @@ input {
   overflow: visible;
 }
 
+.pn-dialog-no-padding .mat-dialog-container {
+  padding: 0;
+}
+
 .pn-hint {
   color: map-get($pn-foreground, secondary-text);
 }
