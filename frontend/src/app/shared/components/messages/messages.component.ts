@@ -49,6 +49,7 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
 
   onTextareaKeyPress(event: KeyboardEvent): void {
     if (event.code === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
       this.onSendMessage();
     }
   }

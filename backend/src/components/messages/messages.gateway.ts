@@ -19,7 +19,7 @@ export class MessagesGateway implements OnGatewayDisconnect {
 
   constructor(private readonly messages: MessagesService) {
     this.messages.messageSaved.subscribe(message => {
-      this.server.to(message.toUserId).emit('newMessage', message);
+      this.server.to(message.toUserId).emit('newMessageNotify', message);
       this.server.to(MessagesGateway.getRoomName(message.fromUserId, message.toUserId)).emit('message', message);
     });
   }
@@ -32,6 +32,11 @@ export class MessagesGateway implements OnGatewayDisconnect {
   @UsePipes(ValidationPipe)
   async handleMessage(@MessageBody() message: CreateMessageDto): Promise<void> {
     await this.messages.save(message);
+  }
+
+  @SubscribeMessage('messageRead')
+  markAsRead(@MessageBody() messageId: string): void {
+    this.messages.markAsRead(messageId);
   }
 
   @SubscribeMessage('messagesOpen')

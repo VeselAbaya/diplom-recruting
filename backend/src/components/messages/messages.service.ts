@@ -20,4 +20,8 @@ export class MessagesService {
     this.messageSaved.next(newMessage);
     return newMessage;
   }
+
+  markAsRead(messageId: string): void {
+    this.messages.markAsRead(messageId);
+  }
 }

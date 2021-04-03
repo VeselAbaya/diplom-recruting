@@ -24,10 +24,12 @@ export class RelationshipsService {
     return this.relationships.getUserRelationTypes(userId);
   }
 
-  async update(id: string, patchDto: UpdateRelationshipDto): Promise<RelationshipEntity> {
+  async update(id: string, patchDto: UpdateRelationshipDto, userId: string): Promise<RelationshipEntity> {
     const updatedRelation = await this.relationships.update(id, patchDto);
     if (updatedRelation) {
-      this.messages.save(new CreateMessageDto(updatedRelation.fromUserId, updatedRelation.toUserId, patchDto.comment));
+      const fromUserId = userId;
+      const toUserId = updatedRelation.toUserId !== userId ? updatedRelation.toUserId : updatedRelation.fromUserId;
+      this.messages.save(new CreateMessageDto(fromUserId, toUserId, patchDto.comment));
     }
     return this.relationships.update(id, patchDto);
   }

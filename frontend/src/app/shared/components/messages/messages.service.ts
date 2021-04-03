@@ -32,7 +32,7 @@ export class MessagesService extends OnDestroyMixin {
   private list = new BehaviorSubject<IMessageDto[]>([]);
   list$ = this.list.pipe(distinctUntilChanged());
 
-  newMessage$ = this.socket.fromEvent<IMessageDto>('newMessage').pipe(
+  newMessage$ = this.socket.fromEvent<IMessageDto>('newMessageNotify').pipe(
     withLatestFrom(this.receiverUser),
     filter(([message, receiverUser]) => !receiverUser || receiverUser.id !== message.fromUserId),
     map(([message]) => message)
@@ -57,9 +57,12 @@ export class MessagesService extends OnDestroyMixin {
       pluck('id')
     ).subscribe(userId => socket.emit('userIsOnline', {userId}));
 
-    socket.fromEvent('message').pipe(
+    socket.fromEvent<IMessageDto>('message').pipe(
       untilComponentDestroyed(this)
-    ).subscribe(message => this.list.next(this.list.getValue().concat(message as IMessageDto)));
+    ).subscribe(message => {
+      this.socket.emit('messageRead', message.id);
+      this.list.next(this.list.getValue().concat(message));
+    });
   }
 
   send(message: string, toUserId = this.receiverUser.getValue()?.id): void {

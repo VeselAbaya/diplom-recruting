@@ -52,7 +52,8 @@ export class RelationshipsController {
   @UsePipes(ValidationPipe)
   @UseInterceptors(ClassSerializerInterceptor)
   updateRelationship(@Param('id', ParseUUIDPipe) id: string,
-                     @Body() relationshipPatchDto: UpdateRelationshipDto): Promise<RelationshipEntity> {
-    return this.relationships.update(id, relationshipPatchDto);
+                     @Body() relationshipPatchDto: UpdateRelationshipDto,
+                     @User('id') userId: string): Promise<RelationshipEntity> {
+    return this.relationships.update(id, relationshipPatchDto, userId);
   }
 }

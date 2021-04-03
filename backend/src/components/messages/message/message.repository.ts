@@ -41,4 +41,19 @@ export class MessageRepository {
 
     return savedMessage;
   }
+
+  async markAsRead(messageId: string): Promise<MessageEntity> {
+    const res = await this.db.write(`
+      MATCH (m:Message {id: $id})
+      SET m.read = true
+      RETURN m
+    `, {id: messageId});
+
+    const message = Neo4j.hydrateOne(res, 'm', MessageEntity);
+    if (!message) {
+      throw new InternalServerErrorException();
+    }
+
+    return message;
+  }
 }
