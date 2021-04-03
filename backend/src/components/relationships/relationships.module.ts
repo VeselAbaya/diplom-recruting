@@ -4,10 +4,11 @@ import { RelationshipsController } from './relationships.controller';
 import { UsersModule } from '@components/users/users.module';
 import { RelationshipRepository } from '@components/relationships/relationship/relationship.repository';
 import { PassportModule } from '@nestjs/passport';
+import { MessagesModule } from '@components/messages/messages.module';
 
 @Module({
   controllers: [RelationshipsController],
   providers: [RelationshipsService, RelationshipRepository],
-  imports: [UsersModule, PassportModule.register({defaultStrategy: 'jwt'})]
+  imports: [UsersModule, MessagesModule, PassportModule.register({defaultStrategy: 'jwt'})]
 })
 export class RelationshipsModule {}

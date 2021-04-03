@@ -62,10 +62,15 @@
   </mat-form-field>
 
   <div class="comment-block">
-    <mat-form-field class="pn-no-subscript" *ngIf="showComment">
-      <mat-label>Comment</mat-label>
-      <textarea matInput formControlName="comment" class="description-textarea" rows="5"></textarea>
-    </mat-form-field>
+    <div @fadeInOut *ngIf="showComment">
+      <mat-form-field class="comment-form-field pn-no-subscript">
+        <mat-label>Comment</mat-label>
+        <textarea matInput formControlName="comment" class="description-textarea" rows="5"></textarea>
+        <mat-error>
+          <ng-content select="[comment-error]"></ng-content>
+        </mat-error>
+      </mat-form-field>
+    </div>
 
     <div class="actions-wrapper">
       <ng-content></ng-content>

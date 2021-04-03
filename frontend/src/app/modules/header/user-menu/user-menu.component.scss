@@ -44,6 +44,7 @@ app-avatar {
   display: flex;
   align-items: center;
 
+  // TODO relation requests notifications
   &__badge {
     $badge-size: 24px;
     display: inline-block;

@@ -1,8 +1,10 @@
 import {
-  ClassSerializerInterceptor,
+  Body, ClassSerializerInterceptor,
   Controller,
   Get,
-  Param, ParseUUIDPipe,
+  Param,
+  ParseUUIDPipe,
+  Patch,
   Query,
   UseGuards,
   UseInterceptors,
@@ -17,6 +19,8 @@ import { GraphSearchParamsDto } from '@components/relationships/dto/graph-search
 import { GraphDto } from '@components/relationships/dto/graph.dto';
 import { User } from '@components/users/user/user.decorator';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
+import { RelationParticipantGuard } from '@components/relationships/guards/relation-participant.guard';
+import { UpdateRelationshipDto } from '@components/relationships/dto/update-relationship.dto';
 
 @Controller(SubPath.relationships())
 export class RelationshipsController {
@@ -41,5 +45,14 @@ export class RelationshipsController {
   @UseGuards(AuthGuard())
   getUserRelationTypes(@Param('user', ParseUUIDPipe) userId: string): Promise<RelationType[]> {
     return this.relationships.getUserRelationTypes(userId);
+  }
+
+  @Patch(SubPath.relationships.relationship())
+  @UseGuards(AuthGuard(), RelationParticipantGuard)
+  @UsePipes(ValidationPipe)
+  @UseInterceptors(ClassSerializerInterceptor)
+  updateRelationship(@Param('id', ParseUUIDPipe) id: string,
+                     @Body() relationshipPatchDto: UpdateRelationshipDto): Promise<RelationshipEntity> {
+    return this.relationships.update(id, relationshipPatchDto);
   }
 }

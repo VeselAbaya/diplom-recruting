@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Neo4j } from '@db/neo4j/neo4j.service';
 import { UserRepository } from '@components/users/user/user.repository';
 import { RelationshipEntity } from '@components/relationships/relationship/relationship.entity';
@@ -9,6 +9,8 @@ import { Relationship } from 'neo4j-driver';
 import { ExcludeFunctions } from '@shared/utils';
 import { UserListItemDto } from '@components/users/dto/user-list-item.dto';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
+import { UpdateRelationshipDto } from '@components/relationships/dto/update-relationship.dto';
+import { UserEntity } from '@components/users/user/user.entity';
 
 @Injectable()
 export class RelationshipRepository {
@@ -115,5 +117,27 @@ export class RelationshipRepository {
     `, {userId});
 
     return res.records.map(record => record.get('relationType'));
+  }
+
+  async update(id: string, patchDto: UpdateRelationshipDto): Promise<RelationshipEntity> {
+    const res = await this.db.write(`
+      MATCH ()-[r:RELATIONSHIP {id: $id}]-()
+      SET r += $properties
+      RETURN DISTINCT r
+    `, {
+      id,
+      properties: {
+        description: patchDto.description,
+        endAt: patchDto.endAt,
+        startAt: patchDto.startAt
+      }
+    });
+
+    const savedRel = Neo4j.hydrateOne(res, 'r', RelationshipEntity);
+    if (!savedRel) {
+      throw new InternalServerErrorException();
+    }
+
+    return savedRel;
   }
 }

@@ -1,6 +1,6 @@
 <button mat-button [matMenuTriggerFor]="menu">
   <span class="user-name">{{user.firstName}} {{user.lastName}}</span>
-  <app-avatar matBadge="1" matBadgeColor="accent" src="assets/default-user-avatar.svg" rounded></app-avatar>
+  <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
 </button>
 
 <mat-menu #menu="matMenu">
@@ -16,7 +16,6 @@
   <a [routerLink]="['/search']" mat-menu-item>Search</a>
   <a [routerLink]="['/requests']" mat-menu-item class="relation-requests">
     <span>Relation requests</span>
-    <span class="relation-requests__badge">1</span>
   </a>
   <button (click)="auth.logout()" mat-menu-item>Logout</button>
 </mat-menu>

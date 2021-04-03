@@ -152,10 +152,14 @@ app-hidden-scroll-wrapper {
   .comment-block {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
   }
 
   .actions-wrapper {
     margin-top: auto;
+    align-self: flex-end;
   }
+}
+
+.comment-form-field ::ng-deep .mat-form-field-subscript-wrapper {
+  top: 100%;
 }

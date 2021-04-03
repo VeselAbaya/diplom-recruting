@@ -8,6 +8,7 @@ import { distinctUntilChanged, tap } from 'rxjs/operators';
 import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
 import { IGraphSearchParamsDto } from '@monorepo/types/relations/graph-search-params.dto.interface';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
+import { IUpdateRelationshipDto } from '@monorepo/types/relationships/update-relationship.dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +36,9 @@ export class RelationsService {
     return this.http.get<RelationType[]>(Path.relationships.userRelationTypes(userId)).pipe(
       tap(relationTypes => this.userFirstLevelRelationTypes.next(relationTypes))
     );
+  }
+
+  updateRelation(id: string, patchDto: IUpdateRelationshipDto): Observable<IRelationshipDto> {
+    return this.http.patch<IRelationshipDto>(Path.relationships.relationship(id), patchDto);
   }
 }

@@ -51,10 +51,10 @@ export class RequestRepository {
 
     const fromUserCypher = `(from:User ${params.fromUserId ? '{id: $fromUserId}' : ''})`;
     const toUserCypher = `(to:User ${params.toUserId ? '{id: $toUserId}' : ''})`;
-    const res = await this.db.write(
-      `MATCH ${fromUserCypher}-[:SENT]->(r:Request {declined: $declined})-[:RECEIVED_TO]->${toUserCypher}
-           RETURN from, to, collect(r) as requests`,
-      params
+    const res = await this.db.write(`
+        MATCH ${fromUserCypher}-[:SENT]->(r:Request {declined: $declined})-[:RECEIVED_TO]->${toUserCypher}
+        RETURN from, to, collect(r) as requests
+      `, params
     );
 
     return res.records.map(record => new GetRequestsDto({

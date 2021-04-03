@@ -11,30 +11,20 @@ import { CdkScrollable } from '@angular/cdk/overlay';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StartDateRequiredIfHasEndDate } from '@shared/components/relations/start-date-required-if-has-end-date.validator';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { Subject } from 'rxjs';
 import { ICreateRelationDto } from '@monorepo/types/relations/create-relation.dto.interface';
 import { IRelationBase } from '@monorepo/types/relations/relation.base.interface';
 import { OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 import { IRelationRequestUserDto } from '@monorepo/types/relations/relation-request-user.dto.interface';
 import { IRelationshipDto } from '@monorepo/types/relationships/relationship.dto.interface';
+import { fadeInOut } from '@shared/animations/fade-in-out.animation';
 
 @Component({
   selector: 'app-relations',
   templateUrl: './relations.component.html',
   styleUrls: ['./relations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate('300ms', style({ opacity: 0 }))
-      ])
-    ])
-  ]
+  animations: [fadeInOut]
 })
 export class RelationsComponent extends OnDestroyMixin {
   RelationType = RelationType;

@@ -4,6 +4,7 @@ export interface Relationships {
   ofUsers: (fromUser?: string, toUser?: string) => string;
   graph: () => string;
   userRelationTypes: (user?: string) => string;
+  relationship: (id?: string) => string;
 
   (): string;
 }
@@ -14,4 +15,5 @@ export const register = (routes: Base) => {
   routes.relationships.ofUsers = (fromUser?: string, toUser?: string) => ':fromUser/:toUser';
   routes.relationships.graph = () => 'graph';
   routes.relationships.userRelationTypes = (user?: string) => 'user-relation-types/:user';
+  routes.relationships.relationship = (id?: string) => ':id';
 };

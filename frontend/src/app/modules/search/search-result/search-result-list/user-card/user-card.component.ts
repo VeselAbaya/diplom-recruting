@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RelationsListDialogComponent } from '@modules/search/search-result/search-result-list/user-card/relations-list-dialog/relations-list-dialog.component';
 import { CreateRelationDialogComponent } from '@modules/search/search-result/search-result-list/user-card/create-relation-dialog/create-relation-dialog.component';
-import { EditRelationsDialogComponent } from '@modules/search/search-result/search-result-list/user-card/edit-relations-dialog/edit-relations-dialog.component';
 import { AuthService } from '@core/services/auth/auth.service';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { MessagesService } from '@shared/components/messages/messages.service';
@@ -31,7 +30,7 @@ export class UserCardComponent {
               private readonly dialog: MatDialog) {}
 
   openRelationsListDialog(): void {
-    this.openRelationsDialog(this.search.selectedUser$, RelationsListDialogComponent);
+    this.openRelationsDialog(this.search.selectedUser$);
   }
 
   openCreateRelationDialog(): void {
@@ -44,12 +43,10 @@ export class UserCardComponent {
   }
 
   openEditRelationsDialog(): void {
-    this.openRelationsDialog(this.auth.user$, RelationsListDialogComponent);
+    this.openRelationsDialog(this.auth.user$, true);
   }
 
-  private openRelationsDialog(user$: Observable<IUserDto | null>,
-                              DialogComponent: typeof EditRelationsDialogComponent |
-                                               typeof RelationsListDialogComponent): void {
+  private openRelationsDialog(user$: Observable<IUserDto | null>, edit = false): void {
     user$.pipe(
       take(1),
       isNotNullOrUndefined(),
@@ -57,11 +54,12 @@ export class UserCardComponent {
         of(selectedUser),
         this.relations.getRelationsBetweenUsers(selectedUser.id, this.user.id)
       ]))
-    ).subscribe(([selectedUser, relations]) => this.dialog.open(DialogComponent, {
+    ).subscribe(([selectedUser, relations]) => this.dialog.open(RelationsListDialogComponent, {
       data: {
         fromUser: selectedUser,
         toUser: this.user,
-        relations
+        relations,
+        edit
       }
     }));
   }

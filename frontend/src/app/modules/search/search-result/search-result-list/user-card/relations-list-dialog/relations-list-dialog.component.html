@@ -1,9 +1,22 @@
 <h1 mat-dialog-title>{{data.fromUser.firstName}}'s and {{data.toUser.firstName}}'s relations</h1>
-<app-relations [showForm]="!!selectedRelation"
-               [showComment]="false"
+<app-relations [showForm]="!!(facade.selected$ | async)"
+               [showComment]="data.edit ? !(isFormEqualsToInitial$ | async) : false"
                [fromUser]="data.fromUser"
                [toUser]="data.toUser"
                [relations]="data.relations"
-               [selectedRelationId]="selectedRelation?.id"
-               (relationSelect)="selectedRelation = $event"
-               [disabled]="true"></app-relations>
+               [selectedRelationId]="(facade.selected$ | async)?.id"
+               (relationSelect)="facade.select($event)"
+               (formSubmit)="onSubmit($event)"
+               [disabled]="!data.edit">
+  <button *ngIf="!!data.edit"
+          class="save-button"
+          mat-stroked-button
+          color="primary"
+          [disabled]="!data.edit || (isFormEqualsToInitial$ | async)">
+    Send request
+  </button>
+
+  <span comment-error>
+    You have to notify another participant about that changes
+  </span>
+</app-relations>
