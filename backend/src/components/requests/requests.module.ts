@@ -9,6 +9,7 @@ import { MessagesModule } from '@components/messages/messages.module';
 @Module({
   controllers: [RequestsController],
   providers: [RequestsService, RequestRepository],
+  exports: [RequestRepository],
   imports: [UsersModule, PassportModule.register({defaultStrategy: 'jwt'}), MessagesModule]
 })
 export class RequestsModule {}

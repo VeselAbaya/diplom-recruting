@@ -6,6 +6,7 @@ import { UsersModule } from '@components/users/users.module';
 import { RequestsModule } from '@components/requests/requests.module';
 import { RelationshipsModule } from '@components/relationships/relationships.module';
 import { MessagesModule } from '@components/messages/messages.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MessagesModule } from '@components/messages/messages.module';
     RequestsModule,
     RelationshipsModule,
     MessagesModule
-  ]
+  ],
+  controllers: [AppController]
 })
 export class AppModule {}
