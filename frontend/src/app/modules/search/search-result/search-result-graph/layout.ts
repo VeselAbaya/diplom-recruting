@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 
 export const GRAPH = {
   NODE_SIZE: 60,
-  NODES_DISTANCE: 250
+  NODES_DISTANCE: 300
 };
 
 // @ts-ignore
@@ -54,8 +54,8 @@ const arcPath = (d) => {
 
 export class Layout extends D3ForceDirectedLayout {
   defaultSettings: D3ForceDirectedSettings = {
-    force: forceSimulation().force('charge', forceManyBody().strength(-150))
-                            .force('collide', forceCollide(GRAPH.NODE_SIZE / 4)),
+    force: forceSimulation().force('charge', forceManyBody().strength(-450))
+                            .force('collide', forceCollide(GRAPH.NODE_SIZE / 2)),
     forceLink: forceLink<D3Node, D3Edge>()
       .id(node => node.id || '')
       .distance(() => GRAPH.NODES_DISTANCE)

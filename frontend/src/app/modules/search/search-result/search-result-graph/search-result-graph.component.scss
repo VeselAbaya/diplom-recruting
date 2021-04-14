@@ -19,6 +19,11 @@ app-avatar {
   fill: mat-color($pn-primary, lighter);
 }
 
+.intermediate-overlay {
+  fill: #fff;
+  opacity: .75;
+}
+
 .node.selected .avatar-backdrop {
   fill: mat-color($pn-primary);
 }

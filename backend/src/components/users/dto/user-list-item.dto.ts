@@ -6,7 +6,8 @@ export class UserListItemDto extends UserEntity implements IUserListItem {
   constructor(userProps: ExcludeFunctions<UserEntity>,
               public notifications: number,
               public relationsCount: number,
-              public networkSize: number) {
+              public networkSize: number,
+              public intermediate: boolean) {
     super(userProps);
   }
 }

@@ -10,7 +10,6 @@ import { ExcludeFunctions } from '@shared/utils';
 import { UserListItemDto } from '@components/users/dto/user-list-item.dto';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
 import { UpdateRelationshipDto } from '@components/relationships/dto/update-relationship.dto';
-import { UserEntity } from '@components/users/user/user.entity';
 
 @Injectable()
 export class RelationshipRepository {
@@ -32,7 +31,10 @@ export class RelationshipRepository {
 
     const res = await this.db.read(`
       CALL db.index.fulltext.queryNodes("usersSearch", $search) YIELD node as u
-      WHERE ($workSchedule IS NULL OR u.workSchedule = $workSchedule)
+      WHERE (CASE WHEN $fromUserId IS NOT NULL
+                    THEN EXISTS((u)-[:RELATIONSHIP*1..${params.networkSize || 1}]-(:User {id: $fromUserId}))
+                  ELSE true END)
+        AND ($workSchedule IS NULL OR u.workSchedule = $workSchedule)
         AND ($workType IS NULL OR u.workType = $workType)
         AND (CASE WHEN u.english IS NOT NULL THEN u.english >= $english
                   ELSE $english = ${EnglishLevel.A1} END)
@@ -45,13 +47,18 @@ export class RelationshipRepository {
         AND (CASE WHEN $fromUserId IS NOT NULL
                     THEN u.id <> $fromUserId
                   ELSE true END)
+      WITH collect(u) as searchSatisfyingUsers
       CALL {
-        WITH u
-        MATCH (u)-[r:RELATIONSHIP*1..${params.networkSize || 1}]-(fromUser:User {id: $fromUserId})
+        WITH searchSatisfyingUsers
+        UNWIND searchSatisfyingUsers as u
+        MATCH path = (u)-[r:RELATIONSHIP*1..${params.networkSize || 1}]-(fromUser:User {id: $fromUserId})
         WHERE all(rel IN r WHERE rel.type IN $relationTypes)
-        RETURN fromUser, collect(r) as pathRelationships
+        RETURN nodes(path) as pathNodes,
+               collect(r) as pathRelationships
       }
-      WITH collect(u) + fromUser as users, apoc.coll.toSet(apoc.coll.flatten(collect(pathRelationships), true)) as edges
+      WITH apoc.coll.toSet(apoc.coll.flatten(collect(pathNodes))) as users,
+           apoc.coll.toSet(apoc.coll.flatten(collect(pathRelationships), true)) as edges,
+           searchSatisfyingUsers
       UNWIND users as user
       CALL {
         WITH user
@@ -73,8 +80,18 @@ export class RelationshipRepository {
       }
       RETURN edges,
              apoc.coll.toSet(
-               collect(user{.*, relationsCount: relationsCount, messagesCount: messagesCount, networkSize: networkSize})
-             ) as nodes`,
+               collect(user{
+                 .*,
+                 relationsCount: relationsCount,
+                 messagesCount: messagesCount,
+                 networkSize: networkSize,
+                 intermediate: CASE WHEN user.id = $fromUserId
+                                 THEN false
+                                 ELSE NOT user IN searchSatisfyingUsers
+                               END
+               })
+             ) as nodes,
+             searchSatisfyingUsers`,
       {
         ...params,
         english: params.english || EnglishLevel.A1,
@@ -93,7 +110,8 @@ export class RelationshipRepository {
         node,
         node.notifications,
         node.relationsCount,
-        node.networkSize
+        node.networkSize,
+        node.intermediate
       )),
       res.records[0].get('edges').map((edge: Relationship) => new RelationshipEntity(
         edge.properties as ExcludeFunctions<RelationshipEntity>

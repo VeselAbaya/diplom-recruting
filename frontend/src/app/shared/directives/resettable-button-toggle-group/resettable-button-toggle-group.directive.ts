@@ -15,6 +15,8 @@ export class ResettableButtonToggleGroupDirective extends OnDestroyMixin impleme
   }
 
   ngAfterViewInit(): void {
+    let isReset = false;
+
     merge(...this.buttonToggleGroup._buttonToggles.map(
       buttonToggle => buttonToggle.change.pipe(pluck('value'))
     )).pipe(
@@ -23,7 +25,13 @@ export class ResettableButtonToggleGroupDirective extends OnDestroyMixin impleme
       pairwise()
     ).subscribe(([prevValue, curValue]) => {
       if (prevValue === curValue) {
-        this.ngControl.control?.setValue(null);
+        if (isReset) {
+          this.ngControl.control?.setValue(curValue);
+          isReset = false;
+        } else {
+          this.ngControl.control?.setValue(null);
+          isReset = true;
+        }
       }
     });
   }

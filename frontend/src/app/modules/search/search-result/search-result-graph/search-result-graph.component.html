@@ -29,6 +29,12 @@
                  [attr.height]="node.dimension.height * 0.8"
                  [attr.width]="node.dimension.width * 0.8"
                  clip-path="url(#round-clip)"/>
+
+      <svg:circle *ngIf="node.intermediate"
+                  class="intermediate-overlay"
+                  [attr.cx]="(node.dimension?.width || 0) / 2"
+                  [attr.cy]="(node.dimension?.height || 0) / 2"
+                  [attr.r]="node.dimension.width / 2"/>
     </svg:g>
 
     <ng-template #nodeContextMenu
