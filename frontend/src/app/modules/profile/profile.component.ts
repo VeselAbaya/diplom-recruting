@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HeaderService } from '@modules/header/header.service';
 import { AuthService } from '@core/services/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { ProfileGuard } from '@modules/profile/profile.guard';

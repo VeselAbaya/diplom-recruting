@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SearchService } from '@modules/search/search.service';
 import { PageEvent } from '@angular/material/paginator';
-import { switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { LIMITS } from '@monorepo/types/pagination/limits';
+import { RelationsService } from '../relations.service';
 
 @Component({
   selector: 'app-search-result',
@@ -13,9 +14,21 @@ import { LIMITS } from '@monorepo/types/pagination/limits';
 export class SearchResultComponent {
   @Input() withGraphView = false;
 
+  usersList$ = this.search.selectedUser$.pipe(
+    switchMap(selectedUser => selectedUser !== null
+      ? this.relations.result$.pipe(map(graph => graph?.nodes.filter(user => user.id !== selectedUser.id)))
+      : this.search.result$
+    )
+  );
+
+  isLoading$ = this.search.selectedUser$.pipe(
+    switchMap(selectedUser => selectedUser !== null ? this.relations.isLoading$ : this.search.usersLoading$)
+  );
+
   LIMITS = LIMITS;
 
-  constructor(public readonly search: SearchService) {}
+  constructor(public readonly search: SearchService,
+              public readonly relations: RelationsService) {}
 
   onPageChange({pageIndex: page, pageSize: limit}: PageEvent): void {
     this.search.params$.pipe(

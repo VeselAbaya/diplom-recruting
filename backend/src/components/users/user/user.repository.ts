@@ -114,7 +114,8 @@ export class UserRepository {
         record.get('u').properties,
         record.get('messagesCount') || 0,
         record.get('relationsCount') || 0,
-        record.get('networkSize') || 0
+        record.get('networkSize') || 0,
+        false
       )),
       params.limit,
       params.page,

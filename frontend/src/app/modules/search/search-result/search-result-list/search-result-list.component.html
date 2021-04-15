@@ -1,11 +1,11 @@
 <ng-container *ngIf="usersList$ | async as users">
   <ng-container *ngIf="users.length else noUsers">
     <app-user-card *ngFor="let user of users" [user]="user"
-                   [class.loading-opacity]="search.usersLoading$ | async"></app-user-card>
+                   [class.loading-opacity]="isLoading$ | async"></app-user-card>
   </ng-container>
   <ng-template #noUsers>
     <span class="pn-hint">No users satisfying the request</span>
   </ng-template>
 </ng-container>
 
-<mat-spinner *ngIf="search.usersLoading$ | async" strokeWidth="7" diameter="80"></mat-spinner>
+<mat-spinner *ngIf="isLoading$ | async" strokeWidth="7" diameter="80"></mat-spinner>

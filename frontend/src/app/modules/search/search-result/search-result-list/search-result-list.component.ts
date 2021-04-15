@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { SearchService } from '@modules/search/search.service';
-import { RelationsService } from '@modules/search/relations.service';
-import { map, switchMap } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-search-result-list',
@@ -10,13 +9,6 @@ import { map, switchMap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultListComponent {
-  usersList$ = this.search.selectedUser$.pipe(
-    switchMap(selectedUser => selectedUser !== null
-      ? this.relations.result$.pipe(map(graph => graph?.nodes.filter(user => user.id !== selectedUser.id)))
-      : this.search.result$
-    )
-  );
-
-  constructor(public readonly search: SearchService,
-              private readonly relations: RelationsService) {}
+  @Input() usersList$: Observable<IUserListItem[] | null | undefined> = of(null);
+  @Input() isLoading$: Observable<boolean> = of(false);
 }

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { IRelationshipDto } from '@monorepo/types/relationships/relationship.dto.interface';
 import { Path } from '@monorepo/routes';
 import { IGraphDto } from '@monorepo/types/relations/graph.dto.interface';
-import { distinctUntilChanged, tap } from 'rxjs/operators';
+import { distinctUntilChanged, finalize, tap } from 'rxjs/operators';
 import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
 import { IGraphSearchParamsDto } from '@monorepo/types/relations/graph-search-params.dto.interface';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
@@ -20,6 +20,9 @@ export class RelationsService {
   private readonly userFirstLevelRelationTypes = new BehaviorSubject<RelationType[]>([]);
   readonly userFirstLevelRelationTypes$ = this.userFirstLevelRelationTypes.pipe(distinctUntilChanged());
 
+  private readonly isLoading = new BehaviorSubject<boolean>(false);
+  readonly isLoading$ = this.isLoading.pipe(distinctUntilChanged());
+
   constructor(private readonly http: HttpClient) {}
 
   getRelationsBetweenUsers(userId1: string, userId2: string): Observable<IRelationshipDto[]> {
@@ -27,8 +30,10 @@ export class RelationsService {
   }
 
   getGraph(params: IGraphSearchParamsDto): Observable<IGraphDto> {
+    this.isLoading.next(true);
     return this.http.get<IGraphDto>(Path.relationships.graph(), {params: prepareGetParams(params)}).pipe(
-      tap(graph => this.result.next(graph))
+      tap(graph => this.result.next(graph)),
+      finalize(() => this.isLoading.next(false))
     );
   }
 

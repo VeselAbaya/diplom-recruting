@@ -35,8 +35,8 @@
 <!--      </mat-select>-->
 <!--    </mat-form-field>-->
   </div>
-  <app-search-result-list></app-search-result-list>
-  <mat-paginator *ngIf="search.pagination$ | async as pagination"
+  <app-search-result-list [usersList$]="usersList$" [isLoading$]="isLoading$"></app-search-result-list>
+  <mat-paginator *ngIf="!(search.selectedUser$ | async) && (search.pagination$ | async) as pagination"
                  [pageSizeOptions]="LIMITS"
                  [pageIndex]="pagination.page"
                  [pageSize]="pagination.limit"
