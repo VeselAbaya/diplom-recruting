@@ -23,8 +23,7 @@ export class ProfileComponent {
     : `${user.firstName}'s network`
   ));
 
-  constructor(public readonly auth: AuthService,
-              public readonly route: ActivatedRoute,
+  constructor(public readonly route: ActivatedRoute,
               public readonly guard: ProfileGuard,
               private readonly search: SearchService,
               private readonly header: HeaderService) {

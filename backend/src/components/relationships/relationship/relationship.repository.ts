@@ -31,10 +31,7 @@ export class RelationshipRepository {
 
     const res = await this.db.read(`
       CALL db.index.fulltext.queryNodes("usersSearch", $search) YIELD node as u
-      WHERE (CASE WHEN $fromUserId IS NOT NULL
-                    THEN EXISTS((u)-[:RELATIONSHIP*1..${params.networkSize || 1}]-(:User {id: $fromUserId}))
-                  ELSE true END)
-        AND ($workSchedule IS NULL OR u.workSchedule = $workSchedule)
+      WHERE ($workSchedule IS NULL OR u.workSchedule = $workSchedule)
         AND ($workType IS NULL OR u.workType = $workType)
         AND (CASE WHEN u.english IS NOT NULL THEN u.english >= $english
                   ELSE $english = ${EnglishLevel.A1} END)
@@ -46,6 +43,9 @@ export class RelationshipRepository {
              OR ($experience = -1 AND u.experience <= 0))
         AND (CASE WHEN $fromUserId IS NOT NULL
                     THEN u.id <> $fromUserId
+                  ELSE true END)
+        AND (CASE WHEN $fromUserId IS NOT NULL
+                    THEN EXISTS((u)-[:RELATIONSHIP*1..${params.networkSize || 1}]-(:User {id: $fromUserId}))
                   ELSE true END)
       WITH collect(u) as searchSatisfyingUsers
       CALL {

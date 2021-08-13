@@ -24,7 +24,6 @@ export class ProfileFormComponent extends OnDestroyMixin {
   readonly WorkType = WorkType;
   readonly EnglishLevel = EnglishLevel;
   readonly ExperienceSliderConfig = ExperienceSliderConfig;
-  name: string | null = null;
   readonly form = new FormGroup({
     email: new FormControl('', Validators.required),
     firstName: new FormControl('', Validators.required),

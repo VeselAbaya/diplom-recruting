@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 
 export const GRAPH = {
   NODE_SIZE: 60,
-  NODES_DISTANCE: 300
+  NODES_DISTANCE: 200
 };
 
 // @ts-ignore
