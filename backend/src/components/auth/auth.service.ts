@@ -17,7 +17,7 @@ export class AuthService {
     if (!newUser) {
       throw new InternalServerErrorException({
         statusCode: 500,
-        message: ['Something went wrond during user creation'],
+        message: ['Something went wrong during user creation'],
         error: 'user-creation-error'
       });
     }

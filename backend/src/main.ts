@@ -19,6 +19,7 @@ async function bootstrap(): Promise<void> {
   app.register(fastifyMultipart);
 
   await app.listen(3000);
+  console.log('Server listen on port 3000');
 
   if (module.hot) {
     module.hot.accept();

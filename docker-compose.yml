@@ -1,0 +1,22 @@
+# only on linux 'cause of network_mode (sorry, I'm stupid in this area)
+version: "3.9"
+services:
+  db:
+    build:
+      context: .
+      dockerfile: neo4j.dockerfile
+    volumes:
+      - neo4jdata:/var/lib/neo4j/data
+      - neo4jplugins:/var/lib/neo4j/plugins
+    network_mode: "host"
+    environment:
+      - NEO4J_dbms_security_procedures_whilelist=apoc.*
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - apoc.initializer.neo4j.0=CREATE CONSTRAINT email_unique IF NOT EXISTS ON (user:User) ASSERT user.email IS UNIQUE;
+      - apoc.initializer.neo4j.1=CREATE CONSTRAINT request_unique IF NOT EXISTS ON (r:Request) ASSERT (r.fromUserId, r.toUserId, r.type) IS NODE KEY;
+      - apoc.initializer.neo4j.2=CALL db.index.fulltext.createNodeIndex('usersSearch', ['User'], ['email', 'firstName', 'lastName', '_keywordsStr']);
+
+volumes:
+  neo4jdata:
+  neo4jplugins:

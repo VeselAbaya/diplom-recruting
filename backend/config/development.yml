@@ -2,8 +2,8 @@ db:
   host: 'localhost'
   port: '7687'
   username: 'neo4j'
-  password: '75onetih'
-  database: 'network'
+  password: '123456'
+  database: 'neo4j'
 
 jwt:
   secret: '!7q5woenrettyi4h~'
