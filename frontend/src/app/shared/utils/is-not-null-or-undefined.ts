@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { isNil } from 'ramda';
 
 function inputIsNotNullOrUndefined<T>(input: null | undefined | T): input is T {
-  return input !== null && input !== undefined;
+  return !isNil(input);
 }
 
 function inputIsNotNullOrUndefinedArray<T>(input: (null | undefined | T)[]): input is T[] {

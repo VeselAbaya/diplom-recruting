@@ -19,6 +19,7 @@ import { BaseUrlInterceptor } from '@core/interceptors/base-url.interceptor';
 import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
 import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from '@env';
+import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { environment } from '@env';
         verticalPosition: 'top',
         duration: 5000
       }
-    }
+    },
+    FullNamePipe
   ],
   bootstrap: [AppComponent]
 })

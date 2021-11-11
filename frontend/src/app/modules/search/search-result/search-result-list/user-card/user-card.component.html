@@ -3,7 +3,7 @@
 <div class="user">
   <app-avatar src="assets/default-user-avatar.svg"></app-avatar>
   <a [routerLink]="['/', 'search', user.id]" class="user-name">
-    {{user.firstName}} {{user.lastName}}
+    {{user | fullName}}
   </a>
 </div>
 

@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderService } from '@modules/header/header.service';
 import { MessagesService } from '@shared/components/messages/messages.service';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import { combineLatest, forkJoin, of } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { SearchFormComponent } from '@modules/search/search-form/search-form.component';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { isNil } from 'ramda';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -19,9 +20,13 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
 
   constructor(public readonly messages: MessagesService,
               public readonly search: SearchService,
-              private readonly header: HeaderService) {
+              private readonly header: HeaderService,
+              private readonly router: Router) {
     super();
-    header.setTitle('Search');
+    router.events.pipe(
+      untilComponentDestroyed(this),
+      filter(e => e instanceof NavigationEnd && this.router.url === '/search')
+    ).subscribe(() => header.setTitle('Search'));
   }
 
   ngOnInit(): void {

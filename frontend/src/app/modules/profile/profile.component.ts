@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HeaderService } from '@modules/header/header.service';
 import { AuthService } from '@core/services/auth/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { ProfileGuard } from '@modules/profile/profile.guard';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +27,14 @@ export class ProfileComponent {
   constructor(public readonly route: ActivatedRoute,
               public readonly guard: ProfileGuard,
               private readonly search: SearchService,
-              private readonly header: HeaderService) {
-    header.setTitle('Profile');
+              private readonly header: HeaderService,
+              private readonly auth: AuthService,
+              private readonly fullName: FullNamePipe) {
+    this.guard.isMyProfile$.pipe(
+      switchMap(isMyProfile => isMyProfile ? this.auth.user$ : this.search.selectedUser$),
+      isNotNullOrUndefined(),
+      map(user => fullName.transform(user)),
+      take(1)
+    ).subscribe(userFullName => header.setTitle(`Profile | ${userFullName}`));
   }
 }
