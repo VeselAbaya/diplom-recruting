@@ -25,6 +25,7 @@ import { RelationTypeModule } from '@shared/pipes/relation-type/relation-type.mo
 import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
 import { IsBidirectionalModule } from '@shared/pipes/is-bidirectional/is-bidirectional.module';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { HiddenScrollWrapperModule } from '@shared/components/hidden-scroll-wrapper/hidden-scroll-wrapper.module';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
     RelationTypeModule,
     FullNameModule,
     IsBidirectionalModule,
-    OverlayModule
+    OverlayModule,
+    HiddenScrollWrapperModule
   ],
   exports: [SearchResultListComponent, SearchResultGraphComponent, SearchResultComponent]
 })
