@@ -17,6 +17,7 @@
 
 .scroll-wrapper {
   position: relative;
+  height: 100%;
 
   &--with-scroll::before,
   &--with-scroll::after {
