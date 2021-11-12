@@ -3,19 +3,22 @@
     <a mat-tab-link [routerLink]="RelationRequestTypeEnum.ToMe"
        routerLinkActive
        #toMeRla="routerLinkActive"
-       [active]="toMeRla.isActive">
+       [active]="toMeRla.isActive"
+       [replaceUrl]="true">
       To me
     </a>
     <a mat-tab-link [routerLink]="RelationRequestTypeEnum.FromMe"
        routerLinkActive
        #fromMeRla="routerLinkActive"
-       [active]="fromMeRla.isActive">
+       [active]="fromMeRla.isActive"
+       [replaceUrl]="true">
       From me
     </a>
     <a mat-tab-link [routerLink]="RelationRequestTypeEnum.Declined"
        routerLinkActive
        #declinedRla="routerLinkActive"
-       [active]="declinedRla.isActive">
+       [active]="declinedRla.isActive"
+       [replaceUrl]="true">
       Declined
     </a>
   </nav>
