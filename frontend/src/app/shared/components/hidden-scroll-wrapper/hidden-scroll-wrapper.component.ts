@@ -10,7 +10,8 @@ import { merge, Subject } from 'rxjs';
 import { CdkScrollable, ViewportRuler } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { distinctUntilChanged, startWith, throttleTime } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { ContentObserver } from '@angular/cdk/observers';
 
 @Component({
   selector: 'app-hidden-scroll-wrapper',
@@ -30,29 +31,31 @@ export class HiddenScrollWrapperComponent extends OnDestroyMixin implements Afte
 
   constructor(private readonly snackbar: MatSnackBar,
               private readonly viewportRuler: ViewportRuler,
+              private readonly contentObserver: ContentObserver,
               private cdr: ChangeDetectorRef) {
     super();
   }
 
   ngAfterViewInit(): void {
-    // todo: FIX IT! Wait for component renders;
-    setTimeout(() => {
-      if (!this.scrollable) {
-        console.error('app-hidden-scroll-wrapper expects cdkScrollable inside ng-content');
-        this.snackbar.open('Something went wrong: Hidden horizontal scrolling isn\'t working', 'Close');
-        return;
-      }
+    if (!this.scrollable) {
+      console.error('app-hidden-scroll-wrapper expects cdkScrollable inside ng-content');
+      this.snackbar.open('Something went wrong: Hidden horizontal scrolling isn\'t working', 'Close');
+      return;
+    }
 
-      merge(this.scrollable.elementScrolled(), this.viewportRuler.change(80)).pipe(
-        untilComponentDestroyed(this),
-        startWith(null)
-      ).subscribe(() => {
-        this.hasScroll.next(this.scrollSize > this.offsetSize);
-        this.scrolledCloseToBegin.next(Math.floor(this.scrollOffsetFromBegin) === 0);
-        this.scrolledCloseToEnd.next(Math.floor(this.scrollOffsetFromEnd) === 0);
-        // TODO: Don't understand why it is needed here (and if it is really needed, why .markForCheck() doesn't help)
-        this.cdr.detectChanges();
-      });
+    merge(
+      this.scrollable.elementScrolled().pipe(debounceTime(40)),
+      this.viewportRuler.change().pipe(debounceTime(40)),
+      this.contentObserver.observe(this.scrollable.getElementRef().nativeElement)
+    ).pipe(
+      untilComponentDestroyed(this)
+    ).subscribe(() => {
+      this.hasScroll.next(this.scrollSize > this.offsetSize);
+      this.scrolledCloseToBegin.next(Math.floor(this.scrollOffsetFromBegin) === 0);
+      this.scrolledCloseToEnd.next(Math.floor(this.scrollOffsetFromEnd) === 0);
+      // elementScrolled() doesn't triggers change detection 'cause that stream created outside of ngZone
+      // https://github.com/angular/components/blob/master/src/cdk/scrolling/scrollable.ts#L51
+      this.cdr.detectChanges();
     });
   }
 
