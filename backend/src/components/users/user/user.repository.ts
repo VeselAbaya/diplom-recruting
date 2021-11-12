@@ -82,6 +82,12 @@ export class UserRepository {
       }
       CALL {
         WITH u
+        MATCH (:User {id: $fromUserId})-[relation:RELATIONSHIP]-(u)
+        WITH size(collect(relation)) as relationsWithOriginCount
+        RETURN relationsWithOriginCount
+      }
+      CALL {
+        WITH u
         MATCH (:User {id: $searcherUserId})-[relation:RELATIONSHIP]-(u)
         WITH size(collect(relation)) as relationsCount
         RETURN relationsCount
@@ -92,7 +98,7 @@ export class UserRepository {
         WITH size(apoc.coll.toSet(collect(relatedUser))) as networkSize
         RETURN networkSize
       }
-      RETURN u, total, messagesCount, relationsCount, networkSize
+      RETURN u, total, messagesCount, relationsCount, relationsWithOriginCount, networkSize
       SKIP $page
       LIMIT $limit`,
       {
@@ -114,6 +120,7 @@ export class UserRepository {
         record.get('u').properties,
         record.get('messagesCount') || 0,
         record.get('relationsCount') || 0,
+        record.get('relationsWithOriginCount') || 0,
         record.get('networkSize') || 0,
         false
       )),

@@ -68,6 +68,12 @@ export class RelationshipRepository {
       }
       CALL {
         WITH user
+        MATCH (:User {id: $fromUserId})-[relation:RELATIONSHIP]-(user)
+        WITH size(collect(relation)) as relationsWithOriginCount
+        RETURN relationsWithOriginCount
+      }
+      CALL {
+        WITH user
         MATCH (:User {id: $searcherUserId})-[relation:RELATIONSHIP]-(user)
         WITH size(collect(relation)) as relationsCount
         RETURN relationsCount
@@ -83,6 +89,7 @@ export class RelationshipRepository {
                collect(user{
                  .*,
                  relationsCount: relationsCount,
+                 relationsWithOriginCount: relationsWithOriginCount,
                  messagesCount: messagesCount,
                  networkSize: networkSize,
                  intermediate: CASE WHEN user.id = $fromUserId
@@ -110,6 +117,7 @@ export class RelationshipRepository {
         node,
         node.notifications,
         node.relationsCount,
+        node.relationsWithOriginCount,
         node.networkSize,
         node.intermediate
       )),
