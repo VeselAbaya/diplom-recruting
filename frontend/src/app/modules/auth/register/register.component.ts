@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeaderService } from '@modules/header/header.service';
@@ -27,18 +28,23 @@ export class RegisterComponent {
   constructor(private readonly auth: AuthService,
               private readonly snackBar: MatSnackBar,
               private readonly errors: ErrorsService,
-              private readonly header: HeaderService) {
+              private readonly header: HeaderService,
+              private readonly route: ActivatedRoute,
+              private readonly router: Router) {
     header.setTitle('Sign up');
   }
 
   onSubmit(): void {
     if (this.form.valid) {
       this.auth.signup(this.form.value).subscribe({
-        next: () => this.snackBar.open(
-          `Check your ${this.form.value.email} for Verification Link`,
-          'Yeah!',
-          {duration: undefined}
-        ),
+        next: () => {
+          this.snackBar.open(
+            `Check your ${this.form.value.email} for Verification Link`,
+            'Yeah!',
+            {duration: undefined}
+          );
+          this.router.navigate(['../signin'], {relativeTo: this.route});
+        },
         error: this.errors.handle
       });
     }
