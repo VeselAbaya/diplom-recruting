@@ -26,6 +26,7 @@ import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
 import { IsBidirectionalModule } from '@shared/pipes/is-bidirectional/is-bidirectional.module';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { HiddenScrollWrapperModule } from '@shared/components/hidden-scroll-wrapper/hidden-scroll-wrapper.module';
+import { NodeHTMLIdPipe } from './search-result-graph/node-html-id.pipe';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { HiddenScrollWrapperModule } from '@shared/components/hidden-scroll-wrap
     SearchResultComponent,
     RelationsListDialogComponent,
     CreateRelationDialogComponent,
-    NetworkGraphComponent
+    NetworkGraphComponent,
+    NodeHTMLIdPipe
   ], imports: [
     CommonModule,
     MatIconModule,

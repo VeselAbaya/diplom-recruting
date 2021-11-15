@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { NodeHTMLIdPipe } from '@modules/search/search-result/search-result-graph/node-html-id.pipe';
 
 interface INgxGraph extends IGraphDto {
   nodes: (IUserListItem & Node)[];
@@ -34,7 +35,8 @@ interface INgxGraph extends IGraphDto {
     transition(':leave',
       animate('75ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({opacity: 0, transform: 'scale(0.7)'}))
     ),
-  ])]
+  ])],
+  providers: [NodeHTMLIdPipe]
 })
 export class SearchResultGraphComponent extends OnDestroyMixin {
   layout = new Layout();
@@ -72,7 +74,8 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
   constructor(private readonly search: SearchService,
               private readonly dialog: MatDialog,
               private readonly snackbar: MatSnackBar,
-              private readonly relations: RelationsService) {
+              private readonly relations: RelationsService,
+              private readonly nodeHTMLId: NodeHTMLIdPipe) {
     super();
   }
 
@@ -111,6 +114,17 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
         data: {fromUser, toUser, relations, selectedRelation: selectedEdge}
       });
     });
+  }
+
+  hideNodeUserCardIfClickedOutsideNodeOrUserCard(event: MouseEvent): void {
+    const nodeWithOverlayElement = event.composedPath().find(target => this.nodeWithOverlay !== null
+      ? (target as Element).id === this.nodeHTMLId.transform(this.nodeWithOverlay.id)
+      : false
+    );
+
+    if (!nodeWithOverlayElement) {
+      this.nodeWithOverlay = null;
+    }
   }
 
   private findFromAndToNodesByEdge = (nodes: IUserListItem[], edge: IRelationshipDto): [IUserListItem | null, IUserListItem | null] => {
