@@ -9,6 +9,7 @@
   <ng-template #nodeTemplate let-node>
     <svg:g class="node"
            cdkOverlayOrigin
+           [id]="node.id | nodeHTMLId"
            [class.selected]="node.id === (selectedUserId$ | async)"
            #nodeOverlayOrigin="cdkOverlayOrigin"
            (mousedown)="mouseMoveStartPoint = $event"
@@ -41,7 +42,7 @@
                  cdkConnectedOverlay
                  [cdkConnectedOverlayOpen]="nodeWithOverlay?.id === node.id"
                  [cdkConnectedOverlayOrigin]="nodeOverlayOrigin"
-                 (overlayOutsideClick)="nodeWithOverlay = null">
+                 (overlayOutsideClick)="hideNodeUserCardIfClickedOutsideNodeOrUserCard($event)">
       <app-user-card @nodeOverlayFade
                      [user]="node"></app-user-card>
     </ng-template>
