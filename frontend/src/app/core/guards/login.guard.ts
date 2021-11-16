@@ -15,9 +15,8 @@ export class LoginGuard implements CanActivate {
     return this.auth.user$.pipe(
       switchMap(user => {
         if (user) {
-          return this.auth.redirectUrl$.pipe(map(url => url instanceof UrlTree
-            ? url
-            : this.router.parseUrl(url))
+          return this.auth.redirectUrl$.pipe(
+            map(url => url instanceof UrlTree ? url : this.router.parseUrl(url))
           );
         }
 

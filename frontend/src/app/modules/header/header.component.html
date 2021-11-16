@@ -1,2 +1,11 @@
+<a routerLink="/search" mat-mini-fab color="accent">
+  <mat-icon svgIcon="relationship" color="primary"></mat-icon>
+</a>
+
 <h1><ng-content></ng-content></h1>
-<app-user-menu *ngIf="(auth.user$ | async) as user" [user]="user"></app-user-menu>
+
+<app-user-menu *ngIf="(auth.user$ | async) as user else signInSignUp" [user]="user"></app-user-menu>
+<ng-template #signInSignUp>
+  <a mat-button routerLink="/auth/signin" class="signin-link">Sign in</a>
+  <a mat-raised-button color="accent" routerLink="/auth/signup">Sign up</a>
+</ng-template>

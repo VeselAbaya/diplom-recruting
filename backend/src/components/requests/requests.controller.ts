@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Put,
   Param,
   Delete,
   UsePipes,
@@ -39,6 +38,8 @@ export class RequestsController {
     return this.requests.create(user, createRequestDto);
   }
 
+  // TODO: From first view seems like I can see any pending requests, even between random users
+  //       (I guess it must be private)
   @Get()
   @UseGuards(AuthGuard())
   @UsePipes(new ValidationPipe({transform: true}))
@@ -71,24 +72,4 @@ export class RequestsController {
   accept(@Param('id') id: string): Promise<RelationshipEntity> {
     return this.requests.accept(id);
   }
-
-  // @Get()
-  // findAll() {
-  //   return this.requestsService.findAll();
-  // }
-  //
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.requestsService.findOne(+id);
-  // }
-  //
-  // @Put(':id')
-  // update(@Param('id') id: string, @Body() updateRequestDto: UpdateRequestDto) {
-  //   return this.requestsService.update(+id, updateRequestDto);
-  // }
-  //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.requestsService.remove(+id);
-  // }
 }

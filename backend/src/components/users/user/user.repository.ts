@@ -51,7 +51,7 @@ export class UserRepository {
     return Neo4j.hydrateOne(res, 'u', UserEntity);
   }
 
-  async find(searcherUserId: string, params: SearchParamsDto): Promise<PaginationDto<UserListItemDto>> {
+  async find(searcherUserId: string | null, params: SearchParamsDto): Promise<PaginationDto<UserListItemDto>> {
     const res = await this.db.read(`
       CALL db.index.fulltext.queryNodes("usersSearch", $search) YIELD node as u, score
       WHERE (CASE WHEN $fromUserId IS NOT NULL

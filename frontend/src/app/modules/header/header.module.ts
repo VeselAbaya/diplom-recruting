@@ -7,19 +7,21 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [HeaderComponent, UserMenuComponent],
   exports: [
     HeaderComponent
   ],
-  imports: [
-    CommonModule,
-    AvatarModule,
-    MatBadgeModule,
-    MatButtonModule,
-    MatMenuModule,
-    RouterModule
-  ]
+    imports: [
+        CommonModule,
+        AvatarModule,
+        MatBadgeModule,
+        MatButtonModule,
+        MatMenuModule,
+        RouterModule,
+        MatIconModule
+    ]
 })
 export class HeaderModule { }

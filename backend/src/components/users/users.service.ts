@@ -28,7 +28,7 @@ export class UsersService {
     return user;
   }
 
-  search(searcherUserId: string, searchParamsDto: SearchParamsDto): Promise<PaginationDto<UserListItemDto>> {
+  search(searcherUserId: string | null, searchParamsDto: SearchParamsDto): Promise<PaginationDto<UserListItemDto>> {
     return this.users.find(searcherUserId, searchParamsDto);
   }
 

@@ -15,12 +15,12 @@ import { SubPath } from '@monorepo/routes';
 import { PatchUserDto } from './dto/patch-user.dto';
 import { UsersService } from './users.service';
 import { SearchParamsDto } from './dto/search-params.dto';
-import { IPagination } from '@monorepo/types/pagination/pagination.interface';
 import { FastifyRequest } from 'fastify';
 import { IsMultipartInterceptor } from './is-multipart.interceptor';
 import { noop } from 'rxjs';
 import { UserListItemDto } from '@components/users/dto/user-list-item.dto';
 import { PaginationDto } from '@shared/pagination.dto';
+import { OptionalJwtAuthGuard } from '@shared/guards/optional-auth.guard';
 
 @Controller(SubPath.users())
 export class UsersController {
@@ -35,10 +35,11 @@ export class UsersController {
   }
 
   @Get(SubPath.users.user())
-  @UseGuards(AuthGuard())
+  @UseGuards(OptionalJwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
-  async getUserById(@Param('id', ParseUUIDPipe) id: string, @User() user: UserEntity): Promise<UserEntity> {
-    return id === user.id ? user : this.users.getUserById(id);
+  async getUserById(@Param('id', ParseUUIDPipe) id: string,
+                    @User() user: UserEntity | null): Promise<UserEntity> {
+    return id === user?.id ? user : this.users.getUserById(id);
   }
 
   @Patch(SubPath.users.me())
@@ -50,10 +51,11 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(AuthGuard())
+  @UseGuards(OptionalJwtAuthGuard)
   @UsePipes(new ValidationPipe({transform: true, transformOptions: {enableImplicitConversion: true}}))
   @UseInterceptors(ClassSerializerInterceptor)
-  getUsers(@Query() searchParamsDto: SearchParamsDto, @User('id') userId: string): Promise<PaginationDto<UserListItemDto>> {
+  getUsers(@Query() searchParamsDto: SearchParamsDto,
+           @User('id') userId: string | null): Promise<PaginationDto<UserListItemDto>> {
     return this.users.search(userId, searchParamsDto);
   }
 

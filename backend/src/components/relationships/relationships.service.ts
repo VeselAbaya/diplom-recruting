@@ -16,7 +16,7 @@ export class RelationshipsService {
     return this.relationships.getRelationships(fromUserId, toUserId);
   }
 
-  getGraph(searcherUserId: string, params: GraphSearchParamsDto): Promise<GraphDto> {
+  getGraph(searcherUserId: string | null, params: GraphSearchParamsDto): Promise<GraphDto> {
     return this.relationships.getGraph(searcherUserId, params);
   }
 
