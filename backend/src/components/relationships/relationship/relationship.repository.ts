@@ -26,7 +26,7 @@ export class RelationshipRepository {
     return res.records.map(record => new RelationshipEntity(record.get('r').properties));
   }
 
-  async getGraph(searcherUserId: string, params: GraphSearchParamsDto): Promise<GraphDto> {
+  async getGraph(searcherUserId: string | null, params: GraphSearchParamsDto): Promise<GraphDto> {
     await this.users.getUserOrThrowError(params.fromUserId);
 
     const res = await this.db.read(`

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { TokenStoreHelper } from './token-store';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
-import { catchError, distinctUntilChanged, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 import { ITokensDto } from '@monorepo/types/auth/tokens.dto.interface';
 import { ISigninDto } from '@monorepo/types/auth/signin.dto.interface';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
@@ -63,12 +63,11 @@ export class AuthService {
   }
 
   updateToken(): Observable<ITokensDto | null> {
-    const request = (refreshToken: string) =>
-      this.http.post<ITokensDto>(Path.auth.refresh(), {refreshToken}).pipe();
+    const refresh = (refreshToken: string) => this.http.post<ITokensDto>(Path.auth.refresh(), {refreshToken});
 
     return this.token$.pipe(
       take(1),
-      switchMap(token => token ? request(token.refreshToken) : of(null)),
+      switchMap(token => token ? refresh(token.refreshToken) : of(null)),
       tap(token => this.token.next(token)),
       tap(token => this.storage.userToken = token),
       tap(token => !token && this.logout()),
@@ -87,9 +86,12 @@ export class AuthService {
         this.storage.userToken = null;
         this._currentUser.next(null);
         this.token.next(null);
-      })
-    ).subscribe(_ => {
+      }),
+      filter(() => this.router.navigated) // prevent reload if it is first (startup) navigation
+    ).subscribe(() => {
+      // save current url in case of token expiration to navigate to last route after retry sign in
       this.redirectUrl.next(this.router.url);
+      // navigate to same url to restart guards (to prevent unauthorized access to protected routes)
       this.router.navigate([this.router.url]);
     });
   }

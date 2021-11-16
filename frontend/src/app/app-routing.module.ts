@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guard';
-import { ProfileGuard } from '@modules/profile/profile.guard';
 
 const routes: Routes = [
   {
@@ -16,7 +15,6 @@ const routes: Routes = [
   {
     path: 'search',
     loadChildren: () => import('./modules/search/search.module').then(m => m.SearchModule),
-    canActivate: [AuthGuard],
     runGuardsAndResolvers: 'always'
   },
   {
@@ -33,7 +31,7 @@ const routes: Routes = [
     {
       onSameUrlNavigation: 'reload',
       paramsInheritanceStrategy: 'always',
-      enableTracing: false,
+      enableTracing: true,
       relativeLinkResolution: 'legacy'
     }
   )],

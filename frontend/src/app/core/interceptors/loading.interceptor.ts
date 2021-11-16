@@ -13,6 +13,7 @@ export class LoadingInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
+    // TODO but what is it? Fix this or write more informative comment :)
     // this is not a bug
     setTimeout(() => this.loading.on());
     return next.handle(req).pipe(
