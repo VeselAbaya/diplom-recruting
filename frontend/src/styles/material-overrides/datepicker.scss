@@ -1,15 +1,34 @@
+@use '~@angular/material' as mat;
 @import '../shared/theme';
-@import '~@angular/material/core/style/variables';
+
+// from https://github.com/angular/components/blob/11.0.x/src/material/core/style/_vendor-prefixes.scss#L9
+@mixin input-placeholder {
+  &::placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
 
 // TODO: Something here leads to the bug - Placeholders instantly disappears on (blur)
 .mat-date-range-input-hide-placeholders .mat-date-range-input-inner {
   @include input-placeholder {
     // Needs to be !important, because the placeholder will end up inheriting the
     // input color in IE, if the consumer overrides it with a higher specificity.
-    color: mat-color($pn-primary, 50) !important;
-    -webkit-text-fill-color: mat-color($pn-primary, 50);
-    transition: color $swift-ease-out-duration $swift-ease-out-duration / 3
-      $swift-ease-out-timing-function;
+    color: mat.get-color-from-palette($pn-primary, 50) !important;
+    -webkit-text-fill-color: mat.get-color-from-palette($pn-primary, 50);
+    transition: color 400ms 400ms / 3
+      cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 }
 
@@ -17,7 +36,7 @@
   @include input-placeholder {
     // Needs to be !important, because the placeholder will end up inheriting the
     // input color in IE, if the consumer overrides it with a higher specificity.
-    color: mat-color($pn-warn, default) !important;
-    -webkit-text-fill-color: mat-color($pn-warn, default);
+    color: mat.get-color-from-palette($pn-warn, default) !important;
+    -webkit-text-fill-color: mat.get-color-from-palette($pn-warn, default);
   }
 }

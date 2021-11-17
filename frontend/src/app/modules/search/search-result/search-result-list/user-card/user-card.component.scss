@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/theme';
 @import '~src/styles/shared/typography';
 
@@ -28,12 +29,12 @@ app-hourly {
 
   // stylelint-disable value-no-vendor-prefix, property-no-vendor-prefix
   &-name {
-    @include mat-typography-level-to-styles($pn-typography, headline);
+    @include mat.typography-level($pn-typography, headline);
     display: -webkit-box;
     overflow: hidden;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    color: mat-color($pn-primary, default);
+    color: mat.get-color-from-palette($pn-primary, default);
   }
   // stylelint-enable value-no-vendor-prefix, property-no-vendor-prefix
 
@@ -48,13 +49,13 @@ app-hourly {
   margin-bottom: 12px;
 
   .mat-icon {
-    color: mat-color($pn-primary, lighter);
+    color: mat.get-color-from-palette($pn-primary, lighter);
     margin-right: 8px;
   }
 
   .network-size {
     margin-left: 6px;
-    font-weight: mat-font-weight($pn-typography, button);
+    font-weight: mat.font-weight($pn-typography, button);
   }
 }
 
@@ -73,5 +74,5 @@ app-hourly {
   padding: 17px 8px 17px 4px;
   gap: 4px;
   box-sizing: border-box;
-  color: mat-color($pn-primary, default);
+  color: mat.get-color-from-palette($pn-primary, default);
 }

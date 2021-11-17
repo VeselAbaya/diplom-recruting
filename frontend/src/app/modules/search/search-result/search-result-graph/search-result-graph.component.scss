@@ -1,5 +1,5 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/palettes';
-@import '~@angular/material/theming';
 
 :host {
   display: block;
@@ -16,7 +16,7 @@ app-avatar {
 }
 
 .avatar-backdrop {
-  fill: mat-color($pn-primary, lighter);
+  fill: mat.get-color-from-palette($pn-primary, lighter);
 }
 
 .intermediate-overlay {
@@ -25,7 +25,7 @@ app-avatar {
 }
 
 .node.selected .avatar-backdrop {
-  fill: mat-color($pn-primary);
+  fill: mat.get-color-from-palette($pn-primary);
 }
 
 .node,
@@ -34,7 +34,7 @@ app-avatar {
 }
 
 app-user-card {
-  @include mat-elevation(16, mat-color($pn-primary));
+  @include mat.elevation(16, mat.get-color-from-palette($pn-primary));
 
   ::ng-deep .user {
     margin-bottom: 26px;

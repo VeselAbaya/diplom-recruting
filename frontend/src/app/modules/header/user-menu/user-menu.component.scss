@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/theme';
 
 :host,
@@ -16,7 +17,7 @@ app-avatar {
 
 .user-name {
   margin-right: 8px;
-  color: mat-color($pn-primary, default-contrast);
+  color: mat.get-color-from-palette($pn-primary, default-contrast);
 }
 
 .user-profile {
@@ -52,8 +53,8 @@ app-avatar {
     height: $badge-size;
     margin-left: 11px;
     border-radius: 50%;
-    background-color: mat-color($pn-accent, default);
-    color: mat-color($pn-accent, default-contrast);
+    background-color: mat.get-color-from-palette($pn-accent, default);
+    color: mat.get-color-from-palette($pn-accent, default-contrast);
     line-height: $badge-size;
     text-align: center;
   }

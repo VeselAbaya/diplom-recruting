@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/theme';
 
 :host,
@@ -48,7 +49,7 @@ app-avatar {
 
 .message-form {
   .mat-icon[svgIcon='send'] {
-    color: mat-color($pn-primary, default);
+    color: mat.get-color-from-palette($pn-primary, default);
   }
 
   &::ng-deep .mat-form-field-wrapper {

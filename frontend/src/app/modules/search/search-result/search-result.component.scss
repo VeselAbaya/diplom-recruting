@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/typography';
 @import '~src/styles/shared/variables';
 @import '~src/styles/shared/theme';
@@ -15,7 +16,7 @@
   margin-bottom: 24px;
 
   &-text {
-    @include mat-typography-level-to-styles($pn-typography, display-1);
+    @include mat.typography-level($pn-typography, display-1);
   }
 }
 

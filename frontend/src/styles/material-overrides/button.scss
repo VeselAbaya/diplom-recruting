@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../shared/typography';
 @import '../shared/palettes';
 
@@ -7,19 +8,19 @@
   border-radius: 20px;
 
   line-height: var(--height);
-  letter-spacing: mat-letter-spacing($pn-typography, button);
+  letter-spacing: mat.letter-spacing($pn-typography, button);
 }
 
 .mat-stroked-button:not(.mat-button-disabled) {
   &.mat-primary {
-    border-color: mat-color($pn-primary, default);
+    border-color: mat.get-color-from-palette($pn-primary, default);
   }
 
   &.mat-warn {
-    border-color: mat-color($pn-warn, default);
+    border-color: mat.get-color-from-palette($pn-warn, default);
   }
 
   &.mat-accent {
-    border-color: mat-color($pn-accent, default);
+    border-color: mat.get-color-from-palette($pn-accent, default);
   }
 }

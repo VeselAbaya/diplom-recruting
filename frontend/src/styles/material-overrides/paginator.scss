@@ -1,7 +1,8 @@
+@use '~@angular/material' as mat;
 @import '../shared/typography';
 
 .mat-paginator {
-  @include mat-typography-level-to-styles($pn-typography, body-1);
+  @include mat.typography-level($pn-typography, body-1);
   background-color: transparent;
 
   &-page-size {

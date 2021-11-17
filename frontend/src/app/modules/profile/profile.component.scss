@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/typography';
 @import '~src/styles/shared/variables';
 
@@ -22,7 +23,7 @@ app-search-result {
   display: block;
 
   &::before {
-    @include mat-typography-level-to-styles($pn-typography, headline);
+    @include mat.typography-level($pn-typography, headline);
     content: attr(data-whos-label);
     position: absolute;
     top: 11px;

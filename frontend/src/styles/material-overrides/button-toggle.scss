@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../shared/palettes';
 @import '../shared/variables';
 
@@ -23,7 +24,7 @@
   }
 
   &-checked {
-    background-color: mat-color($pn-accent, default);
-    color: mat-color($pn-accent, default-contrast);
+    background-color: mat.get-color-from-palette($pn-accent, default);
+    color: mat.get-color-from-palette($pn-accent, default-contrast);
   }
 }
