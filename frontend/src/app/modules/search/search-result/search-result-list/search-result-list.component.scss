@@ -1,12 +1,17 @@
 @import '~src/styles/shared/theme';
 
 :host {
+  --row-height: 278px;
   position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-  grid-auto-rows: 278px;
+  grid-auto-rows: var(--row-height);
   gap: 24px;
-  min-height: 278px;
+  min-height: var(--row-height);
+}
+
+:host(.not-authenticated-user) {
+  --row-height: 226px;
 }
 
 .loading-opacity {

@@ -17,19 +17,21 @@
   Network size <span class="network-size">{{user.networkSize}}</span>
 </div>
 
-<div class="buttons" *ngIf="(auth.user$ | async)?.id !== user.id else itsCurrentUser">
-  <button mat-stroked-button color="primary" (click)="openCreateRelationDialog()">
-    Add Relationship
-  </button>
-  <button [matBadge]="user.notifications" [matBadgeHidden]="!user.notifications" matBadgeColor="accent"
-          mat-stroked-button mat-icon-button color="primary" class="pn-icon-align"
-          (click)="messages.openChatWithUser(user)">
-    <mat-icon svgIcon="message"></mat-icon>
-  </button>
-</div>
-<ng-template #itsCurrentUser>
-  <span class="pn-hint">It's you</span>
-</ng-template>
+<ng-container *ngIf="auth.user$ | async as authUser">
+  <div class="buttons" *ngIf="authUser.id !== user.id else itsCurrentUser">
+    <button mat-stroked-button color="primary" (click)="openCreateRelationDialog()">
+      Add Relationship
+    </button>
+    <button [matBadge]="user.notifications" [matBadgeHidden]="!user.notifications" matBadgeColor="accent"
+            mat-stroked-button mat-icon-button color="primary" class="pn-icon-align"
+            (click)="messages.openChatWithUser(user)">
+      <mat-icon svgIcon="message"></mat-icon>
+    </button>
+  </div>
+  <ng-template #itsCurrentUser>
+    <span class="pn-hint">It's you</span>
+  </ng-template>
+</ng-container>
 
 <div class="right-icons">
   <button mat-icon-button

@@ -5,6 +5,7 @@
 :host {
   position: relative;
   display: flex;
+  gap: 8px;
   flex-direction: column;
   align-items: flex-start;
   box-sizing: border-box;
@@ -12,10 +13,6 @@
   border: 1px solid map-get($pn-foreground, divider);
   border-radius: 4px;
   background-color: map-get($pn-background, card);
-}
-
-app-hourly {
-  margin-bottom: 10px;
 }
 
 .user {
@@ -46,7 +43,6 @@ app-hourly {
 .user-info {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
 
   .mat-icon {
     color: mat.get-color-from-palette($pn-primary, lighter);
