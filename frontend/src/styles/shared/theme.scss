@@ -1,16 +1,16 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import 'palettes';
 
 $pn-foreground: (
   base:              black,
-  divider:           mat-color($pn-primary, 50),
-  dividers:          mat-color($pn-primary, 50),
-  disabled:          $dark-disabled-text,
+  divider:           mat.get-color-from-palette($pn-primary, 50),
+  dividers:          mat.get-color-from-palette($pn-primary, 50),
+  disabled:          rgba(black, 0.38),
   disabled-button:   rgba(189, 189, 189),
-  disabled-text:     var(--material-disabled-text-color, #{$dark-disabled-text}),
-  elevation:         mat-color($pn-primary, default, .2),
-  hint-text:         $dark-disabled-text,
-  secondary-text:    mat-color($pn-primary, 50),
+  disabled-text:     var(--material-disabled-text-color, #{rgba(black, 0.38)}),
+  elevation:         mat.get-color-from-palette($pn-primary, default, .2),
+  hint-text:         rgba(black, 0.38),
+  secondary-text:    mat.get-color-from-palette($pn-primary, 50),
   icon:              rgba(black, 0.54),
   icons:             rgba(black, 0.54),
   text:              rgba(black, 0.87),
@@ -20,25 +20,25 @@ $pn-foreground: (
 );
 
 $pn-background: (
-  status-bar: map-get($mat-grey, 300),
-  app-bar:    map-get($mat-grey, 100),
-  background: map-get($mat-grey, 50),
+  status-bar: map-get(mat.$grey-palette, 300),
+  app-bar:    map-get(mat.$grey-palette, 100),
+  background: map-get(mat.$grey-palette, 50),
   hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
   card:       white,
   dialog:     white,
   disabled-button: rgba(black, 0.12),
   raised-button: white,
-  focused-button: $dark-focused,
-  selected-button: map-get($mat-grey, 300),
-  selected-disabled-button: map-get($mat-grey, 400),
-  disabled-button-toggle: map-get($mat-grey, 200),
-  unselected-chip: map-get($mat-grey, 300),
-  disabled-list-option: map-get($mat-grey, 200),
-  tooltip: map-get($mat-grey, 700),
+  focused-button: rgba(black, 0.12),
+  selected-button: map-get(mat.$grey-palette, 300),
+  selected-disabled-button: map-get(mat.$grey-palette, 400),
+  disabled-button-toggle: map-get(mat.$grey-palette, 200),
+  unselected-chip: map-get(mat.$grey-palette, 300),
+  disabled-list-option: map-get(mat.$grey-palette, 200),
+  tooltip: map-get(mat.$grey-palette, 700),
 );
 
 $pn-theme: map-merge(
-  mat-light-theme(
+  mat.define-light-theme(
     $primary: $pn-primary,
     $accent: $pn-accent,
     $warn: $pn-warn

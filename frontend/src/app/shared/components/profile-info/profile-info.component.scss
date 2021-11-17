@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/typography';
 @import '~src/styles/shared/theme';
 @import '~src/styles/shared/variables';
@@ -44,7 +45,7 @@ $avatar-size: 110px;
   label .mat-icon {
     width: 80px;
     height: 80px;
-    color: mat-color($pn-primary, default, .65);
+    color: mat.get-color-from-palette($pn-primary, default, .65);
   }
 
   input {
@@ -68,7 +69,7 @@ app-avatar {
   }
 
   &__name {
-    @include mat-typography-level-to-styles($pn-typography, title);
+    @include mat.typography-level($pn-typography, title);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -79,7 +80,7 @@ app-avatar {
     display: flex;
     align-items: center;
     max-width: 100%;
-    color: mat-color($pn-primary, default);
+    color: mat.get-color-from-palette($pn-primary, default);
   }
 
   &__email-value {

@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/theme';
 @import '~src/styles/shared/typography';
 @import '~src/styles/shared/variables';
@@ -32,7 +33,7 @@
   }
 
   app-profile-info {
-    @include mat-elevation(3, mat-color($pn-primary, default));
+    @include mat.elevation(3, mat.get-color-from-palette($pn-primary, default));
     box-sizing: border-box;
     flex-basis: 100%;
     height: 168px;
@@ -68,9 +69,9 @@
 }
 
 .arrow {
-  --arrow-color: #{mat-color($pn-accent, lighter)};
+  --arrow-color: #{mat.get-color-from-palette($pn-accent, lighter)};
   $arrow-stroke-width: 2.5px;
-  @include mat-typography-level-to-styles($pn-typography, caption);
+  @include mat.typography-level($pn-typography, caption);
   position: relative;
   display: flex;
   align-items: center;
@@ -79,12 +80,12 @@
   height: $arrow-stroke-width;
   background-color: var(--arrow-color);
   text-align: center;
-  color: mat-color($pn-accent, lighter-contrast);
+  color: mat.get-color-from-palette($pn-accent, lighter-contrast);
   transition: color $transition-duration, background-color $transition-duration;
 
   &--selected {
-    --arrow-color: #{mat-color($pn-primary, 500)};
-    color: mat-color($pn-primary, 500);
+    --arrow-color: #{mat.get-color-from-palette($pn-primary, 500)};
+    color: mat.get-color-from-palette($pn-primary, 500);
   }
 
   // TODO: add shadow to whole arrow

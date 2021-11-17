@@ -1,8 +1,9 @@
+@use '~@angular/material' as mat;
 @import '~src/styles/shared/palettes';
 @import '~src/styles/shared/variables';
 
 h1 {
-  color: mat-color($pn-primary, default-contrast);
+  color: mat.get-color-from-palette($pn-primary, default-contrast);
   margin-bottom: 0;
   margin-right: auto;
 }
@@ -15,10 +16,10 @@ h1 {
   gap: .8em;
   width: 100%;
   padding: 0 $body-padding;
-  background-color: mat-color($pn-primary, default);
+  background-color: mat.get-color-from-palette($pn-primary, default);
 }
 
 .signin-link {
-  color: mat-color($pn-primary, default-contrast);
+  color: mat.get-color-from-palette($pn-primary, default-contrast);
   text-decoration: underline;
 }

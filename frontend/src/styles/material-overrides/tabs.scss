@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../shared/palettes';
 @import '../shared/variables';
 @import '../shared/typography';
@@ -10,9 +11,9 @@
 .mat-tab-link {
   min-width: 280px;
   height: 53px;
-  border-bottom: 3px solid mat-color($pn-primary, lighter);
-  font-size: mat-font-size($pn-typography, title);
-  font-weight: mat-font-weight($pn-typography, body-1);
+  border-bottom: 3px solid mat.get-color-from-palette($pn-primary, lighter);
+  font-size: mat.font-size($pn-typography, title);
+  font-weight: mat.font-weight($pn-typography, body-1);
   color: $text-color;
   opacity: 1;
   transition: opacity $transition-duration, color $transition-duration;
@@ -23,13 +24,13 @@
 
   .mat-icon {
     margin-right: 18px;
-    color: mat-color($pn-primary, lighter);
+    color: mat.get-color-from-palette($pn-primary, lighter);
     transition: color $transition-duration;
   }
 
   &-active,
   &-active .mat-icon {
-    color: mat-color($pn-primary, default);
+    color: mat.get-color-from-palette($pn-primary, default);
   }
 }
 

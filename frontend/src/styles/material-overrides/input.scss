@@ -1,21 +1,23 @@
+@use '~@angular/material' as mat;
+@use 'sass:math';
 @import '../shared/palettes';
 @import '../shared/theme';
 @import '../shared/typography';
 @import '../shared/variables';
 
 .mat-form-field.mat-form-field-appearance-outline {
-  $line-height: mat-line-height($pn-typography, input);
+  $line-height: mat.line-height($pn-typography, input);
   // The amount to scale the font for the floating label and subscript.
   $subscript-font-scale: 0.75;
   // The padding above and below the infix.
-  $infix-padding: .775em;
+  $infix-padding: .575em;
   // The margin applied to the form-field-infix to reserve space for the floating label.
   $infix-margin-top: 1em * $line-height * $subscript-font-scale;
   // The space between the bottom of the .mat-form-field-flex area and the subscript wrapper.
   // Mocks show half of the text size, but this margin is applied to an element with the subscript
   // text font size, so we need to divide by the scale factor to make it half of the original text
   // size.
-  $subscript-margin-top: 0.5em / $subscript-font-scale;
+  $subscript-margin-top: math.div(0.5em, $subscript-font-scale);
   // The padding applied to the form-field-wrapper to reserve space for the subscript, since it's
   // absolutely positioned. This is a combination of the subscript's margin and line-height, but we
   // need to multiply by the subscript font scale factor since the wrapper has a larger font size.
@@ -26,23 +28,20 @@
   // stylelint-disable-next-line selector-max-compound-selectors
   &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
   .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
-    @include _mat-form-field-outline-label-floating(
-      $subscript-font-scale,
-      $infix-padding + $outline-appearance-label-offset,
-      $infix-margin-top
-    );
+    transform: translateY(-$infix-margin-top - $infix-padding) scale($subscript-font-scale);
+    width: math.div(100%, $subscript-font-scale);
   }
 
   &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-outline {
-    color: mat-color($pn-foreground, divider);
+    color: mat.get-color-from-palette($pn-foreground, divider);
   }
 
   &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-outline-thick {
-    color: mat-color($pn-foreground, divider);
+    color: mat.get-color-from-palette($pn-foreground, divider);
   }
 
   &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-label {
-    color: mat-color($pn-foreground, secondary-text);
+    color: mat.get-color-from-palette($pn-foreground, secondary-text);
   }
 
   .mat-form-field-infix {
