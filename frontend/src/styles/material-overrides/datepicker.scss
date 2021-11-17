@@ -20,7 +20,6 @@
   }
 }
 
-// TODO: Something here leads to the bug - Placeholders instantly disappears on (blur)
 .mat-date-range-input-hide-placeholders .mat-date-range-input-inner {
   @include input-placeholder {
     // Needs to be !important, because the placeholder will end up inheriting the
