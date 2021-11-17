@@ -31,7 +31,7 @@ const routes: Routes = [
     {
       onSameUrlNavigation: 'reload',
       paramsInheritanceStrategy: 'always',
-      enableTracing: true,
+      enableTracing: false,
       relativeLinkResolution: 'legacy'
     }
   )],

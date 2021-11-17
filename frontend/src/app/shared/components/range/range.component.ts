@@ -35,6 +35,7 @@ export interface IRateRangeDto {
   ]
 })
 export class RangeComponent implements ControlValueAccessor, Validator {
+  Infinity = Infinity;
   _min = 0;
   _max: number | null = null;
   _isInvalid: ValidationErrors | null = null;
@@ -79,9 +80,14 @@ export class RangeComponent implements ControlValueAccessor, Validator {
     if (isNaN(max)) {
       this.max = null;
     }
+    else if (max < 0) {
+      event.preventDefault();
+      event.stopPropagation();
+      setTimeout(() => inputEl.value = this._max?.toString() ?? '');
+    }
     else {
       this.max = max;
-      inputEl.value = this._max ? this._max.toString() : '';
+      inputEl.value = this._max?.toString() ?? '';
     }
   }
 
