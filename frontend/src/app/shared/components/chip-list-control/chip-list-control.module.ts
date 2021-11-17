@@ -4,7 +4,7 @@ import { ChipListControlComponent } from '@shared/components/chip-list-control/c
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { ThinInputModule } from '@shared/directives/thin-input/thin-input.module';
+import { ThinInputFieldModule } from '@shared/components/thin-input-field/thin-input-field.module';
 
 
 
@@ -16,7 +16,7 @@ import { ThinInputModule } from '@shared/directives/thin-input/thin-input.module
     MatFormFieldModule,
     MatChipsModule,
     MatIconModule,
-    ThinInputModule
+    ThinInputFieldModule
   ]
 })
 export class ChipListControlModule { }

@@ -7,7 +7,7 @@ import { map, switchMap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuard implements CanActivate {
+export class SigninGuard implements CanActivate {
   constructor(private router: Router, private auth: AuthService) {}
 
   canActivate(next: ActivatedRouteSnapshot,
@@ -16,7 +16,7 @@ export class LoginGuard implements CanActivate {
       switchMap(user => {
         if (user) {
           return this.auth.redirectUrl$.pipe(
-            map(url => url instanceof UrlTree ? url : this.router.parseUrl(url))
+            map(url => this.router.parseUrl(url))
           );
         }
 

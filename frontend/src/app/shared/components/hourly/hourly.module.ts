@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HourlyComponent } from './hourly.component';
-import { ThinInputModule } from '@shared/directives/thin-input/thin-input.module';
+import { ThinInputFieldModule } from '@shared/components/thin-input-field/thin-input-field.module';
 
 
 
@@ -12,7 +12,7 @@ import { ThinInputModule } from '@shared/directives/thin-input/thin-input.module
   ],
   imports: [
     CommonModule,
-    ThinInputModule
+    ThinInputFieldModule
   ]
 })
 export class HourlyModule { }

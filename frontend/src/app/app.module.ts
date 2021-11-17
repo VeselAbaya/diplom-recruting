@@ -17,8 +17,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { LoadingInterceptor } from '@core/interceptors/loading.interceptor';
 import { BaseUrlInterceptor } from '@core/interceptors/base-url.interceptor';
 import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
-import { SocketIoModule } from 'ngx-socket-io';
-import { environment } from '@env';
 import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
 
 @NgModule({
@@ -26,10 +24,9 @@ import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     HttpClientModule,
-    SocketIoModule.forRoot({url: environment.baseUrl}),
     AppRoutingModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -77,7 +74,6 @@ import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
       }
     },
     FullNamePipe
-  ],
-  bootstrap: [AppComponent]
+  ]
 })
 export class AppModule { }

@@ -1,0 +1,38 @@
+// We want the start input to be flush against the separator, no matter how much text it has, but
+// the problem is that inputs have a fixed width. We work around the issue by implementing an
+// auto-resizing input that stretches based on its text, up to a point. It works by having
+// a relatively-positioned wrapper (`.mat-date-range-input-start-wrapper` below) and an absolutely-
+// positioned `input`, as well as a `span` inside the wrapper which mirrors the input's value and
+// placeholder. As the user is typing, the value gets mirrored in the span which causes the wrapper
+// to stretch and the input with it.
+
+:host {
+  position: relative;
+  display: inline-flex;
+
+  ::ng-deep input[appThinInput] {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.thin-input-mirror {
+  // Disable user selection so users don't accidentally copy the text via ctrl + A.
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  // Hide the element so it doesn't get read out by screen
+  // readers and it doesn't show up behind the input.
+  visibility: hidden;
+
+  // Text inside inputs never wraps so the one in the span shouldn't either.
+  white-space: nowrap;
+  display: inline-block;
+
+  // Prevent the container from collapsing. Make it more
+  // than 1px so the input caret doesn't get clipped.
+  min-width: 2px;
+}

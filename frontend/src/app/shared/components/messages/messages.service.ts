@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { Inject, Injectable } from '@angular/core';
 import { AuthService } from '@core/services/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -19,6 +18,7 @@ import { IMessageDto } from '@monorepo/types/message/message.dto.interface';
 import { Path } from '@monorepo/routes';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { IMessagesSocket, MESSAGES_SOCKET } from '@shared/components/messages/messages-socket.interfacte';
 
 export type IReceiverUser = Pick<IUserDto, 'id' | 'avatarSrc'>;
 
@@ -40,7 +40,7 @@ export class MessagesService extends OnDestroyMixin {
 
   constructor(private readonly http: HttpClient,
               private readonly auth: AuthService,
-              private readonly socket: Socket) {
+              @Inject(MESSAGES_SOCKET) private readonly socket: IMessagesSocket) {
     super();
     auth.user$.pipe(
       untilComponentDestroyed(this),

@@ -4,7 +4,7 @@ import { ProfileInfoComponent } from './profile-info.component';
 import { AvatarModule } from '@shared/components/avatar/avatar.module';
 import { HourlyModule } from '@shared/components/hourly/hourly.module';
 import { MatIconModule } from '@angular/material/icon';
-import { ThinInputModule } from '@shared/directives/thin-input/thin-input.module';
+import { ThinInputFieldModule } from '@shared/components/thin-input-field/thin-input-field.module';
 import { AngularCropperjsModule } from 'angular-cropperjs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
     AvatarModule,
     HourlyModule,
     MatIconModule,
-    ThinInputModule,
+    ThinInputFieldModule,
     AngularCropperjsModule,
     MatButtonModule,
     MatDialogModule
