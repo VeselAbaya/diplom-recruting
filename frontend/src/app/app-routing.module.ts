@@ -17,12 +17,12 @@ const routes: Routes = [
     loadChildren: () => import('./modules/search/search.module').then(m => m.SearchModule),
     runGuardsAndResolvers: 'always'
   },
-  // {
-  //   path: 'requests',
-  //   loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule),
-  //   canActivate: [AuthGuard],
-  //   runGuardsAndResolvers: 'always'
-  // },
+  {
+    path: 'requests',
+    loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule),
+    canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always'
+  },
   {
     path: '**',
     redirectTo: 'search'
