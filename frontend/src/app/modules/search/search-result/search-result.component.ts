@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 import { SearchService } from '@modules/search/search.service';
 import { PageEvent } from '@angular/material/paginator';
-import { map, switchMap, take, tap } from 'rxjs/operators';
 import { LIMITS } from '@monorepo/types/pagination/limits';
 import { RelationsService } from '../relations.service';
-import { Router } from '@angular/router';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-search-result',
