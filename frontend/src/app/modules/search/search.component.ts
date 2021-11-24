@@ -3,7 +3,7 @@ import { HeaderService } from '@modules/header/header.service';
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { combineLatest, forkJoin, of } from 'rxjs';
-import { SearchService } from '@modules/search/search.service';
+import { DEFAULT_SEARCH_PARAMS, SearchService } from '@modules/search/search.service';
 import { SearchFormComponent } from '@modules/search/search-form/search-form.component';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { NavigationEnd, Router } from '@angular/router';
@@ -31,7 +31,7 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
   ngOnInit(): void {
     combineLatest([
       this.searchForm.valueChanges,
-      this.search.selectedUser$.pipe(map(user => user?.id ?? ''))
+      this.search.selectedUser$.pipe(map(user => user?.id ?? DEFAULT_SEARCH_PARAMS.fromUserId))
     ]).pipe(
       untilComponentDestroyed(this),
       switchMap(([formValue, fromUserId]) => forkJoin([
