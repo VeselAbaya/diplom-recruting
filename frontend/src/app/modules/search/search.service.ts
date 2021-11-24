@@ -80,7 +80,11 @@ export class SearchService extends OnDestroyMixin {
     this.params.next(newParams);
   }
 
-  getUsers(newParams: ISearchParamsDto = DEFAULT_SEARCH_PARAMS): Observable<IPagination<IUserListItem>> {
+  getParams(): ISearchParamsDto {
+    return this.params.value;
+  }
+
+  getUsers(): Observable<IPagination<IUserListItem>> {
     this.usersLoading.next(true);
     return this.http.get<IPagination<IUserListItem>>(Path.users(), {params: prepareGetParams(this.params.value)}).pipe(
       tap(({items, ...pagination}) => {
