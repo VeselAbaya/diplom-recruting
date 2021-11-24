@@ -32,6 +32,13 @@ export const DEFAULT_SEARCH_PARAMS: Required<ISearchParamsDto> = {
   fromUserId: ''
 };
 
+// 1. TODO We are keeping same info (about selectedUser) in two different places
+//      1. selectedUser
+//      2. params.fromUserId
+//      It also seems like shit
+// 2. TODO Maybe we can move params to separate service, which will be injected to all
+//      entities which use params or modify it
+// 3. TODO Method getUsers must accepts that params from p. 2
 @Injectable({
   providedIn: 'root'
 })

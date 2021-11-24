@@ -22,10 +22,16 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
               private readonly header: HeaderService,
               private readonly router: Router) {
     super();
-    router.events.pipe(
+    this.router.events.pipe(
       untilComponentDestroyed(this),
       filter(e => e instanceof NavigationEnd && this.router.url === '/search')
-    ).subscribe(() => header.setTitle('Search'));
+    ).subscribe(() => this.header.setTitle('Search'));
+
+    this.search.params$.pipe(
+      untilComponentDestroyed(this),
+      filter(params => this.router.url === '/search' && !params.fromUserId),
+      switchMap(() => this.search.getUsers())
+    ).subscribe();
   }
 
   ngOnInit(): void {

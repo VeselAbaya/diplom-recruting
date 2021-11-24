@@ -15,6 +15,8 @@ import { equals } from 'ramda';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
 import { RelationsService } from '@modules/search/relations.service';
 
+// TODO Search component must be dumb
+//   Dependency from SearchService#params$ makes it smart-like
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
