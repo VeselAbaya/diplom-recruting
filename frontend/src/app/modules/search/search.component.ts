@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderService } from '@modules/header/header.service';
 import { MessagesService } from '@shared/components/messages/messages.service';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { combineLatest, forkJoin, of } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { SearchFormComponent } from '@modules/search/search-form/search-form.component';
@@ -40,14 +40,13 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
         this.search.pagination$.pipe(take(1)),
         this.search.params$.pipe(take(1))
       ])),
-      switchMap(([formValue, fromUserId, {page, limit}, params]) => {
+      tap(([formValue, fromUserId, {page, limit}, params]) => {
         const newParams = {
           ...params, page, limit,
           ...formValue, fromUserId
         };
 
         this.search.setParams(newParams);
-        return of();
       })
     ).subscribe();
   }
