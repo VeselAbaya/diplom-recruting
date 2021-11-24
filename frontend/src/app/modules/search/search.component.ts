@@ -32,7 +32,7 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
   ngOnInit(): void {
     combineLatest([
       this.searchForm.valueChanges,
-      this.search.selectedUser$.pipe(map(user => user?.id))
+      this.search.selectedUser$.pipe(map(user => user?.id ?? ''))
     ]).pipe(
       untilComponentDestroyed(this),
       switchMap(([formValue, fromUserId]) => forkJoin([
@@ -47,11 +47,12 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
           ...formValue, fromUserId
         };
 
-        if (!isNil(fromUserId)) {
-          this.search.setParams(newParams);
-          return of();
-        }
-        return this.search.getUsers(newParams);
+        // if (!isNil(fromUserId)) {
+        console.log('search component params are going to be set')
+        this.search.setParams(newParams);
+        return of();
+        // }
+        // return this.search.getUsers(newParams);
       })
     ).subscribe();
   }

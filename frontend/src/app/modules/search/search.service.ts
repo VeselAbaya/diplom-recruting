@@ -15,7 +15,7 @@ import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
-import { clone } from 'ramda';
+import { clone, equals } from 'ramda';
 
 export const DEFAULT_SEARCH_PARAMS: Required<ISearchParamsDto> = {
   search: '',
@@ -50,7 +50,7 @@ export class SearchService extends OnDestroyMixin {
   readonly pagination$ = this.pagination.pipe(distinctUntilChanged());
 
   private readonly params = new BehaviorSubject<ISearchParamsDto>(DEFAULT_SEARCH_PARAMS);
-  readonly params$ = this.params.pipe(distinctUntilChanged());
+  readonly params$ = this.params.pipe(distinctUntilChanged((a, b) => equals(a, b)));
 
   private readonly usersLoading = new BehaviorSubject(false);
   readonly usersLoading$ = this.usersLoading.pipe(distinctUntilChanged());
@@ -82,7 +82,7 @@ export class SearchService extends OnDestroyMixin {
 
   getUsers(newParams: ISearchParamsDto = DEFAULT_SEARCH_PARAMS): Observable<IPagination<IUserListItem>> {
     this.usersLoading.next(true);
-    this.params.next(newParams);
+    // this.params.next(newParams);
     return this.http.get<IPagination<IUserListItem>>(Path.users(), {params: prepareGetParams(this.params.value)}).pipe(
       tap(({items, ...pagination}) => {
         this.result.next(items);
