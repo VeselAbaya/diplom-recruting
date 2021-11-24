@@ -46,6 +46,5 @@ export class SearchResultComponent extends OnDestroyMixin implements OnInit {
   onPageChange({pageIndex: page, pageSize: limit}: PageEvent): void {
     const params = this.search.getParams();
     this.search.setParams({...params, page, limit});
-    this.search.getUsers();
   }
 }
