@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { SearchService } from '@modules/search/search.service';
 import { PageEvent } from '@angular/material/paginator';
@@ -39,12 +39,8 @@ export class SearchResultComponent extends OnDestroyMixin implements OnInit {
   ngOnInit(): void {
     this.search.params$.pipe(
       untilComponentDestroyed(this),
-      switchMap(params => {
-        if (this.router.url === '/search' && !params.fromUserId) {
-          return this.search.getUsers(params);
-        }
-        return of();
-      })
+      filter(params => this.router.url === '/search' && !params.fromUserId),
+      switchMap(params => this.search.getUsers(params))
     ).subscribe();
   }
 
