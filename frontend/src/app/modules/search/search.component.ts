@@ -6,7 +6,6 @@ import { combineLatest, forkJoin, of } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { SearchFormComponent } from '@modules/search/search-form/search-form.component';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { isNil } from 'ramda';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
@@ -47,12 +46,8 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
           ...formValue, fromUserId
         };
 
-        // if (!isNil(fromUserId)) {
-        console.log('search component params are going to be set')
         this.search.setParams(newParams);
         return of();
-        // }
-        // return this.search.getUsers(newParams);
       })
     ).subscribe();
   }
