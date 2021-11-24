@@ -31,6 +31,8 @@ export class ProfileGuard implements CanActivate, CanDeactivate<ProfileComponent
     );
   }
 
+  // TODO canDeactivate call too much times
+  //      (on each user profile navigation, even between two users like /search/id1 -> /search/id2)
   canDeactivate(): Observable<boolean> {
     return this.search.params$.pipe(
       take(1),

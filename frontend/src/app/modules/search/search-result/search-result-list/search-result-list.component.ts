@@ -9,6 +9,8 @@ import { Observable, of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultListComponent {
+  // TODO Why it accepts observable?
+  //      To make | async by itself? (kek)
   @Input() usersList$: Observable<IUserListItem[] | null | undefined> = of(null);
   @Input() isLoading$: Observable<boolean> = of(false);
 }
