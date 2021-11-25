@@ -76,8 +76,8 @@ export class SearchFormComponent extends OnDestroyMixin {
         english: params.english,
         workSchedule: params.workSchedule,
         workType: params.workType
-      }
-    ));
+      })
+    );
   }
 
   onReset(): void {

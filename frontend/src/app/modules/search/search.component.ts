@@ -29,7 +29,6 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
 
     this.search.params$.pipe(
       untilComponentDestroyed(this),
-      filter(params => this.router.url === '/search' && !params.fromUserId),
       switchMap(() => this.search.getUsers())
     ).subscribe();
   }
