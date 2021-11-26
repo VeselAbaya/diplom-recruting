@@ -51,10 +51,6 @@
 
     <mat-label>Experience</mat-label>
     <mat-slider formControlName="experience"
-                [min]="ExperienceSliderConfig.min"
-                [max]="ExperienceSliderConfig.max"
-                [displayWith]="ExperienceSliderConfig.displayWith"
-                [thumbLabel]="true"
-                [tickInterval]="1"></mat-slider>
+                appExperienceSlider></mat-slider>
   </div>
 </form>

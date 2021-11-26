@@ -7,6 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchFormModule } from '@modules/search/search-form/search-form.module';
 import { MessagesModule } from '@shared/components/messages/messages.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [SearchComponent],
@@ -17,7 +18,8 @@ import { MessagesModule } from '@shared/components/messages/messages.module';
     MatTabsModule,
     MatIconModule,
     SearchFormModule,
-    MessagesModule
+    MessagesModule,
+    ReactiveFormsModule
   ]
 })
 export class SearchModule { }
