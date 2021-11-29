@@ -6,6 +6,6 @@
 
 <app-user-menu *ngIf="(auth.user$ | async) as user else signInSignUp" [user]="user"></app-user-menu>
 <ng-template #signInSignUp>
-  <a mat-button routerLink="/auth/signin" class="signin-link">Sign in</a>
-  <a mat-raised-button color="accent" routerLink="/auth/signup">Sign up</a>
+  <a mat-button routerLink="/auth/signin" class="signin-link" (click)="saveCurrentUrlToRedirectAfterLogin()">Sign in</a>
+  <a mat-raised-button color="accent" routerLink="/auth/signup" (click)="saveCurrentUrlToRedirectAfterLogin()">Sign up</a>
 </ng-template>
