@@ -1,9 +1,9 @@
 <div class="header">
   <h1>Select filter parameters</h1>
-  <button mat-button color="primary" class="reset-button" (click)="onReset()">Reset</button>
+  <button mat-button color="primary" class="reset-button" (click)="reset()">Reset</button>
 </div>
 
-<form class="search-form" [formGroup]="form">
+<form class="search-form" [formGroup]="form" (focusout)="onTouch()">
   <mat-form-field class="pn-no-subscript full-row">
     <mat-label>Search</mat-label>
     <input type="text" formControlName="search" matInput>
@@ -33,11 +33,7 @@
 
   <mat-label>Experience</mat-label>
   <mat-slider formControlName="experience"
-              [min]="ExperienceSliderConfig.min"
-              [max]="ExperienceSliderConfig.max"
-              [displayWith]="ExperienceSliderConfig.displayWith"
-              [thumbLabel]="true"
-              [tickInterval]="1"></mat-slider>
+              appExperienceSlider></mat-slider>
 
   <mat-label>English</mat-label>
   <mat-form-field class="pn-no-subscript pn-vertical-align">

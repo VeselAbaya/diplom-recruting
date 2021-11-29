@@ -1,55 +1,72 @@
-import { ChangeDetectionStrategy, Component, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  FormGroup, NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
+} from '@angular/forms';
 import {
   EnglishLevel,
   ISearchParamsDto,
   WorkSchedule,
   WorkType
 } from '@monorepo/types/search/search-params.dto.interface';
-import { SearchService } from '@modules/search/search.service';
-import { debounceTime, distinctUntilChanged, filter, map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { ExperienceSliderConfig } from '@shared/experience-slider.config';
-import { Subject } from 'rxjs';
-import { equals } from 'ramda';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
+import { SearchService } from '@modules/search/search.service';
 import { RelationsService } from '@modules/search/relations.service';
 
-// TODO Search component must be dumb
-//   Dependency from SearchService#params$ makes it smart-like
+export type ISearchFormValue = Omit<ISearchParamsDto, 'fromUserId'>;
+
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: SearchFormComponent
+    },
+    {
+      provide: NG_VALIDATORS,
+      multi: true,
+      useExisting: SearchFormComponent
+    }
+  ]
 })
-export class SearchFormComponent extends OnDestroyMixin {
+export class SearchFormComponent extends OnDestroyMixin implements ControlValueAccessor, Validator {
   readonly RelationType = RelationType;
   readonly WorkSchedule = WorkSchedule;
   readonly WorkType = WorkType;
   readonly EnglishLevel = EnglishLevel;
-  readonly ExperienceSliderConfig = ExperienceSliderConfig;
-
-  @Output() readonly valueChanges = new Subject<Omit<ISearchParamsDto, 'fromUserId'>>();
 
   form = new FormGroup({
-    search: new FormControl(''),
-    rateRange: new FormControl({min: 0, max: null}),
-    networkSize: new FormControl(1),
-    relationTypes: new FormControl([]),
-    experience: new FormControl(0),
-    english: new FormControl(EnglishLevel.A1),
-    workSchedule: new FormControl(null),
-    workType: new FormControl(null)
+    search: new FormControl(),
+    rateRange: new FormControl(),
+    networkSize: new FormControl(),
+    relationTypes: new FormControl(),
+    experience: new FormControl(),
+    english: new FormControl(),
+    workSchedule: new FormControl(),
+    workType: new FormControl()
   });
 
-  constructor(public readonly search: SearchService, public readonly relations: RelationsService) {
+  private onChange: (val: ISearchFormValue) => unknown = v => {};
+  onTouch = () => {};
+
+  constructor(public readonly search: SearchService,
+              public readonly relations: RelationsService) {
     super();
+    this.reset();
+
     this.form.valueChanges.pipe(
       untilComponentDestroyed(this),
-      debounceTime(500),
-      filter(() => this.form.valid),
-      distinctUntilChanged((a, b) => equals(a, b)),
       map(formValue => ({
         search: formValue.search,
         hourlyRateMin: formValue.rateRange.min,
@@ -61,26 +78,31 @@ export class SearchFormComponent extends OnDestroyMixin {
         workSchedule: formValue.workSchedule,
         workType: formValue.workType
       }))
-    ).subscribe(params => this.valueChanges.next(params));
-
-    search.params$.pipe(
-      take(1),
-      untilComponentDestroyed(this)
-    ).subscribe(params =>
-      this.form.setValue({
-        search: params.search,
-        rateRange: {min: params.hourlyRateMin, max: params.hourlyRateMax},
-        networkSize: params.networkSize,
-        relationTypes: params.relationTypes,
-        experience: params.experience,
-        english: params.english,
-        workSchedule: params.workSchedule,
-        workType: params.workType
-      })
-    );
+    ).subscribe(val => this.onChange(val));
   }
 
-  onReset(): void {
+  registerOnChange(fn: (val: ISearchFormValue) => unknown): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => {}): void {
+    this.onTouch = fn;
+  }
+
+  writeValue(val: ISearchFormValue): void {
+    this.form.setValue({
+      search: val.search,
+      rateRange: {min: val.hourlyRateMin, max: val.hourlyRateMax},
+      networkSize: val.networkSize,
+      relationTypes: val.relationTypes,
+      experience: val.experience,
+      english: val.english,
+      workSchedule: val.workSchedule,
+      workType: val.workType
+    });
+  }
+
+  reset(): void {
     this.form.reset({
       search: '',
       rateRange: {min: 0, max: null},
@@ -91,5 +113,14 @@ export class SearchFormComponent extends OnDestroyMixin {
       workSchedule: null,
       workType: null
     });
+  }
+
+  validate(): ValidationErrors | null {
+    return Object.values(this.form.controls).reduce((errors, control) => {
+      if (control.invalid) {
+        errors = errors ? {...errors, ...control.errors} : control.errors;
+      }
+      return errors;
+    }, null as ValidationErrors | null);
   }
 }

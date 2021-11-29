@@ -1,5 +1,5 @@
 <div class="left-side">
-  <app-search-form></app-search-form>
+  <app-search-form [formControl]="searchForm"></app-search-form>
   <app-messages *ngIf="messages.receiverUser$ | async"></app-messages>
 </div>
 

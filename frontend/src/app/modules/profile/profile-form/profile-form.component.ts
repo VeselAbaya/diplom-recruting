@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EnglishLevel, WorkSchedule, WorkType } from '@monorepo/types/search/search-params.dto.interface';
-import { ExperienceSliderConfig } from '@shared/experience-slider.config';
 import { catchError, skip, switchMap, take, tap } from 'rxjs/operators';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { ProfileService } from '@modules/profile/profile.service';
@@ -23,7 +22,6 @@ export class ProfileFormComponent extends OnDestroyMixin {
   readonly WorkSchedule = WorkSchedule;
   readonly WorkType = WorkType;
   readonly EnglishLevel = EnglishLevel;
-  readonly ExperienceSliderConfig = ExperienceSliderConfig;
   readonly form = new FormGroup({
     email: new FormControl('', Validators.required),
     firstName: new FormControl('', Validators.required),

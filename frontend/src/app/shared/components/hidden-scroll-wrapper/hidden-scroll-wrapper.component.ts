@@ -10,7 +10,7 @@ import { merge, Subject } from 'rxjs';
 import { CdkScrollable, ViewportRuler } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 import { ContentObserver } from '@angular/cdk/observers';
 
 @Component({
@@ -44,8 +44,8 @@ export class HiddenScrollWrapperComponent extends OnDestroyMixin implements Afte
     }
 
     merge(
-      this.scrollable.elementScrolled().pipe(debounceTime(40)),
-      this.viewportRuler.change().pipe(debounceTime(40)),
+      this.scrollable.elementScrolled().pipe(throttleTime(40)),
+      this.viewportRuler.change().pipe(throttleTime(40)),
       this.contentObserver.observe(this.scrollable.getElementRef().nativeElement)
     ).pipe(
       untilComponentDestroyed(this)

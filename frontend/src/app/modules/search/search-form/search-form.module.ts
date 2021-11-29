@@ -11,10 +11,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { ResettableButtonToggleGroupModule } from '@shared/directives/resettable-button-toggle-group/resettable-button-toggle-group.module';
 import { RelationTypeModule } from '@shared/pipes/relation-type/relation-type.module';
+import { ExperienceSliderModule } from '@shared/directives/experience-slider/experience-slider.module';
 
 
 @NgModule({
-  declarations: [SearchFormComponent], imports: [
+  declarations: [SearchFormComponent],
+  imports: [
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -26,7 +28,8 @@ import { RelationTypeModule } from '@shared/pipes/relation-type/relation-type.mo
     MatButtonToggleModule,
     MatButtonModule,
     ResettableButtonToggleGroupModule,
-    RelationTypeModule
+    RelationTypeModule,
+    ExperienceSliderModule
   ],
   exports: [SearchFormComponent]
 })

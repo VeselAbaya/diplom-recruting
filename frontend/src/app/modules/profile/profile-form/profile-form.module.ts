@@ -11,6 +11,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
 import { ResettableButtonToggleGroupModule } from '@shared/directives/resettable-button-toggle-group/resettable-button-toggle-group.module';
+import { ExperienceSliderModule } from '@shared/directives/experience-slider/experience-slider.module';
 
 
 
@@ -30,7 +31,8 @@ import { ResettableButtonToggleGroupModule } from '@shared/directives/resettable
     MatButtonToggleModule,
     MatSliderModule,
     MatSelectModule,
-    ResettableButtonToggleGroupModule
+    ResettableButtonToggleGroupModule,
+    ExperienceSliderModule
   ]
 })
 export class ProfileFormModule { }
