@@ -44,7 +44,6 @@ $control-gap: 6px;
 form {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   gap: $control-gap;
 
   ::ng-deep .mat-form-field {

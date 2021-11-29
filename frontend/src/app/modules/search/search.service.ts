@@ -15,7 +15,7 @@ import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
-import { clone } from 'ramda';
+import { clone, equals } from 'ramda';
 
 export const DEFAULT_SEARCH_PARAMS: Required<ISearchParamsDto> = {
   search: '',
@@ -32,6 +32,13 @@ export const DEFAULT_SEARCH_PARAMS: Required<ISearchParamsDto> = {
   fromUserId: ''
 };
 
+// 1. TODO We are keeping same info (about selectedUser) in two different places
+//      1. selectedUser
+//      2. params.fromUserId
+//      It also seems like shit
+// 2. TODO Maybe we can move params to separate service, which will be injected to all
+//      entities which use params or modify it
+// 3. TODO Method getUsers must accepts that params from p. 2
 @Injectable({
   providedIn: 'root'
 })
@@ -50,7 +57,7 @@ export class SearchService extends OnDestroyMixin {
   readonly pagination$ = this.pagination.pipe(distinctUntilChanged());
 
   private readonly params = new BehaviorSubject<ISearchParamsDto>(DEFAULT_SEARCH_PARAMS);
-  readonly params$ = this.params.pipe(distinctUntilChanged());
+  readonly params$ = this.params.pipe(distinctUntilChanged((a, b) => equals(a, b)));
 
   private readonly usersLoading = new BehaviorSubject(false);
   readonly usersLoading$ = this.usersLoading.pipe(distinctUntilChanged());
@@ -80,9 +87,12 @@ export class SearchService extends OnDestroyMixin {
     this.params.next(newParams);
   }
 
-  getUsers(newParams: ISearchParamsDto = DEFAULT_SEARCH_PARAMS): Observable<IPagination<IUserListItem>> {
+  getParams(): ISearchParamsDto {
+    return this.params.value;
+  }
+
+  getUsers(): Observable<IPagination<IUserListItem>> {
     this.usersLoading.next(true);
-    this.params.next(newParams);
     return this.http.get<IPagination<IUserListItem>>(Path.users(), {params: prepareGetParams(this.params.value)}).pipe(
       tap(({items, ...pagination}) => {
         this.result.next(items);

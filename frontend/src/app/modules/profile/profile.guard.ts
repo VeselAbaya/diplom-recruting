@@ -7,6 +7,10 @@ import { ProfileComponent } from '@modules/profile/profile.component';
 import { AuthService } from '@core/services/auth/auth.service';
 import { RelationsService } from '@modules/search/relations.service';
 
+const PROFILE_URL_REGEX = new RegExp(
+  'search/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+);
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,15 +31,25 @@ export class ProfileGuard implements CanActivate, CanDeactivate<ProfileComponent
     return this.search.getUserAndSetAsSelected(route.params.id).pipe(
       tap(user => this.relations.getUserRelationTypes(user.id).subscribe()),
       mapTo(true),
-      catchError(() => of(false))
+      catchError(() => {
+        this.search.setSelectedUser(null);
+        return of(false);
+      })
     );
   }
 
-  canDeactivate(): Observable<boolean> {
+  canDeactivate(component: ProfileComponent,
+                currentRoute: ActivatedRouteSnapshot,
+                currentState: RouterStateSnapshot,
+                nextState?: RouterStateSnapshot): Observable<boolean> {
+    const navigatingToOtherProfile = nextState && PROFILE_URL_REGEX.test(nextState.url);
+    if (navigatingToOtherProfile) {
+      return of(true);
+    }
+
     return this.search.params$.pipe(
       take(1),
-      tap(params => {
-        this.search.setParams({...params, fromUserId: undefined});
+      tap(() => {
         this.search.setSelectedUser(null);
         this.isMyProfile.next(null);
       }),

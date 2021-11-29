@@ -1,10 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { map, switchMap } from 'rxjs/operators';
 import { SearchService } from '@modules/search/search.service';
 import { PageEvent } from '@angular/material/paginator';
-import { map, switchMap, take } from 'rxjs/operators';
 import { LIMITS } from '@monorepo/types/pagination/limits';
 import { RelationsService } from '../relations.service';
 
+// TODO SearchResultList and SearchResultGraph accepts user data in different ways
+//      *SearchResultGraph fetching it by itself
+//      *SearchResultList accepts it via @Input
+//      IT SEEMS LIKE SHIT
 @Component({
   selector: 'app-search-result',
   templateUrl: './search-result.component.html',
@@ -25,15 +29,15 @@ export class SearchResultComponent {
     switchMap(selectedUser => selectedUser !== null ? this.relations.isLoading$ : this.search.usersLoading$)
   );
 
+  // TODO check if we can configure material paginator to default limits
   LIMITS = LIMITS;
 
   constructor(public readonly search: SearchService,
-              public readonly relations: RelationsService) {}
+              public readonly relations: RelationsService) {
+  }
 
   onPageChange({pageIndex: page, pageSize: limit}: PageEvent): void {
-    this.search.params$.pipe(
-      take(1),
-      switchMap(params => this.search.getUsers({...params, page, limit}))
-    ).subscribe();
+    const params = this.search.getParams();
+    this.search.setParams({...params, page, limit});
   }
 }

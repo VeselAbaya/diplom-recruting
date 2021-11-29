@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderService } from '@modules/header/header.service';
 import { MessagesService } from '@shared/components/messages/messages.service';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { combineLatest, forkJoin, of } from 'rxjs';
-import { SearchService } from '@modules/search/search.service';
+import { DEFAULT_SEARCH_PARAMS, SearchService } from '@modules/search/search.service';
 import { SearchFormComponent } from '@modules/search/search-form/search-form.component';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { isNil } from 'ramda';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
@@ -23,16 +22,21 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
               private readonly header: HeaderService,
               private readonly router: Router) {
     super();
-    router.events.pipe(
+    this.router.events.pipe(
       untilComponentDestroyed(this),
       filter(e => e instanceof NavigationEnd && this.router.url === '/search')
-    ).subscribe(() => header.setTitle('Search'));
+    ).subscribe(() => this.header.setTitle('Search'));
+
+    this.search.params$.pipe(
+      untilComponentDestroyed(this),
+      switchMap(() => this.search.getUsers())
+    ).subscribe();
   }
 
   ngOnInit(): void {
     combineLatest([
       this.searchForm.valueChanges,
-      this.search.selectedUser$.pipe(map(user => user?.id))
+      this.search.selectedUser$.pipe(map(user => user?.id ?? DEFAULT_SEARCH_PARAMS.fromUserId))
     ]).pipe(
       untilComponentDestroyed(this),
       switchMap(([formValue, fromUserId]) => forkJoin([
@@ -41,17 +45,13 @@ export class SearchComponent extends OnDestroyMixin implements OnInit {
         this.search.pagination$.pipe(take(1)),
         this.search.params$.pipe(take(1))
       ])),
-      switchMap(([formValue, fromUserId, {page, limit}, params]) => {
+      tap(([formValue, fromUserId, {page, limit}, params]) => {
         const newParams = {
           ...params, page, limit,
           ...formValue, fromUserId
         };
 
-        if (!isNil(fromUserId)) {
-          this.search.setParams(newParams);
-          return of();
-        }
-        return this.search.getUsers(newParams);
+        this.search.setParams(newParams);
       })
     ).subscribe();
   }

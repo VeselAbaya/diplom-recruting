@@ -11,6 +11,9 @@ import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdest
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchResultListComponent extends OnDestroyMixin {
+  // TODO Why it accepts observable?
+  //      To make | async by itself? (kek)
+
   @Input() usersList$: Observable<IUserListItem[] | null | undefined> = of(null);
   @Input() isLoading$: Observable<boolean> = of(false);
 
