@@ -4,11 +4,11 @@ import { MessagesComponent } from './messages.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AvatarModule } from '@shared/components/avatar/avatar.module';
 import { HiddenScrollWrapperModule } from '@shared/components/hidden-scroll-wrapper/hidden-scroll-wrapper.module';
 import { CdkScrollableModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
-
 
 
 @NgModule({
@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     AvatarModule,
     HiddenScrollWrapperModule,
     CdkScrollableModule,

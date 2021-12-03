@@ -2,9 +2,10 @@ import { Inject, Injectable } from '@angular/core';
 import { AuthService } from '@core/services/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import {
+  catchError,
   distinctUntilChanged,
   filter,
-  map,
+  map, mapTo,
   pluck,
   switchMap,
   switchMapTo,
@@ -12,7 +13,7 @@ import {
   tap,
   withLatestFrom
 } from 'rxjs/operators';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { isNotNullOrUndefined, isNotNullOrUndefinedArray } from '@shared/utils/is-not-null-or-undefined';
 import { IMessageDto } from '@monorepo/types/message/message.dto.interface';
 import { Path } from '@monorepo/routes';
@@ -65,15 +66,17 @@ export class MessagesService extends OnDestroyMixin {
     });
   }
 
-  send(message: string, toUserId = this.receiverUser.getValue()?.id): void {
-    this.auth.user$.pipe(
+  send(message: string, toUserId = this.receiverUser.getValue()?.id): Observable<boolean> {
+    return this.auth.user$.pipe(
       take(1),
-      map(user => user?.id),
       withLatestFrom(of(toUserId)),
-      isNotNullOrUndefinedArray()
-    ).subscribe(([currentUserId, receiverUserId]) => {
-      this.socket.emit('message', {fromUserId: currentUserId, toUserId: receiverUserId, text: message});
-    });
+      isNotNullOrUndefinedArray(),
+      tap(([currentUserId, receiverUserId]) => {
+        this.socket.emit('message', {fromUserId: currentUserId, toUserId: receiverUserId, text: message});
+      }),
+      mapTo(true),
+      catchError(() => of(false))
+    );
   }
 
   openChatWithUser(receiverUser: IReceiverUser): void {
