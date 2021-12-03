@@ -33,6 +33,9 @@ export class MessagesService extends OnDestroyMixin {
   private list = new BehaviorSubject<IMessageDto[]>([]);
   list$ = this.list.pipe(distinctUntilChanged());
 
+  private readonly messageSending = new BehaviorSubject(false);
+  readonly messageSending$ = this.messageSending.pipe(distinctUntilChanged());
+
   newMessage$ = this.socket.fromEvent<IMessageDto>('newMessageNotify').pipe(
     withLatestFrom(this.receiverUser),
     filter(([message, receiverUser]) => !receiverUser || receiverUser.id !== message.fromUserId),
@@ -69,6 +72,7 @@ export class MessagesService extends OnDestroyMixin {
   send(message: string, toUserId = this.receiverUser.getValue()?.id): Observable<boolean> {
     return this.auth.user$.pipe(
       take(1),
+      map(user => user?.id),
       withLatestFrom(of(toUserId)),
       isNotNullOrUndefinedArray(),
       tap(([currentUserId, receiverUserId]) => {

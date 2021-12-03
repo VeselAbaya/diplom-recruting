@@ -19,14 +19,14 @@ export class SearchResultComponent {
   @Input() withGraphView = false;
 
   usersList$ = this.search.selectedUser$.pipe(
-    switchMap(selectedUser => selectedUser !== null
-      ? this.relations.result$.pipe(map(graph => graph?.nodes.filter(user => user.id !== selectedUser.id)))
-      : this.search.result$
+    switchMap(selectedUser => selectedUser === null
+      ? this.search.result$
+      : this.relations.result$.pipe(map(graph => graph?.nodes.filter(user => user.id !== selectedUser.id)))
     )
   );
 
   isLoading$ = this.search.selectedUser$.pipe(
-    switchMap(selectedUser => selectedUser !== null ? this.relations.isLoading$ : this.search.usersLoading$)
+    switchMap(selectedUser => selectedUser === null ? this.search.usersLoading$ : this.relations.isLoading$)
   );
 
   // TODO check if we can configure material paginator to default limits
