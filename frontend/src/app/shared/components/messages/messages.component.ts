@@ -1,4 +1,11 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { AuthService } from '@core/services/auth/auth.service';
 import { CdkScrollable } from '@angular/cdk/overlay';
@@ -42,9 +49,14 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
   }
 
   onSendMessage(): void {
-    this.messages.send(this.text);
-    this.text = '';
-    this.scrollBottom();
+    if (this.text.trim() === '') {
+      return;
+    }
+
+    this.messages.send(this.text).subscribe(() => {
+      this.text = '';
+      this.scrollBottom();
+    });
   }
 
   onTextareaKeyPress(event: KeyboardEvent): void {

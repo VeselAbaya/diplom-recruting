@@ -14,9 +14,16 @@
     </app-hidden-scroll-wrapper>
 
     <mat-form-field class="message-form pn-no-subscript pn-vertical-align pn-textarea-with-suffix">
-      <textarea matInput rows="3" [(ngModel)]="text" (keypress)="onTextareaKeyPress($event)"></textarea>
-      <button mat-icon-button matSuffix color="primary" (click)="onSendMessage()">
-        <mat-icon svgIcon="send"></mat-icon>
+      <textarea matInput rows="3" [(ngModel)]="text" [disabled]="!!(messages.isSending$ | async)" (keypress)="onTextareaKeyPress($event)"></textarea>
+      <button matSuffix
+              mat-icon-button
+              color="primary"
+              [disabled]="messages.isSending$ | async"
+              (click)="onSendMessage()">
+        <mat-icon *ngIf="(messages.isSending$ | async) === false; else spinner" svgIcon="send"></mat-icon>
+        <ng-template #spinner>
+          <mat-spinner color="primary" matSuffix strokeWidth="2" diameter="24"></mat-spinner>
+        </ng-template>
       </button>
     </mat-form-field>
   </ng-container>

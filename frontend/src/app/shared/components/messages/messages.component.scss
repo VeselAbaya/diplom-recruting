@@ -55,4 +55,8 @@ app-avatar {
   &::ng-deep .mat-form-field-wrapper {
     background-color: map-get($pn-background, card);
   }
+
+  &::ng-deep .mat-spinner.mat-primary circle {
+    stroke: mat.get-color-from-palette($pn-primary, 100);
+  }
 }
