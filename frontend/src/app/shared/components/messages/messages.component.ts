@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   QueryList,
   ViewChild,
@@ -24,12 +23,10 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
   @ViewChildren('message') messagesQuery!: QueryList<HTMLDivElement>;
   @ViewChild(CdkScrollable) messagesContainer: CdkScrollable | null = null;
   text = '';
-  isLoading = false;
   private isUserScrolledToBottom = true;
 
   constructor(public readonly auth: AuthService,
-              public readonly messages: MessagesService,
-              private cdr: ChangeDetectorRef) {
+              public readonly messages: MessagesService) {
     super();
   }
 
@@ -56,13 +53,8 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
       return;
     }
 
-    this.isLoading = true;
-    this.messages.send(this.text).pipe(
-      take(1)
-    ).subscribe(() => {
+    this.messages.send(this.text).subscribe(() => {
       this.text = '';
-      this.isLoading = false;
-      this.cdr.markForCheck();
       this.scrollBottom();
     });
   }

@@ -2,10 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import { AuthService } from '@core/services/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import {
-  catchError,
   distinctUntilChanged,
-  filter,
-  map, mapTo,
+  filter, finalize,
+  map,
   pluck,
   switchMap,
   switchMapTo,
@@ -33,8 +32,8 @@ export class MessagesService extends OnDestroyMixin {
   private list = new BehaviorSubject<IMessageDto[]>([]);
   list$ = this.list.pipe(distinctUntilChanged());
 
-  private readonly messageSending = new BehaviorSubject(false);
-  readonly messageSending$ = this.messageSending.pipe(distinctUntilChanged());
+  private readonly isSending = new BehaviorSubject(false);
+  readonly isSending$ = this.isSending.pipe(distinctUntilChanged());
 
   newMessage$ = this.socket.fromEvent<IMessageDto>('newMessageNotify').pipe(
     withLatestFrom(this.receiverUser),
@@ -62,14 +61,15 @@ export class MessagesService extends OnDestroyMixin {
     ).subscribe(userId => socket.emit('userIsOnline', {userId}));
 
     socket.fromEvent<IMessageDto>('message').pipe(
-      untilComponentDestroyed(this)
+      untilComponentDestroyed(this),
     ).subscribe(message => {
       this.socket.emit('messageRead', message.id);
       this.list.next(this.list.getValue().concat(message));
     });
   }
 
-  send(message: string, toUserId = this.receiverUser.getValue()?.id): Observable<boolean> {
+  send(message: string, toUserId = this.receiverUser.getValue()?.id): Observable<IMessageDto> {
+    this.isSending.next(true);
     return this.auth.user$.pipe(
       take(1),
       map(user => user?.id),
@@ -78,8 +78,12 @@ export class MessagesService extends OnDestroyMixin {
       tap(([currentUserId, receiverUserId]) => {
         this.socket.emit('message', {fromUserId: currentUserId, toUserId: receiverUserId, text: message});
       }),
-      mapTo(true),
-      catchError(() => of(false))
+      // TODO Figure out why it is not working without this nested pipe
+      switchMap(([currentUserId]) => this.socket.fromEvent<IMessageDto>('message').pipe(
+        filter(newMessage => newMessage.fromUserId === currentUserId),
+        take(1),
+        finalize(() => this.isSending.next(false))
+      ))
     );
   }
 
