@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanDeactivate } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { catchError, distinctUntilChanged, map, mapTo, take, tap } from 'rxjs/operators';
 import { ProfileComponent } from '@modules/profile/profile.component';
 import { AuthService } from '@core/services/auth/auth.service';
 import { RelationsService } from '@modules/search/relations.service';
+import { ProfileService } from '@modules/profile/profile.service';
+import { SearchParamsService } from '@modules/search/search-params/search-params.service';
 
 const PROFILE_URL_REGEX = new RegExp(
   'search/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
@@ -20,7 +22,10 @@ export class ProfileGuard implements CanActivate, CanDeactivate<ProfileComponent
 
   constructor(private readonly search: SearchService,
               private readonly auth: AuthService,
-              private readonly relations: RelationsService) {}
+              private readonly relations: RelationsService,
+              private readonly profile: ProfileService,
+              private readonly searchParams: SearchParamsService) {
+  }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     this.auth.user$.pipe(
@@ -28,11 +33,14 @@ export class ProfileGuard implements CanActivate, CanDeactivate<ProfileComponent
       map(user => user?.id === route.params.id),
     ).subscribe(isMyProfile => this.isMyProfile.next(isMyProfile));
 
-    return this.search.getUserAndSetAsSelected(route.params.id).pipe(
-      tap(user => this.relations.getUserRelationTypes(user.id).subscribe()),
+    return this.search.getUser(route.params.id).pipe(
+      tap(user => {
+        this.relations.getUserRelationTypes(user.id).subscribe();
+        this.profile.setSelectedUser(user);
+      }),
       mapTo(true),
       catchError(() => {
-        this.search.setSelectedUser(null);
+        this.profile.setSelectedUser(null);
         return of(false);
       })
     );
@@ -41,19 +49,13 @@ export class ProfileGuard implements CanActivate, CanDeactivate<ProfileComponent
   canDeactivate(component: ProfileComponent,
                 currentRoute: ActivatedRouteSnapshot,
                 currentState: RouterStateSnapshot,
-                nextState?: RouterStateSnapshot): Observable<boolean> {
-    const navigatingToOtherProfile = nextState && PROFILE_URL_REGEX.test(nextState.url);
-    if (navigatingToOtherProfile) {
-      return of(true);
+                nextState?: RouterStateSnapshot): boolean {
+    const navigatingToOtherProfile = nextState && PROFILE_URL_REGEX.test(nextState?.url);
+    if (!navigatingToOtherProfile) {
+      this.profile.setSelectedUser(null);
+      this.isMyProfile.next(null);
     }
 
-    return this.search.params$.pipe(
-      take(1),
-      tap(() => {
-        this.search.setSelectedUser(null);
-        this.isMyProfile.next(null);
-      }),
-      mapTo(true)
-    );
+    return true;
   }
 }

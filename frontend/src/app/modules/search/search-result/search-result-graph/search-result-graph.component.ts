@@ -16,6 +16,9 @@ import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { NodeHTMLIdPipe } from '@modules/search/search-result/search-result-graph/node-html-id.pipe';
+import { SearchParamsService } from '@modules/search/search-params/search-params.service';
+import { ProfileService } from '@modules/profile/profile.service';
+import { combineLatest } from 'rxjs';
 
 interface INgxGraph extends IGraphDto {
   nodes: (IUserListItem & Node)[];
@@ -49,10 +52,12 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
   mouseMoveStartPoint = {x: 0, y: 0};
   private mouseMovedDistance = 0;
 
-  graph$ = this.search.params$.pipe(
+  graph$ = combineLatest([
+    this.profile.selectedUser$.pipe(isNotNullOrUndefined()),
+    this.searchParams.params$
+  ]).pipe(
     untilComponentDestroyed(this),
-    filter(params => !!params.fromUserId),
-    switchMap(params => this.relations.getGraph(params as IGraphSearchParamsDto)),
+    switchMap(([user, params]) => this.relations.getGraph({...params, fromUserId: user.id})),
     map(graph => {
       graph.edges = graph.edges.map(edge => ({
         ...edge,
@@ -65,7 +70,7 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
     shareReplay(1)
   );
 
-  selectedUserId$ = this.search.selectedUser$.pipe(
+  selectedUserId$ = this.profile.selectedUser$.pipe(
     tap(() => this.nodeWithOverlay = null),
     isNotNullOrUndefined(),
     pluck('id')
@@ -75,7 +80,9 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
               private readonly dialog: MatDialog,
               private readonly snackbar: MatSnackBar,
               private readonly relations: RelationsService,
-              private readonly nodeHTMLId: NodeHTMLIdPipe) {
+              private readonly nodeHTMLId: NodeHTMLIdPipe,
+              private readonly searchParams: SearchParamsService,
+              private readonly profile: ProfileService) {
     super();
   }
 

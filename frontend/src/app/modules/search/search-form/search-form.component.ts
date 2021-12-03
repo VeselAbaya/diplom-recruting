@@ -17,10 +17,9 @@ import {
 import { map } from 'rxjs/operators';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
-import { SearchService } from '@modules/search/search.service';
 import { RelationsService } from '@modules/search/relations.service';
-
-export type ISearchFormValue = Omit<ISearchParamsDto, 'fromUserId'>;
+import { ProfileService } from '@modules/profile/profile.service';
+import { ISearchParams } from '@modules/search/search-params/search-params.interface';
 
 @Component({
   selector: 'app-search-form',
@@ -57,10 +56,10 @@ export class SearchFormComponent extends OnDestroyMixin implements ControlValueA
     workType: new FormControl()
   });
 
-  private onChange: (val: ISearchFormValue) => unknown = v => {};
+  private onChange: (val: ISearchParams) => unknown = v => {};
   onTouch = () => {};
 
-  constructor(public readonly search: SearchService,
+  constructor(public readonly profile: ProfileService,
               public readonly relations: RelationsService) {
     super();
     this.reset();
@@ -81,7 +80,7 @@ export class SearchFormComponent extends OnDestroyMixin implements ControlValueA
     ).subscribe(val => this.onChange(val));
   }
 
-  registerOnChange(fn: (val: ISearchFormValue) => unknown): void {
+  registerOnChange(fn: (val: ISearchParams) => unknown): void {
     this.onChange = fn;
   }
 
@@ -89,17 +88,21 @@ export class SearchFormComponent extends OnDestroyMixin implements ControlValueA
     this.onTouch = fn;
   }
 
-  writeValue(val: ISearchFormValue): void {
-    this.form.setValue({
-      search: val.search,
-      rateRange: {min: val.hourlyRateMin, max: val.hourlyRateMax},
-      networkSize: val.networkSize,
-      relationTypes: val.relationTypes,
-      experience: val.experience,
-      english: val.english,
-      workSchedule: val.workSchedule,
-      workType: val.workType
-    });
+  writeValue(val: ISearchParams | null): void {
+    if (val) {
+      this.form.setValue({
+        search: val.search,
+        rateRange: {min: val.hourlyRateMin, max: val.hourlyRateMax},
+        networkSize: val.networkSize,
+        relationTypes: val.relationTypes,
+        experience: val.experience,
+        english: val.english,
+        workSchedule: val.workSchedule,
+        workType: val.workType
+      });
+    } else {
+      this.reset();
+    }
   }
 
   reset(): void {

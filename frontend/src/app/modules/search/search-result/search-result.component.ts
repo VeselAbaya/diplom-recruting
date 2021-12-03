@@ -4,6 +4,8 @@ import { SearchService } from '@modules/search/search.service';
 import { PageEvent } from '@angular/material/paginator';
 import { LIMITS } from '@monorepo/types/pagination/limits';
 import { RelationsService } from '../relations.service';
+import { ProfileService } from '@modules/profile/profile.service';
+import { SearchParamsService } from '@modules/search/search-params/search-params.service';
 
 // TODO SearchResultList and SearchResultGraph accepts user data in different ways
 //      *SearchResultGraph fetching it by itself
@@ -18,26 +20,27 @@ import { RelationsService } from '../relations.service';
 export class SearchResultComponent {
   @Input() withGraphView = false;
 
-  usersList$ = this.search.selectedUser$.pipe(
+  usersList$ = this.profile.selectedUser$.pipe(
     switchMap(selectedUser => selectedUser !== null
       ? this.relations.result$.pipe(map(graph => graph?.nodes.filter(user => user.id !== selectedUser.id)))
       : this.search.result$
     )
   );
 
-  isLoading$ = this.search.selectedUser$.pipe(
+  isLoading$ = this.profile.selectedUser$.pipe(
     switchMap(selectedUser => selectedUser !== null ? this.relations.isLoading$ : this.search.usersLoading$)
   );
 
   // TODO check if we can configure material paginator to default limits
   LIMITS = LIMITS;
 
-  constructor(public readonly search: SearchService,
-              public readonly relations: RelationsService) {
+  constructor(readonly search: SearchService,
+              readonly relations: RelationsService,
+              readonly profile: ProfileService,
+              private readonly searchParams: SearchParamsService) {
   }
 
   onPageChange({pageIndex: page, pageSize: limit}: PageEvent): void {
-    const params = this.search.getParams();
-    this.search.setParams({...params, page, limit});
+    this.searchParams.patch({page, limit});
   }
 }

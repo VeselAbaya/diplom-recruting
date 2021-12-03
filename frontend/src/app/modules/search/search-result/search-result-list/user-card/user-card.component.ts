@@ -12,6 +12,7 @@ import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
 import { RelationsService } from '@modules/search/relations.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
+import { ProfileService } from '@modules/profile/profile.service';
 
 @Component({
   selector: 'app-user-card',
@@ -26,11 +27,12 @@ export class UserCardComponent {
               public readonly auth: AuthService,
               public readonly profileGuard: ProfileGuard,
               public readonly search: SearchService,
+              public readonly profile: ProfileService,
               private readonly relations: RelationsService,
               private readonly dialog: MatDialog) {}
 
   openRelationsListDialog(): void {
-    this.openRelationsDialog(this.search.selectedUser$);
+    this.openRelationsDialog(this.profile.selectedUser$);
   }
 
   openCreateRelationDialog(): void {

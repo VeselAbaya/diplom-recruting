@@ -43,7 +43,7 @@
     <mat-icon svgIcon="relationship"></mat-icon>
   </button>
 
-  <ng-container *ngIf="search.selectedUser$ | async as selectedUser">
+  <ng-container *ngIf="profile.selectedUser$ | async as selectedUser">
     <button mat-icon-button color="primary"
             *ngIf="!(profileGuard.isMyProfile$ | async) && selectedUser.id !== user.id && user.relationsWithOriginCount !== 0"
             (click)="openRelationsListDialog()"

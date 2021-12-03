@@ -8,7 +8,6 @@ import { IProfileInfoChangeEvent } from '@shared/components/profile-info/profile
 import { ErrorsService } from '@core/services/errors.service';
 import { Observable, of } from 'rxjs';
 import { ProfileGuard } from '@modules/profile/profile.guard';
-import { SearchService } from '@modules/search/search.service';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
 
@@ -36,20 +35,19 @@ export class ProfileFormComponent extends OnDestroyMixin {
     experience: new FormControl(null),
   }, {updateOn: 'blur'});
 
-  profileUser$: Observable<IUserDto> = this.search.selectedUser$.pipe(
+  profileUser$: Observable<IUserDto> = this.profile.selectedUser$.pipe(
     isNotNullOrUndefined(),
     tap(user => this.form.reset(user, {emitEvent: false}))
   );
 
-  constructor(public readonly search: SearchService,
-              public readonly guard: ProfileGuard,
+  constructor(public readonly guard: ProfileGuard,
               private readonly profile: ProfileService,
               private readonly errors: ErrorsService) {
     super();
     this.form.valueChanges.pipe(
       untilComponentDestroyed(this),
       skip(1),
-      switchMap(() => this.search.selectedUser$.pipe(take(1))),
+      switchMap(() => this.profile.selectedUser$.pipe(take(1))),
       switchMap(user => {
         const patch = this.form.value;
         patch.phone = patch.phone || null;

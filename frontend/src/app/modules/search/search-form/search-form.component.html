@@ -12,7 +12,7 @@
   <mat-label>Rate value</mat-label>
   <app-range formControlName="rateRange"></app-range>
 
-  <ng-container *ngIf="(search.selectedUser$ | async) !== null">
+  <ng-container *ngIf="(profile.selectedUser$ | async) !== null">
     <mat-label>Network size</mat-label>
     <mat-slider formControlName="networkSize"
                 [min]="1"

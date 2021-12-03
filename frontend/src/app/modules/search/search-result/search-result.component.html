@@ -38,7 +38,7 @@
   <app-hidden-scroll-wrapper orientation="vertical">
     <app-search-result-list cdkScrollable [usersList$]="usersList$" [isLoading$]="isLoading$"></app-search-result-list>
   </app-hidden-scroll-wrapper>
-  <mat-paginator *ngIf="!(search.selectedUser$ | async) && (search.pagination$ | async) as pagination"
+  <mat-paginator *ngIf="!(profile.selectedUser$ | async) && (search.pagination$ | async) as pagination"
                  [pageSizeOptions]="LIMITS"
                  [pageIndex]="pagination.page"
                  [pageSize]="pagination.limit"
