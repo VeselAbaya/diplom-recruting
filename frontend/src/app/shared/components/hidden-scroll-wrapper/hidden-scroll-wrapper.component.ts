@@ -6,7 +6,7 @@ import {
   ContentChild,
   Input
 } from '@angular/core';
-import { merge, Subject } from 'rxjs';
+import { asyncScheduler, merge, Subject } from 'rxjs';
 import { CdkScrollable, ViewportRuler } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -43,9 +43,10 @@ export class HiddenScrollWrapperComponent extends OnDestroyMixin implements Afte
       return;
     }
 
+    const throttleScroll = throttleTime(100, asyncScheduler, {leading: true, trailing: true});
     merge(
-      this.scrollable.elementScrolled().pipe(throttleTime(40)),
-      this.viewportRuler.change().pipe(throttleTime(40)),
+      this.scrollable.elementScrolled().pipe(throttleScroll),
+      this.viewportRuler.change().pipe(throttleScroll),
       this.contentObserver.observe(this.scrollable.getElementRef().nativeElement)
     ).pipe(
       untilComponentDestroyed(this)
@@ -53,7 +54,7 @@ export class HiddenScrollWrapperComponent extends OnDestroyMixin implements Afte
       this.hasScroll.next(this.scrollSize > this.offsetSize);
       this.scrolledCloseToBegin.next(Math.floor(this.scrollOffsetFromBegin) === 0);
       this.scrolledCloseToEnd.next(Math.floor(this.scrollOffsetFromEnd) === 0);
-      // elementScrolled() doesn't triggers change detection 'cause that stream created outside of ngZone
+      // elementScrolled() doesn't trigger change detection 'cause that stream created outside of ngZone
       // https://github.com/angular/components/blob/master/src/cdk/scrolling/scrollable.ts#L51
       this.cdr.detectChanges();
     });

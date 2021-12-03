@@ -8,6 +8,7 @@ import { SearchService } from '@modules/search/search.service';
 import { ProfileGuard } from '@modules/profile/profile.guard';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
 import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
+import { ProfileService } from '@modules/profile/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +19,7 @@ import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
 export class ProfileComponent {
   whoseNetworkLabel$ = combineLatest([
     this.guard.isMyProfile$,
-    this.search.selectedUser$.pipe(isNotNullOrUndefined())
+    this.profile.selectedUser$.pipe(isNotNullOrUndefined())
   ]).pipe(map(([isMyProfile, user]) => isMyProfile
     ? 'Your network'
     : `${user.firstName}'s network`
@@ -29,9 +30,10 @@ export class ProfileComponent {
               private readonly search: SearchService,
               private readonly header: HeaderService,
               private readonly auth: AuthService,
-              private readonly fullName: FullNamePipe) {
+              private readonly fullName: FullNamePipe,
+              private readonly profile: ProfileService) {
     this.guard.isMyProfile$.pipe(
-      switchMap(isMyProfile => isMyProfile ? this.auth.user$ : this.search.selectedUser$),
+      switchMap(isMyProfile => isMyProfile ? this.auth.user$ : this.profile.selectedUser$),
       isNotNullOrUndefined(),
       map(user => fullName.transform(user)),
       take(1)
