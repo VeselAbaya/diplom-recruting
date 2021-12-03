@@ -62,8 +62,8 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
     ).subscribe(() => {
       this.text = '';
       this.isLoading = false;
-      this.scrollBottom();
       this.cdr.markForCheck();
+      this.scrollBottom();
     });
   }
 
