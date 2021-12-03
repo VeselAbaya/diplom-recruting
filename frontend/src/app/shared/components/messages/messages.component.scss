@@ -56,7 +56,7 @@ app-avatar {
     background-color: map-get($pn-background, card);
   }
 
-  .mat-spinner.mat-primary circle {
+  &::ng-deep .mat-spinner.mat-primary circle {
     stroke: mat.get-color-from-palette($pn-primary, 100);
   }
 }
