@@ -13,7 +13,7 @@
       Interactive map
     </ng-template>
 
-    <app-search-result-graph></app-search-result-graph>
+    <app-search-result-graph [graph]="relations.result$ | async"></app-search-result-graph>
   </mat-tab>
 </mat-tab-group>
 
@@ -25,21 +25,22 @@
   <div class="result-list-header">
     <span class="result-list-header-text">Search result</span>
 
-<!--    TODO: add sorting -->
-<!--    <mat-form-field class="pn-no-subscript">-->
-<!--      <mat-label>Sort by</mat-label>-->
-<!--      <mat-select>-->
-<!--        <mat-option>Name</mat-option>-->
-<!--        <mat-option>Network size</mat-option>-->
-<!--        <mat-option>Rate value</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
+    <!--    TODO: add sorting -->
+    <!--    <mat-form-field class="pn-no-subscript">-->
+    <!--      <mat-label>Sort by</mat-label>-->
+    <!--      <mat-select>-->
+    <!--        <mat-option>Name</mat-option>-->
+    <!--        <mat-option>Network size</mat-option>-->
+    <!--        <mat-option>Rate value</mat-option>-->
+    <!--      </mat-select>-->
+    <!--    </mat-form-field>-->
   </div>
   <app-hidden-scroll-wrapper orientation="vertical">
-    <app-search-result-list cdkScrollable [usersList$]="usersList$" [isLoading$]="isLoading$"></app-search-result-list>
+    <app-search-result-list cdkScrollable
+                            [users]="usersList$ | async"
+                            [isLoading]="!!(isLoading$ | async)"></app-search-result-list>
   </app-hidden-scroll-wrapper>
   <mat-paginator *ngIf="!(profile.selectedUser$ | async) && (search.pagination$ | async) as pagination"
-                 [pageSizeOptions]="LIMITS"
                  [pageIndex]="pagination.page"
                  [pageSize]="pagination.limit"
                  [length]="pagination.total"

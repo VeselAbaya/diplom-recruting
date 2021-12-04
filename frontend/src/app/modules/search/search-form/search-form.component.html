@@ -3,7 +3,7 @@
   <button mat-button color="primary" class="reset-button" (click)="reset()">Reset</button>
 </div>
 
-<form class="search-form" [formGroup]="form" (focusout)="onTouch()">
+<form class="search-form" [formGroup]="form">
   <mat-form-field class="pn-no-subscript full-row">
     <mat-label>Search</mat-label>
     <input type="text" formControlName="search" matInput>
