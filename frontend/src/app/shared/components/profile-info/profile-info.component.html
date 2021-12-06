@@ -14,7 +14,8 @@
                      #cropperComponent></angular-cropper>
     <button mat-stroked-button color="primary"
             mat-dialog-close
-            class="cropper-save-button" (click)="onAvatarCrop(cropperComponent.cropper)">Save</button>
+            class="cropper-save-button" (click)="onAvatarCrop(cropperComponent.cropper.getCroppedCanvas())">Save
+    </button>
   </ng-template>
 </div>
 
@@ -40,7 +41,8 @@
   </ng-container>
 
   <ng-template #notEditable>
-    <app-hourly class="user-info__rate" *ngIf="hourlyRate !== null && hourlyRate !== undefined" [rate]="hourlyRate"></app-hourly>
+    <app-hourly class="user-info__rate" *ngIf="hourlyRate !== null && hourlyRate !== undefined"
+                [rate]="hourlyRate"></app-hourly>
     <span class="user-info__name" *ngIf="name">{{name}}</span>
     <span class="user-info__email" *ngIf="email">
       <mat-icon svgIcon="message"></mat-icon>
