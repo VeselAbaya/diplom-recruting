@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter, ViewChild, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { AVATAR_EXT, DEFAULT_AVATAR_URL } from '@monorepo/constants';
@@ -16,7 +16,7 @@ export interface IProfileInfoChangeEvent {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileInfoComponent {
-  @ViewChild('cropperDialog', {static: true}) readonly cropperDialogRef: TemplateRef<unknown> | null = null;
+  @ViewChild('cropperDialog', { static: true }) readonly cropperDialogRef: TemplateRef<unknown> | null = null;
 
   @Input() avatarSrc = DEFAULT_AVATAR_URL;
   @Input() hourlyRate: number | null = null;
@@ -31,7 +31,8 @@ export class ProfileInfoComponent {
     this._editable = typeof val === 'string' ? true : val;
   }
 
-  constructor(private readonly snackbar: MatSnackBar, private readonly dialog: MatDialog) {}
+  constructor(private readonly snackbar: MatSnackBar, private readonly dialog: MatDialog) {
+  }
 
   onChange(prop: 'name' | 'email', event: Event): void {
     const inputEl = event.target as HTMLInputElement;
@@ -48,7 +49,7 @@ export class ProfileInfoComponent {
         prop === 'name'
           ? 'You should write first name at least'
           : (inputEl.value ? 'Invalid email' : 'Email is required'),
-        'Close', {panelClass: 'warn'}
+        'Close', { panelClass: 'warn' }
       );
       inputEl.value = (this[prop] ?? '').toString();
     }
@@ -80,15 +81,14 @@ export class ProfileInfoComponent {
     }
   }
 
-  onAvatarCrop(cropper: Cropper): void {
-    const canvas = cropper.getCroppedCanvas();
-    canvas.toBlob(blob => {
+  onAvatarCrop(croppedCanvas: HTMLCanvasElement): void {
+    croppedCanvas.toBlob(blob => {
       if (!blob) {
         this.snackbar.open('Something went wrong', 'Close');
         return;
       }
       this.avatarChange.emit(blob);
     }, `image/${AVATAR_EXT}`, .75);
-    this.avatarSrc = canvas.toDataURL(`image/${AVATAR_EXT}`);
+    this.avatarSrc = croppedCanvas.toDataURL(`image/${AVATAR_EXT}`);
   }
 }
