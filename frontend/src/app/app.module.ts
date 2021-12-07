@@ -18,6 +18,8 @@ import { LoadingInterceptor } from '@core/interceptors/loading.interceptor';
 import { BaseUrlInterceptor } from '@core/interceptors/base-url.interceptor';
 import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
 import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
+import { MAT_PAGINATOR_DEFAULT_OPTIONS } from '@angular/material/paginator';
+import { LIMITS } from '@monorepo/types/pagination/limits';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,7 @@ import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
     },
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {appearance: 'outline'}
+      useValue: { appearance: 'outline' }
     },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
@@ -73,7 +75,14 @@ import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
         duration: 5000
       }
     },
+    {
+      provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+      useValue: {
+        pageSizeOptions: LIMITS
+      }
+    },
     FullNamePipe
   ]
 })
-export class AppModule { }
+export class AppModule {
+}

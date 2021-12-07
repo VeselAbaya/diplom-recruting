@@ -1,1 +1,1 @@
-export const FORM_DEBOUNCE = 500;
+export const FORM_DEBOUNCE = 400;

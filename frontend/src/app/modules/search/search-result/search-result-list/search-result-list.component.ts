@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
-import { Observable, of } from 'rxjs';
 import { AuthService } from '@core/services/auth/auth.service';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
@@ -11,11 +10,8 @@ import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdest
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchResultListComponent extends OnDestroyMixin {
-  // TODO Why it accepts observable?
-  //      To make | async by itself? (kek)
-
-  @Input() usersList$: Observable<IUserListItem[] | null | undefined> = of(null);
-  @Input() isLoading$: Observable<boolean> = of(false);
+  @Input() users: IUserListItem[] | null | undefined = null;
+  @Input() isLoading = false;
 
   @HostBinding('class.not-authenticated-user') isUserUnauthorized = true;
 
