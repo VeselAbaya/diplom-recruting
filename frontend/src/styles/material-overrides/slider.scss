@@ -1,5 +1,4 @@
 @use '~@angular/material' as mat;
-@import '../shared/theme';
 
 // all this magic in that file just to show thumb-label always;
 
@@ -12,7 +11,7 @@
   }
 
   &:not(.cdk-focused) .mat-slider-thumb-label {
-    background-color: mat.get-color-from-palette($pn-foreground, slider-off);
+    background-color: var(--pn-foreground-slider-off);
   }
 
   .mat-slider-thumb {
@@ -32,7 +31,7 @@
     display: block;
     width: $empty-space-width;
     height: 2px;
-    background-color: map-get($pn-foreground, slider-off);
+    background-color: var(--pn-foreground-slider-off);
   }
 
   &.mat-slider-horizontal .mat-slider-wrapper {
@@ -41,5 +40,5 @@
 }
 
 .mat-slider.mat-slider-disabled.cdk-focused .mat-slider-thumb-label {
-  background-color: mat.get-color-from-palette($pn-foreground, slider-off);
+  background-color: var(--pn-foreground-slider-off);
 }

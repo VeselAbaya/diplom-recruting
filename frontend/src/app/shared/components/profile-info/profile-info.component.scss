@@ -1,6 +1,5 @@
 @use '~@angular/material' as mat;
 @import '~src/styles/shared/typography';
-@import '~src/styles/shared/theme';
 @import '~src/styles/shared/variables';
 
 :host,
@@ -32,7 +31,7 @@ $avatar-size: 110px;
     height: 100%;
 
     border-radius: 50%;
-    background-color: map-get($pn-foreground, elevation);
+    background-color: var(--pn-foreground-elevation);
     cursor: pointer;
     opacity: 0;
     transition: opacity $transition-duration;
@@ -45,7 +44,7 @@ $avatar-size: 110px;
   label .mat-icon {
     width: 80px;
     height: 80px;
-    color: mat.get-color-from-palette($pn-primary, default, .65);
+    color: rgba(var(--pn-primary-default), .65);
   }
 
   input {
@@ -62,6 +61,7 @@ app-avatar {
   align-items: flex-start;
   justify-content: center;
   overflow: hidden;
+  width: 100%;
   max-width: 100%;
 
   &__rate {
@@ -74,13 +74,19 @@ app-avatar {
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 100%;
+    width: 100%;
+  }
+
+  &__name input {
+    width: 100%;
   }
 
   &__email {
     display: flex;
     align-items: center;
     max-width: 100%;
-    color: mat.get-color-from-palette($pn-primary, default);
+    width: 100%;
+    color: var(--pn-primary-default);
   }
 
   &__email-value {
@@ -92,6 +98,7 @@ app-avatar {
 
   &__email input {
     color: inherit;
+    width: 100%;
   }
 
   &__email .mat-icon {

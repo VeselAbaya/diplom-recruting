@@ -25,18 +25,23 @@
                 editable
                 (rateChange)="onRateChange($event)"
                 [rate]="hourlyRate"></app-hourly>
-    <input class="user-info__name"
-           appThinInput
-           [value]="name"
-           placeholder="Your Name"
-           (change)="onChange('name', $event)">
+
+    <app-thin-input-field class="user-info__name">
+      <input appThinInput
+             [value]="name"
+             placeholder="Your Name"
+             (change)="onChange('name', $event)">
+    </app-thin-input-field>
+
     <span class="user-info__email" *ngIf="email">
       <mat-icon svgIcon="message"></mat-icon>
-      <input appThinInput
-             type="email"
-             placeholder="Your Email"
-             [value]="email"
-             (change)="onChange('email', $event)">
+      <app-thin-input-field>
+        <input appThinInput
+               type="email"
+               placeholder="Your Email"
+               [value]="email"
+               (change)="onChange('email', $event)">
+      </app-thin-input-field>
     </span>
   </ng-container>
 

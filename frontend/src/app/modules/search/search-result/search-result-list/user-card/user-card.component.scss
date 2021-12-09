@@ -1,5 +1,5 @@
 @use '~@angular/material' as mat;
-@import '~src/styles/shared/theme';
+@use 'sass:map';
 @import '~src/styles/shared/typography';
 
 :host {
@@ -10,9 +10,9 @@
   align-items: flex-start;
   box-sizing: border-box;
   padding: 22px 52px 22px 17px;
-  border: 1px solid map-get($pn-foreground, divider);
+  border: 1px solid var(--pn-foreground-divider);
   border-radius: 4px;
-  background-color: map-get($pn-background, card);
+  background-color: var(--pn-background-card);
 }
 
 .user {
@@ -31,7 +31,7 @@
     overflow: hidden;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    color: mat.get-color-from-palette($pn-primary, default);
+    color: var(--pn-primary-default);
   }
   // stylelint-enable value-no-vendor-prefix, property-no-vendor-prefix
 
@@ -45,7 +45,7 @@
   align-items: center;
 
   .mat-icon {
-    color: mat.get-color-from-palette($pn-primary, lighter);
+    color: var(--pn-primary-lighter);
     margin-right: 8px;
   }
 
@@ -70,5 +70,5 @@
   padding: 17px 8px 17px 4px;
   gap: 4px;
   box-sizing: border-box;
-  color: mat.get-color-from-palette($pn-primary, default);
+  color: var(--pn-primary-default);
 }

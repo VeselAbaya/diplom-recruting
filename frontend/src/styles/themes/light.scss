@@ -1,0 +1,100 @@
+/* This file NOT FOR IMPORT */
+@use 'sass:map';
+@use '~@angular/material' as mat;
+@import 'pn-theme.mixin';
+
+$light-body-background-color: #f4f5f7;
+$light-text-color: #03030b;
+
+$pn-light-primary: mat.define-palette((
+  50: #c7c2f2,
+  100: #6f63ff,
+  500: #0336ff,
+  700: #0008ca,
+  contrast: (
+    50: $light-text-color,
+    100: $light-text-color,
+    500: #fff,
+    700: #fff
+  )
+), $lighter: 50, $default: 700);
+
+$light-auth-body-background-color: mat.get-color-from-palette($pn-light-primary, 50, .25);
+
+$pn-light-accent: mat.define-palette((
+  100: #ffff54,
+  500: #ffde03,
+  700: #c7ad00,
+  contrast: (
+    100: $light-text-color,
+    500: $light-text-color,
+    700: #fff
+  )
+));
+
+$pn-light-warn: mat.define-palette((
+  100: #ff615e,
+  500: #ff1203,
+  700: #cc0e04,
+  contrast: (
+    100: $light-text-color,
+    500: $light-text-color,
+    700: #fff,
+  )
+));
+
+$pn-light-foreground: (
+  base:              black,
+  divider:           mat.get-color-from-palette($pn-light-primary, 50),
+  dividers:          mat.get-color-from-palette($pn-light-primary, 50),
+  disabled:          rgba(black, 0.38),
+  disabled-button:   rgba(189, 189, 189),
+  disabled-text:     var(--material-disabled-text-color, #{rgba(black, 0.38)}),
+  elevation:         mat.get-color-from-palette($pn-light-primary, default, .2),
+  hint-text:         rgba(black, 0.38),
+  secondary-text:    mat.get-color-from-palette($pn-light-primary, 50),
+  icon:              rgba(black, 0.54),
+  icons:             rgba(black, 0.54),
+  text:              rgba(black, 0.87),
+  slider-min:        rgba(black, 0.87),
+  slider-off:        rgba(black, 0.26),
+  slider-off-active: rgba(black, 0.38),
+);
+
+$pn-light-background: (
+  status-bar: map.get(mat.$grey-palette, 300),
+  app-bar:    map.get(mat.$grey-palette, 100),
+  background: map.get(mat.$grey-palette, 50),
+  hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
+  card:       white,
+  dialog:     white,
+  disabled-button: rgba(black, 0.12),
+  raised-button: white,
+  focused-button: rgba(black, 0.12),
+  selected-button: map.get(mat.$grey-palette, 300),
+  selected-disabled-button: map.get(mat.$grey-palette, 400),
+  disabled-button-toggle: map.get(mat.$grey-palette, 200),
+  unselected-chip: map.get(mat.$grey-palette, 300),
+  disabled-list-option: map.get(mat.$grey-palette, 200),
+  tooltip: map.get(mat.$grey-palette, 700),
+);
+
+$pn-light-theme: map-merge(
+  mat.define-light-theme(
+    $primary: $pn-light-primary,
+    $accent: $pn-light-accent,
+    $warn: $pn-light-warn
+  ),
+  (
+    foreground: $pn-light-foreground,
+    background: $pn-light-background
+  )
+);
+
+@include pn-theme(
+  $pn-light-theme,
+  $light-text-color,
+  $light-body-background-color,
+  $light-auth-body-background-color
+);
+

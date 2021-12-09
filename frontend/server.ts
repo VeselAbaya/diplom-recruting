@@ -9,7 +9,7 @@ import { AppServerModule } from './src/main.server';
 import { existsSync } from 'fs';
 import { APP_PORT } from '@shared/tokens/app-port.token';
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4200;
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -20,7 +20,12 @@ export function app(): express.Express {
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
-    providers: [{ provide: APP_PORT, useValue: port }]
+    providers: [{ provide: APP_PORT, useValue: port }],
+    // If inlineCriticalCss: true
+    // it adds to <link rel="stylesheet" href="dark.css" media="(prefers-color-scheme: dark)">
+    //  attribute <link ... onload="this.media='(prefers-color-scheme: dark)'">
+    // and it's breaking all scheme-related stuff
+    inlineCriticalCss: false
   }));
 
   server.set('view engine', 'html');

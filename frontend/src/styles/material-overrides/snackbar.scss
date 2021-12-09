@@ -1,5 +1,4 @@
 @use '~@angular/material' as mat;
-@import '../shared/palettes';
 
 .mat-snack-bar-container {
   .mat-button-base {
@@ -8,14 +7,14 @@
   }
 
   &.primary .mat-button-base {
-    color: mat.get-color-from-palette($pn-primary, default);
+    color: var(--pn-primary-default);
   }
 
   &.accent .mat-button-base {
-    color: mat.get-color-from-palette($pn-accent, default);
+    color: var(--pn-accent-default);
   }
 
   &.warn .mat-button-base {
-    color: mat.get-color-from-palette($pn-warn, default);
+    color: var(--pn-warn-default);
   }
 }

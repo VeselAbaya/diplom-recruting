@@ -1,5 +1,4 @@
 @use '~@angular/material' as mat;
-@import '~src/styles/shared/theme';
 
 :host,
 :host ::ng-deep .mat-button-wrapper {
@@ -17,7 +16,7 @@ app-avatar {
 
 .user-name {
   margin-right: 8px;
-  color: mat.get-color-from-palette($pn-primary, default-contrast);
+  color: var(--pn-primary-default-contrast);
 }
 
 .user-profile {
@@ -37,7 +36,7 @@ app-avatar {
 
   &__email {
     margin-bottom: 9px;
-    color: map-get($pn-foreground, secondary-text);
+    color: var(--pn-foreground-secondary-text);
   }
 }
 
@@ -53,8 +52,8 @@ app-avatar {
     height: $badge-size;
     margin-left: 11px;
     border-radius: 50%;
-    background-color: mat.get-color-from-palette($pn-accent, default);
-    color: mat.get-color-from-palette($pn-accent, default-contrast);
+    background-color: var(--pn-accent-default);
+    color: var(--pn-accent-default-contrast);
     line-height: $badge-size;
     text-align: center;
   }

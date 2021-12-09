@@ -10,7 +10,9 @@
   position: relative;
   display: inline-flex;
 
+  // stylelint-disable-next-line selector-no-qualifying-type
   ::ng-deep input[appThinInput] {
+    color: currentColor;
     position: absolute;
     top: 0;
     left: 0;
@@ -19,9 +21,6 @@
 
 .thin-input-mirror {
   // Disable user selection so users don't accidentally copy the text via ctrl + A.
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 
   // Hide the element so it doesn't get read out by screen

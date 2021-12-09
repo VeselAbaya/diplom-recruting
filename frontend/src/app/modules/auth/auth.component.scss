@@ -1,11 +1,10 @@
 @use '~@angular/material' as mat;
-@import '~src/styles/shared/palettes';
 
 :host {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: mat.get-color-from-palette($pn-primary, 50, .25);
+  background-color: var(--pn-auth-body-background-color);
   box-sizing: border-box;
 }
 

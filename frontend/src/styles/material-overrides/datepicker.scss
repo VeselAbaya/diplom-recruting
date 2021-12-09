@@ -1,21 +1,8 @@
 @use '~@angular/material' as mat;
-@import '../shared/theme';
 
 // from https://github.com/angular/components/blob/11.0.x/src/material/core/style/_vendor-prefixes.scss#L9
 @mixin input-placeholder {
   &::placeholder {
-    @content;
-  }
-
-  &::-moz-placeholder {
-    @content;
-  }
-
-  &::-webkit-input-placeholder {
-    @content;
-  }
-
-  &:-ms-input-placeholder {
     @content;
   }
 }
@@ -24,8 +11,8 @@
   @include input-placeholder {
     // Needs to be !important, because the placeholder will end up inheriting the
     // input color in IE, if the consumer overrides it with a higher specificity.
-    color: mat.get-color-from-palette($pn-primary, 50) !important;
-    -webkit-text-fill-color: mat.get-color-from-palette($pn-primary, 50);
+    color: var(--pn-primary-lighter) !important;
+    -webkit-text-fill-color: var(--pn-primary-lighter);
     transition: color 400ms 400ms / 3
       cubic-bezier(0.25, 0.8, 0.25, 1);
   }
@@ -35,7 +22,7 @@
   @include input-placeholder {
     // Needs to be !important, because the placeholder will end up inheriting the
     // input color in IE, if the consumer overrides it with a higher specificity.
-    color: mat.get-color-from-palette($pn-warn, default) !important;
-    -webkit-text-fill-color: mat.get-color-from-palette($pn-warn, default);
+    color: var(--pn-warn-default) !important;
+    -webkit-text-fill-color: var(--pn-warn-default);
   }
 }

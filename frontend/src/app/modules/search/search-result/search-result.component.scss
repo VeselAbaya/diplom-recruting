@@ -1,7 +1,6 @@
 @use '~@angular/material' as mat;
 @import '~src/styles/shared/typography';
 @import '~src/styles/shared/variables';
-@import '~src/styles/shared/theme';
 
 :host {
   display: flex;
@@ -41,6 +40,6 @@ app-search-result-list {
 }
 
 app-search-result-graph {
-  border: 1px solid map-get($pn-foreground, divider);
+  border: 1px solid var(--pn-foreground-divider);
   border-radius: 4px;
 }

@@ -1,5 +1,4 @@
 @use '~@angular/material' as mat;
-@import '../shared/palettes';
 @import '../shared/variables';
 
 .mat-button-toggle-group {
@@ -24,7 +23,7 @@
   }
 
   &-checked {
-    background-color: mat.get-color-from-palette($pn-accent, default);
-    color: mat.get-color-from-palette($pn-accent, default-contrast);
+    background-color: var(--pn-accent-default);
+    color: var(--pn-accent-default-contrast);
   }
 }

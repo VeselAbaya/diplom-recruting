@@ -1,4 +1,3 @@
-@import '~src/styles/shared/theme';
 @import '~src/styles/shared/variables';
 
 $left-side-width: 350px;
@@ -23,9 +22,9 @@ $left-side-width: 350px;
 app-messages {
   flex-grow: 1;
   padding-bottom: 4px;
-  border: 1px solid map-get($pn-foreground, divider);
+  border: 1px solid var(--pn-foreground-divider);
   border-radius: 4px;
-  background-color: map-get($pn-background, card);
+  background-color: var(--pn-background-card);
 
   ::ng-deep .messages {
     padding: 8px 5px;

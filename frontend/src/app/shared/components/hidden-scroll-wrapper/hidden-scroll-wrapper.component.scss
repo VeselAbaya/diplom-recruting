@@ -42,13 +42,13 @@
 
   &--horizontal::before {
     left: 0;
-    background: linear-gradient(90deg, var(--hidden-area-background, #{$body-background-color}), transparent);
+    background: linear-gradient(90deg, var(--hidden-area-background, var(--pn-body-background-color)), transparent);
   }
 
   &--horizontal::after {
     top: 0;
     right: 0;
-    background: linear-gradient(-90deg, var(--hidden-area-background, #{$body-background-color}), transparent);
+    background: linear-gradient(-90deg, var(--hidden-area-background, var(--pn-body-background-color)), transparent);
   }
 
   &--vertical::before,
@@ -59,12 +59,12 @@
 
   &--vertical::before {
     top: 0;
-    background: linear-gradient(180deg, var(--hidden-area-background, #{$body-background-color}), transparent);
+    background: linear-gradient(180deg, var(--hidden-area-background, var(--pn-body-background-color)), transparent);
   }
 
   &--vertical::after {
     bottom: 0;
-    background: linear-gradient(0, var(--hidden-area-background, #{$body-background-color}), transparent);
+    background: linear-gradient(0, var(--hidden-area-background, var(--pn-body-background-color)), transparent);
   }
 
   &--scrolled-close-to-begin::before,

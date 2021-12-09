@@ -28,6 +28,6 @@ app-messages {
 
   ::ng-deep app-hidden-scroll-wrapper {
     --hidden-area-size: 70px;
-    --hidden-area-background: #{$body-background-color};
+    --hidden-area-background: var(--pn-body-background-color);
   }
 }
