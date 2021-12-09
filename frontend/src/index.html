@@ -5,11 +5,28 @@
   <title>ProfessionalNetwork</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <!-- TODO maybe it's not needed cause we use one 'cancel' icon, it's better to move it to assets/icons  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+
+  <!-- In case if browser not supports prefers-color-scheme -->
+  <script>
+    if (matchMedia('(prefers-color-scheme: dark)').media === 'not all') {
+      document.documentElement.style.display = 'none';
+      document.head.insertAdjacentHTML(
+        'beforeend',
+        `<link rel="stylesheet"
+                    href="light.css"
+                    onload="document.documentElement.style.display = ''">`
+      )
+    }
+  </script>
+  <link rel="stylesheet" href="dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="light.css" media="(prefers-color-scheme: light)">
 </head>
 <body class="mat-typography pn-body">
-  <app-root></app-root>
+<app-root></app-root>
 </body>
 </html>

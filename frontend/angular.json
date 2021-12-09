@@ -34,7 +34,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              {
+                "input": "src/styles/themes/light.scss",
+                "inject": false
+              },
+              {
+                "input": "src/styles/themes/dark.scss",
+                "inject": false
+              }
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -52,7 +60,14 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -142,7 +157,7 @@
             "tsConfig": "tsconfig.server.json",
             "optimization": false,
             "sourceMap": true,
-            "extractLicenses": false,
+            "extractLicenses": false
           },
           "configurations": {
             "production": {
@@ -194,6 +209,7 @@
           "defaultConfiguration": "production"
         }
       }
-    }},
+    }
+  },
   "defaultProject": "professional-network"
 }

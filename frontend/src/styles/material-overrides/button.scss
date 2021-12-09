@@ -1,6 +1,5 @@
 @use '~@angular/material' as mat;
 @import '../shared/typography';
-@import '../shared/palettes';
 
 :not(.mat-snack-bar-container) .mat-button-base {
   --height: 40px;
@@ -13,14 +12,14 @@
 
 .mat-stroked-button:not(.mat-button-disabled) {
   &.mat-primary {
-    border-color: mat.get-color-from-palette($pn-primary, default);
+    border-color: var(--pn-primary-default);
   }
 
   &.mat-warn {
-    border-color: mat.get-color-from-palette($pn-warn, default);
+    border-color: var(--pn-warn-default);
   }
 
   &.mat-accent {
-    border-color: mat.get-color-from-palette($pn-accent, default);
+    border-color: var(--pn-accent-default);
   }
 }

@@ -1,5 +1,4 @@
 @use '~@angular/material' as mat;
-@import '~src/styles/shared/theme';
 
 :host {
   display: flex;
@@ -7,7 +6,7 @@
 }
 
 .mat-card {
-  @include mat.elevation(4, map-get($pn-foreground, elevation));
+  @include mat.elevation(4, var(--pn-foreground-elevation));
   position: relative;
   width: 480px;
   min-width: 470px;
@@ -18,7 +17,7 @@
     position: absolute;
     top: 16px;
     right: 16px;
-    color: map-get($pn-foreground, secondary-text);
+    color: var(--pn-foreground-secondary-text);
   }
 }
 

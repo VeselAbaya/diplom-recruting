@@ -8,25 +8,21 @@
 @import 'styles/shared/typography';
 @include mat.core($pn-typography);
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@import 'styles/shared/theme';
-@include mat.all-component-themes($pn-theme);
+// All material components specific styles and application' custom properties includes in styles/themes
 
-/* You can add global styles to this file, and also import other style files */
-@import 'styles/shared/palettes';
-@import 'styles/shared/variables';
+:root {
+  color-scheme: light dark;
+}
 
 html,
 body {
-  background-color: $body-background-color;
+  background-color: var(--pn-body-background-color);
 }
 
 body {
   margin: 0;
   font-family: mat.font-family($pn-typography);
-  color: $text-color;
+  color: var(--pn-text-color);
 }
 
 .pn-body {
@@ -37,7 +33,7 @@ input {
   font: inherit;
 
   &::placeholder {
-    color: map-get($pn-foreground, secondary-text);
+    color: var(--pn-light-foreground-secondary-text);
   }
 
   // stylelint-disable property-no-vendor-prefix, selector-no-qualifying-type
@@ -87,5 +83,5 @@ input {
 }
 
 .pn-hint {
-  color: map-get($pn-foreground, secondary-text);
+  color: var(--pn-foreground-secondary-text);
 }

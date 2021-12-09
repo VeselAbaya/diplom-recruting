@@ -1,5 +1,4 @@
 @use '~@angular/material' as mat;
-@import '~src/styles/shared/palettes';
 
 :host {
   --size: 56px;
@@ -21,7 +20,7 @@
     width: calc(var(--size) - 2px);
     height: calc(var(--size) - 2px);
     border-radius: 50%;
-    background-color: mat.get-color-from-palette($pn-primary, lighter);
+    background-color: var(--pn-primary-lighter);
   }
 }
 
@@ -39,6 +38,6 @@
     height: var(--size);
     width: var(--size);
     border-radius: 4px;
-    background-color: mat.get-color-from-palette($pn-primary, lighter);
+    background-color: var(--pn-primary-lighter);
   }
 }

@@ -1,5 +1,3 @@
-@import '~src/styles/shared/theme';
-
 form {
   display: flex;
   align-items: center;
@@ -13,5 +11,5 @@ form {
   width: 12px;
   height: 1px;
   margin: 0 6px;
-  background-color: map-get($pn-foreground, divider);
+  background-color: var(--pn-foreground-divider);
 }

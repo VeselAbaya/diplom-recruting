@@ -1,0 +1,100 @@
+@use '~@angular/material' as mat;
+@use 'sass:map';
+
+/* Generates all css custom properties used by application' styles */
+@mixin pn-theme($mat-theme, $text-color, $body-background-color, $auth-body-background-color) {
+  $primary: map.get($mat-theme, primary);
+  $accent: map.get($mat-theme, accent);
+  $warn: map.get($mat-theme, warn);
+  $foreground: map.get($mat-theme, foreground);
+  $background: map.get($mat-theme, background);
+
+  @include mat.all-component-themes($mat-theme);
+
+  :root {
+    /* COMMON */
+
+    --pn-text-color: #{$text-color};
+    --pn-body-background-color: #{$body-background-color};
+    --pn-auth-body-background-color: #{$auth-body-background-color};
+
+    /* PALETTES */
+
+    --pn-primary-50: #{mat.get-color-from-palette($primary, 50)};
+    --pn-primary-100: #{mat.get-color-from-palette($primary, 100)};
+    --pn-primary-500: #{mat.get-color-from-palette($primary, 500)};
+    --pn-primary-700: #{mat.get-color-from-palette($primary, 700)};
+    --pn-primary-contrast-50: #{mat.get-contrast-color-from-palette($primary, 50)};
+    --pn-primary-contrast-100: #{mat.get-contrast-color-from-palette($primary, 100)};
+    --pn-primary-contrast-500: #{mat.get-contrast-color-from-palette($primary, 500)};
+    --pn-primary-contrast-700: #{mat.get-contrast-color-from-palette($primary, 700)};
+    --pn-primary-lighter: #{mat.get-color-from-palette($primary, lighter)};
+    --pn-primary-default: #{mat.get-color-from-palette($primary, default)};
+    --pn-primary-dark: #{mat.get-color-from-palette($primary, dark)};
+    --pn-primary-lighter-contrast: #{mat.get-color-from-palette($primary, lighter-contrast)};
+    --pn-primary-default-contrast: #{mat.get-color-from-palette($primary, default-contrast)};
+    --pn-primary-dark-contrast: #{mat.get-color-from-palette($primary, dark-contrast)};
+
+    --pn-accent-100: #{mat.get-color-from-palette($accent, 100)};
+    --pn-accent-500: #{mat.get-color-from-palette($accent, 500)};
+    --pn-accent-700: #{mat.get-color-from-palette($accent, 700)};
+    --pn-accent-contrast-100: #{mat.get-contrast-color-from-palette($accent, 100)};
+    --pn-accent-contrast-500: #{mat.get-contrast-color-from-palette($accent, 500)};
+    --pn-accent-contrast-700: #{mat.get-contrast-color-from-palette($accent, 700)};
+    --pn-accent-lighter: #{mat.get-color-from-palette($accent, lighter)};
+    --pn-accent-default: #{mat.get-color-from-palette($accent, default)};
+    --pn-accent-dark: #{mat.get-color-from-palette($accent, dark)};
+    --pn-accent-lighter-contrast: #{mat.get-color-from-palette($accent, lighter-contrast)};
+    --pn-accent-default-contrast: #{mat.get-color-from-palette($accent, default-contrast)};
+    --pn-accent-dark-contrast: #{mat.get-color-from-palette($accent, dark-contrast)};
+
+    --pn-warn-100: #{mat.get-color-from-palette($warn, 100)};
+    --pn-warn-500: #{mat.get-color-from-palette($warn, 500)};
+    --pn-warn-700: #{mat.get-color-from-palette($warn, 700)};
+    --pn-warn-contrast-100: #{mat.get-contrast-color-from-palette($warn, 100)};
+    --pn-warn-contrast-500: #{mat.get-contrast-color-from-palette($warn, 500)};
+    --pn-warn-contrast-700: #{mat.get-contrast-color-from-palette($warn, 700)};
+    --pn-warn-lighter: #{mat.get-color-from-palette($warn, lighter)};
+    --pn-warn-default: #{mat.get-color-from-palette($warn, default)};
+    --pn-warn-dark: #{mat.get-color-from-palette($warn, dark)};
+    --pn-warn-lighter-contrast: #{mat.get-color-from-palette($warn, lighter-contrast)};
+    --pn-warn-default-contrast: #{mat.get-color-from-palette($warn, default-contrast)};
+    --pn-warn-dark-contrast: #{mat.get-color-from-palette($warn, dark-contrast)};
+
+    /* FOREGROUND */
+
+    --pn-foreground-base: #{map.get($foreground, base)};
+    --pn-foreground-divider: #{map.get($foreground, divider)};
+    --pn-foreground-dividers: #{map.get($foreground, dividers)};
+    --pn-foreground-disabled: #{map.get($foreground, disabled)};
+    --pn-foreground-disabled-button: #{map.get($foreground, disabled-button)};
+    --pn-foreground-disabled-text: #{map.get($foreground, disabled-text)};
+    --pn-foreground-elevation: #{map.get($foreground, elevation)};
+    --pn-foreground-hint-text: #{map.get($foreground, hint-text)};
+    --pn-foreground-secondary-text: #{map.get($foreground, secondary-text)};
+    --pn-foreground-icon: #{map.get($foreground, icon)};
+    --pn-foreground-icons: #{map.get($foreground, icons)};
+    --pn-foreground-text: #{map.get($foreground, text)};
+    --pn-foreground-slider-min: #{map.get($foreground, slider-min)};
+    --pn-foreground-slider-off: #{map.get($foreground, slider-off)};
+    --pn-foreground-slider-off-active: #{map.get($foreground, slider-off-active)};
+
+    /* BACKGROUND */
+
+    --pn-background-status-bar: #{map.get($background, status-bar)};
+    --pn-background-app-bar: #{map.get($background, app-bar)};
+    --pn-background-background: #{map.get($background, background)};
+    --pn-background-hover: #{map.get($background, hover)};
+    --pn-background-card: #{map.get($background, card)};
+    --pn-background-dialog: #{map.get($background, dialog)};
+    --pn-background-disabled-button: #{map.get($background, disabled-button)};
+    --pn-background-raised-button: #{map.get($background, raised-button)};
+    --pn-background-focused-button: #{map.get($background, focused-button)};
+    --pn-background-selected-button: #{map.get($background, selected-button)};
+    --pn-background-selected-disabled-button: #{map.get($background, selected-disabled-button)};
+    --pn-background-disabled-button-toggle: #{map.get($background, disabled-button-toggle)};
+    --pn-background-unselected-chip: #{map.get($background, unselected-chip)};
+    --pn-background-disabled-list-option: #{map.get($background, disabled-list-option)};
+    --pn-background-tooltip: #{map.get($background, tooltip)};
+  }
+}

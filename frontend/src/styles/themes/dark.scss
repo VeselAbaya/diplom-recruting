@@ -1,0 +1,99 @@
+/* This file NOT FOR IMPORT */
+@use 'sass:map';
+@use '~@angular/material' as mat;
+@import 'pn-theme.mixin';
+
+$dark-body-background-color: #303030;
+$dark-auth-body-background-color: #565561;
+$dark-text-color: #fff;
+$light-text-color: #03030b;
+
+$pn-dark-primary: mat.define-palette((
+  50: #0008ca,
+  100: #0336ff,
+  500: #6f63ff,
+  700: #c7c2f2,
+  contrast: (
+    50: $dark-text-color,
+    100: $dark-text-color,
+    500: #fff,
+    700: #fff
+  )
+), $lighter: 700, $default: 500);
+
+$pn-dark-accent: mat.define-palette((
+  100: #ffde03,
+  500: #ffde03,
+  700: #c7ad00,
+  contrast: (
+    100: $light-text-color,
+    500: $light-text-color,
+    700: #fff
+  )
+), $lighter: 500);
+
+$pn-dark-warn: mat.define-palette((
+  100: #ff615e,
+  500: #ff1203,
+  700: #cc0e04,
+  contrast: (
+    100: $dark-text-color,
+    500: $dark-text-color,
+    700: #fff,
+  )
+), $default: 100);
+
+$pn-dark-foreground: (
+  base:              white,
+  divider:           rgba(white, 0.12),
+  dividers:          rgba(white, 0.12),
+  disabled:          rgba(white, 0.5),
+  disabled-button:   rgba(white, 0.3),
+  disabled-text:     rgba(white, 0.5),
+  elevation:         mat.get-color-from-palette($pn-dark-primary, default, .2),
+  hint-text:         rgba(white, 0.5),
+  secondary-text:    mat.get-color-from-palette($pn-dark-primary, 700),
+  icon:              white,
+  icons:             white,
+  text:              white,
+  slider-min:        white,
+  slider-off:        rgba(white, 0.3),
+  slider-off-active: rgba(white, 0.3),
+);
+
+$pn-dark-background: (
+  status-bar: black,
+  app-bar:    map.get(mat.$grey-palette, 900),
+  background: #303030,
+  hover:      rgba(white, 0.04), // TODO(kara): check style with Material Design UX
+  card:       #353535,
+  dialog:     #353535,
+  disabled-button: rgba(white, 0.12),
+  raised-button: #353535,
+  focused-button: rgba(white, 0.12),
+  selected-button: map.get(mat.$grey-palette, 900),
+  selected-disabled-button: #353535,
+  disabled-button-toggle: black,
+  unselected-chip: map.get(mat.$grey-palette, 700),
+  disabled-list-option: black,
+  tooltip: map.get(mat.$grey-palette, 700),
+);
+
+$pn-dark-theme: map-merge(
+  mat.define-dark-theme(
+    $primary: $pn-dark-primary,
+    $accent: $pn-dark-accent,
+    $warn: $pn-dark-warn
+  ),
+  (
+    foreground: $pn-dark-foreground,
+    background: $pn-dark-background
+  )
+);
+
+@include pn-theme(
+  $pn-dark-theme,
+  $dark-text-color,
+  $dark-body-background-color,
+  $dark-auth-body-background-color
+);

@@ -1,7 +1,5 @@
 @use '~@angular/material' as mat;
 @use 'sass:math';
-@import '../shared/palettes';
-@import '../shared/theme';
 @import '../shared/typography';
 @import '../shared/variables';
 
@@ -33,15 +31,15 @@
   }
 
   &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-outline {
-    color: mat.get-color-from-palette($pn-foreground, divider);
+    color: var(--pn-foreground-divider);
   }
 
   &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-outline-thick {
-    color: mat.get-color-from-palette($pn-foreground, divider);
+    color: var(--pn-foreground-divider);
   }
 
   &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-label {
-    color: mat.get-color-from-palette($pn-foreground, secondary-text);
+    color: var(--pn-foreground-secondary-text);
   }
 
   .mat-form-field-infix {

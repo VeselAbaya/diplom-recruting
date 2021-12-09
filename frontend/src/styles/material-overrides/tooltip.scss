@@ -1,9 +1,8 @@
 @use '~@angular/material' as mat;
-@import '../shared/theme';
 @import '../shared/typography';
 
 .mat-tooltip {
   @include mat.typography-level($pn-typography, body-2);
   margin: 8px;
-  color: map-get($pn-foreground, secondary-text);
+  color: var(--pn-foreground-secondary-text);
 }
