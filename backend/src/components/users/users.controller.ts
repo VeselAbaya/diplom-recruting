@@ -2,10 +2,16 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
-  Get, Param, ParseUUIDPipe,
-  Patch, Post, Query, Req,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+  Req,
   UseGuards,
-  UseInterceptors, UsePipes,
+  UseInterceptors,
+  UsePipes,
   ValidationPipe
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -52,7 +58,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(OptionalJwtAuthGuard)
-  @UsePipes(new ValidationPipe({transform: true, transformOptions: {enableImplicitConversion: true}}))
+  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { enableImplicitConversion: true } }))
   @UseInterceptors(ClassSerializerInterceptor)
   getUsers(@Query() searchParamsDto: SearchParamsDto,
            @User('id') userId: string | null): Promise<PaginationDto<UserListItemDto>> {

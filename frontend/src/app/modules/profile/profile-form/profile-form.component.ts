@@ -33,11 +33,11 @@ export class ProfileFormComponent extends OnDestroyMixin {
     workSchedule: new FormControl(null),
     workType: new FormControl(null),
     experience: new FormControl(null),
-  }, {updateOn: 'blur'});
+  }, { updateOn: 'blur' });
 
   profileUser$: Observable<IUserDto> = this.profile.selectedUser$.pipe(
     isNotNullOrUndefined(),
-    tap(user => this.form.reset(user, {emitEvent: false}))
+    tap(user => this.form.reset(user, { emitEvent: false }))
   );
 
   constructor(public readonly guard: ProfileGuard,
@@ -53,16 +53,18 @@ export class ProfileFormComponent extends OnDestroyMixin {
         patch.phone = patch.phone || null;
 
         if (this.form.valid) {
-          return this.profile.update(this.form.value).pipe(catchError(err => {
-            this.errors.handle(err);
-            this.form.reset(user, {emitEvent: false});
-            return of(user);
-          }));
+          return this.profile.update(this.form.value).pipe(
+            catchError(err => {
+              this.errors.handle(err);
+              this.form.reset(user, { emitEvent: false });
+              return of(user);
+            })
+          );
         } else {
           return of(user);
         }
       })
-    ).subscribe({error: this.errors.handle});
+    ).subscribe({ error: this.errors.handle });
   }
 
   _disabled = false;
@@ -81,6 +83,6 @@ export class ProfileFormComponent extends OnDestroyMixin {
 
   onProfileInfoChange(change: IProfileInfoChangeEvent): void {
     const [firstName, lastName] = change.name.split(' ');
-    this.form.patchValue({firstName, lastName, email: change.email, hourlyRate: change.hourlyRate});
+    this.form.patchValue({ firstName, lastName, email: change.email, hourlyRate: change.hourlyRate });
   }
 }

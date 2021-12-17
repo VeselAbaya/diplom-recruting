@@ -30,10 +30,10 @@
     --pn-primary-contrast-700: #{mat.get-contrast-color-from-palette($primary, 700)};
     --pn-primary-lighter: #{mat.get-color-from-palette($primary, lighter)};
     --pn-primary-default: #{mat.get-color-from-palette($primary, default)};
-    --pn-primary-dark: #{mat.get-color-from-palette($primary, dark)};
+    --pn-primary-dark: #{mat.get-color-from-palette($primary, darker)};
     --pn-primary-lighter-contrast: #{mat.get-color-from-palette($primary, lighter-contrast)};
     --pn-primary-default-contrast: #{mat.get-color-from-palette($primary, default-contrast)};
-    --pn-primary-dark-contrast: #{mat.get-color-from-palette($primary, dark-contrast)};
+    --pn-primary-dark-contrast: #{mat.get-color-from-palette($primary, darker-contrast)};
 
     --pn-accent-100: #{mat.get-color-from-palette($accent, 100)};
     --pn-accent-500: #{mat.get-color-from-palette($accent, 500)};
@@ -43,10 +43,10 @@
     --pn-accent-contrast-700: #{mat.get-contrast-color-from-palette($accent, 700)};
     --pn-accent-lighter: #{mat.get-color-from-palette($accent, lighter)};
     --pn-accent-default: #{mat.get-color-from-palette($accent, default)};
-    --pn-accent-dark: #{mat.get-color-from-palette($accent, dark)};
+    --pn-accent-dark: #{mat.get-color-from-palette($accent, darker)};
     --pn-accent-lighter-contrast: #{mat.get-color-from-palette($accent, lighter-contrast)};
     --pn-accent-default-contrast: #{mat.get-color-from-palette($accent, default-contrast)};
-    --pn-accent-dark-contrast: #{mat.get-color-from-palette($accent, dark-contrast)};
+    --pn-accent-dark-contrast: #{mat.get-color-from-palette($accent, darker-contrast)};
 
     --pn-warn-100: #{mat.get-color-from-palette($warn, 100)};
     --pn-warn-500: #{mat.get-color-from-palette($warn, 500)};
@@ -56,10 +56,10 @@
     --pn-warn-contrast-700: #{mat.get-contrast-color-from-palette($warn, 700)};
     --pn-warn-lighter: #{mat.get-color-from-palette($warn, lighter)};
     --pn-warn-default: #{mat.get-color-from-palette($warn, default)};
-    --pn-warn-dark: #{mat.get-color-from-palette($warn, dark)};
+    --pn-warn-dark: #{mat.get-color-from-palette($warn, darker)};
     --pn-warn-lighter-contrast: #{mat.get-color-from-palette($warn, lighter-contrast)};
     --pn-warn-default-contrast: #{mat.get-color-from-palette($warn, default-contrast)};
-    --pn-warn-dark-contrast: #{mat.get-color-from-palette($warn, dark-contrast)};
+    --pn-warn-dark-contrast: #{mat.get-color-from-palette($warn, darker-contrast)};
 
     /* FOREGROUND */
 

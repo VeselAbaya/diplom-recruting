@@ -7,6 +7,10 @@ export interface IJwtConfig {
   secret: string;
 }
 
+export interface ICookieConfig {
+  secret: string;
+}
+
 export class Config {
   static get DB(): INeo4jConfig {
     return config.get<INeo4jConfig>('db');
@@ -14,5 +18,9 @@ export class Config {
 
   static get JWT(): IJwtConfig {
     return config.get<IJwtConfig>('jwt');
+  }
+
+  static get Cookie(): ICookieConfig {
+    return config.get<ICookieConfig>('cookie');
   }
 }

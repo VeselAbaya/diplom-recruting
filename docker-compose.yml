@@ -1,5 +1,45 @@
+# for DEVELOPMENT purposes ONLY
 version: "3.9"
 services:
+  reverse-proxy:
+    image: nginx
+    ports:
+      - "443:443"
+    container_name: reverse_proxy
+    volumes:
+      - ./reverse-proxy.conf:/etc/nginx/nginx.conf
+      - ./ssl/cert.crt:/etc/nginx/cert.crt
+      - ./ssl/cert.key:/etc/nginx/cert.key
+    depends_on:
+      - frontend
+      - backend
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.dockerfile
+    container_name: frontend
+    command: bash -c "node_modules/@angular/cli/bin/ng run professional-network:serve-ssr"
+    volumes:
+      - ./frontend:/usr/src/app/frontend
+      - ./shared:/usr/src/app/shared
+      - /usr/src/app/frontend/node_modules
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    container_name: backend
+    command: bash -c "node_modules/@nestjs/cli/bin/nest.js start --watch"
+    volumes:
+      - ./backend:/usr/src/app/backend
+      - ./shared:/usr/src/app/shared
+      - ./ssl:/usr/src/app/ssl
+      - /usr/src/app/backend/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     build:
       context: .
@@ -7,16 +47,22 @@ services:
     volumes:
       - neo4jdata:/var/lib/neo4j/data
       - neo4jplugins:/var/lib/neo4j/plugins
+    container_name: db
     ports:
-      - "7474:7474"
-      - "7687:7687"
+      - "7474:7474" # neo4j browser port | for debugging purposes only
     environment:
       - NEO4J_dbms_security_procedures_whilelist=apoc.*
       - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - apoc.initializer.neo4j.0=CREATE CONSTRAINT email_unique IF NOT EXISTS ON (user:User) ASSERT user.email IS UNIQUE;
       - apoc.initializer.neo4j.1=CREATE CONSTRAINT request_unique IF NOT EXISTS ON (r:Request) ASSERT (r.fromUserId, r.toUserId, r.type) IS NODE KEY;
-      - apoc.initializer.neo4j.2=CALL db.index.fulltext.createNodeIndex('usersSearch', ['User'], ['email', 'firstName', 'lastName', '_keywordsStr']);
+      - apoc.initializer.neo4j.2=CREATE FULLTEXT INDEX usersSearch IF NOT EXISTS FOR (u:User) ON EACH [u.email, u.firstName, u.lastName, u._keywordsStr];
+    healthcheck:
+      test: wget http://localhost:7474 || exit 1
+      interval: 1s
+      timeout: 5s
+      retries: 20
+      start_period: 3s
 
 volumes:
   neo4jdata:

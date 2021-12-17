@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { APP_PORT } from '@shared/tokens/app-port.token';
+import { APP_DOMAIN } from '@shared/tokens/app-domain.token';
 
 @Injectable({
   providedIn: 'root'
@@ -48,13 +48,14 @@ export class MatIconService {
 
   constructor(private matIconRegistry: MatIconRegistry,
               private domSanitizer: DomSanitizer,
-              @Inject(APP_PORT) private port: string | number | null) {}
+              @Inject(APP_DOMAIN) private readonly domain: string) {
+  }
 
   init(): void {
-    this.listIcons.forEach(({name, src}) =>
+    this.listIcons.forEach(({ name, src }) =>
       this.matIconRegistry.addSvgIcon(
         name,
-        this.domSanitizer.bypassSecurityTrustResourceUrl(`http://localhost:${this.port}/${src}`)
+        this.domSanitizer.bypassSecurityTrustResourceUrl(`${this.domain}/${src}`)
       )
     );
   }

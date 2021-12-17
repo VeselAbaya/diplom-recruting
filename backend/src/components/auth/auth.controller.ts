@@ -1,8 +1,10 @@
 import {
   Body,
   ClassSerializerInterceptor,
-  Controller, Delete,
+  Controller,
+  Delete,
   Post,
+  Res,
   UseGuards,
   UseInterceptors,
   ValidationPipe,
@@ -14,7 +16,11 @@ import { User } from '../users/user/user.decorator';
 import { SignupDto } from './dto/signup.dto';
 import { SubPath } from '@monorepo/routes';
 import { SigninDto } from './dto/signin.dto';
-import { ITokensDto } from '@monorepo/types/auth/tokens.dto.interface';
+import { FastifyReply } from 'fastify';
+import { Config } from '@config';
+import { IRefreshTokenDto } from '@monorepo/types/auth/refresh-token.dto.interface';
+import { pick } from 'ramda';
+import { ITokens } from '@components/auth/tokens.interface';
 
 @Controller(SubPath.auth())
 export class AuthController {
@@ -28,8 +34,10 @@ export class AuthController {
   }
 
   @Post(SubPath.auth.signin())
-  signIn(@Body(ValidationPipe) signinDto: SigninDto): Promise<ITokensDto> {
-    return this.authService.signIn(signinDto);
+  async signIn(@Body(ValidationPipe) signinDto: SigninDto,
+               @Res({ passthrough: true }) res: FastifyReply): Promise<IRefreshTokenDto> {
+    const tokens = await this.authService.signIn(signinDto);
+    return AuthController.setCookieAndReturnRefreshTokenDto(res, tokens);
   }
 
   @Delete(SubPath.auth.logout())
@@ -40,7 +48,22 @@ export class AuthController {
   }
 
   @Post(SubPath.auth.refresh())
-  refresh(@Body() {refreshToken}: {refreshToken: string}): Promise<ITokensDto> {
-    return this.authService.refresh(refreshToken);
+  async refresh(@Body() { refreshToken }: { refreshToken: string },
+                @Res({ passthrough: true }) res: FastifyReply): Promise<IRefreshTokenDto> {
+    const tokens = await this.authService.refresh(refreshToken);
+    return AuthController.setCookieAndReturnRefreshTokenDto(res, tokens);
+  }
+
+  private static setCookieAndReturnRefreshTokenDto(res: FastifyReply, tokens: ITokens): IRefreshTokenDto {
+    res.setCookie('access', tokens.accessToken, {
+      httpOnly: true,
+      domain: '.pn-graph.com',
+      sameSite: 'none',
+      secure: true,
+      path: '/',
+      maxAge: Config.JWT.accessExpiresIn
+    });
+
+    return pick(['refreshToken'], tokens);
   }
 }
