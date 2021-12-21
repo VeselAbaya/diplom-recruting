@@ -13,7 +13,9 @@
       Interactive map
     </ng-template>
 
-    <app-search-result-graph [graph]="relations.result$ | async"></app-search-result-graph>
+    <!-- we do not want to mock all that hard browser-specific logic in SearchResulGraph component -->
+    <app-search-result-graph *appOnlyInBrowser
+                             [graph]="relations.result$ | async"></app-search-result-graph>
   </mat-tab>
 </mat-tab-group>
 

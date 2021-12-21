@@ -105,7 +105,8 @@ export class AppController {
 
   constructor(private readonly users: UserRepository,
               private readonly db: Neo4j,
-              private readonly requests: RequestRepository) {}
+              private readonly requests: RequestRepository) {
+  }
 
   @Get('generate-users')
   generateUsers(): Promise<(UserEntity | null)[]> {

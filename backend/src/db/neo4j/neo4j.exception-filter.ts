@@ -1,7 +1,7 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
 import { Neo4jError } from 'neo4j-driver';
-import { AuthException } from '../../components/auth/auth.exceptions';
+import { AuthException } from '@components/auth/auth.exceptions';
 
 @Catch(Neo4jError)
 export class Neo4jExceptionFilter implements ExceptionFilter {
@@ -20,7 +20,7 @@ export class Neo4jExceptionFilter implements ExceptionFilter {
       }
 
       // Node(54778) with label `Test` must have the property `mustExist`
-      else if ( exception.message.includes('must have the property') ) {
+      else if (exception.message.includes('must have the property')) {
         statusCode = 400;
         error = 'Bad Request';
 

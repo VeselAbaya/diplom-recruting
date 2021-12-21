@@ -12,10 +12,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AvatarModule } from '@shared/components/avatar/avatar.module';
 import { HourlyModule } from '@shared/components/hourly/hourly.module';
-import { RelationsListDialogComponent } from './search-result-list/user-card/relations-list-dialog/relations-list-dialog.component';
+import {
+  RelationsListDialogComponent
+} from './search-result-list/user-card/relations-list-dialog/relations-list-dialog.component';
 import { RelationsModule } from '@shared/components/relations/relations.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CreateRelationDialogComponent } from './search-result-list/user-card/create-relation-dialog/create-relation-dialog.component';
+import {
+  CreateRelationDialogComponent
+} from './search-result-list/user-card/create-relation-dialog/create-relation-dialog.component';
 import { RouterModule } from '@angular/router';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { NetworkGraphComponent } from './search-result-graph/network-graph/network-graph.component';
@@ -27,6 +31,7 @@ import { IsBidirectionalModule } from '@shared/pipes/is-bidirectional/is-bidirec
 import { OverlayModule } from '@angular/cdk/overlay';
 import { HiddenScrollWrapperModule } from '@shared/components/hidden-scroll-wrapper/hidden-scroll-wrapper.module';
 import { NodeHTMLIdPipe } from './search-result-graph/node-html-id.pipe';
+import { OnlyInBrowserModule } from '@shared/directives/only-in-browser/only-in-browser.module';
 
 @NgModule({
   declarations: [
@@ -58,8 +63,10 @@ import { NodeHTMLIdPipe } from './search-result-graph/node-html-id.pipe';
     FullNameModule,
     IsBidirectionalModule,
     OverlayModule,
-    HiddenScrollWrapperModule
+    HiddenScrollWrapperModule,
+    OnlyInBrowserModule
   ],
   exports: [SearchResultListComponent, SearchResultGraphComponent, SearchResultComponent]
 })
-export class SearchResultModule { }
+export class SearchResultModule {
+}

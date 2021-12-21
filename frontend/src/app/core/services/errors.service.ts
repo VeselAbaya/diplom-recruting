@@ -10,8 +10,12 @@ export class ErrorsService {
     this.handle = this.handle.bind(this);
   }
 
-  handle({error: {message}}: {error: IException}): void {
-    const snackMsg = typeof message === 'string' ? message : message.join('\n');
-    this.snackbar.open(snackMsg, 'Close', {panelClass: 'warn'});
+  handle({ error: { message } }: { error: IException }): void {
+    let snackMsg = 'Something went wrong';
+    try {
+      snackMsg = typeof message === 'string' ? message : message.join('\n');
+    } finally {
+      this.snackbar.open(snackMsg, 'Close', { panelClass: 'warn' });
+    }
   }
 }

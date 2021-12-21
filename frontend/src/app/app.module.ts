@@ -1,9 +1,7 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,13 +18,16 @@ import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
 import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS } from '@angular/material/paginator';
 import { LIMITS } from '@monorepo/types/pagination/limits';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TransferHttpCacheModule } from '@nguniversal/common';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule.withServerTransition({ appId: 'ssr-pn-graph' }),
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
@@ -36,7 +37,8 @@ import { LIMITS } from '@monorepo/types/pagination/limits';
     MatProgressBarModule,
     HeaderModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    TransferHttpCacheModule
   ],
   providers: [
     {

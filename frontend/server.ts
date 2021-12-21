@@ -7,9 +7,17 @@ import { join } from 'path';
 
 import { AppServerModule } from './src/main.server';
 import { existsSync } from 'fs';
-import { APP_PORT } from '@shared/tokens/app-port.token';
+import { isNil } from 'ramda';
 
-const port = process.env.PORT || 4200;
+import cookieParser from 'cookie-parser';
+import { ACCESS_TOKEN } from '@shared/tokens/access.token';
+
+// @ts-ignore
+import * as xhr2 from 'xhr2';
+// To be able to send cookie from Angular HttpClient
+xhr2.prototype._restrictedHeaders = {};
+
+const port = isNil(process.env.PORT) ? 4200 : +process.env.PORT;
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -17,10 +25,11 @@ export function app(): express.Express {
   const distFolder = join(process.cwd(), 'dist/professional-network/browser');
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index.html';
 
+  server.use(cookieParser());
+
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
-    providers: [{ provide: APP_PORT, useValue: port }],
     // If inlineCriticalCss: true
     // it adds to <link rel="stylesheet" href="dark.css" media="(prefers-color-scheme: dark)">
     //  attribute <link ... onload="this.media='(prefers-color-scheme: dark)'">
@@ -39,7 +48,12 @@ export function app(): express.Express {
   }));
 
   server.get('*', (req: express.Request, res: express.Response) => {
-    res.render(indexHtml, { req });
+    res.render(indexHtml, {
+      req,
+      providers: [
+        { provide: ACCESS_TOKEN, useValue: req.cookies.access }
+      ]
+    });
   });
 
   return server;
@@ -48,7 +62,7 @@ export function app(): express.Express {
 function run(): void {
   // Start up the Node server
   const server = app();
-  server.listen(port, () => {
+  server.listen(port, '0.0.0.0', () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
