@@ -1,21 +1,39 @@
-<button mat-button [matMenuTriggerFor]="menu">
+<button mat-button cdkOverlayOrigin
+        #triggerOrigin="cdkOverlayOrigin"
+        (click)="openNavigationOverlay()"
+        cdkMonitorElementFocus
+        (cdkFocusChange)="openNavigationOverlayIfFocusViaTab($event)">
   <span class="user-name">{{user.firstName}} {{user.lastName}}</span>
   <app-avatar src="assets/default-user-avatar.svg" rounded></app-avatar>
 </button>
 
-<mat-menu #menu="matMenu">
-  <div class="user-profile">
-    <app-avatar class="user-profile__avatar" src="assets/default-user-avatar.svg"></app-avatar>
-    <div class="user-profile__info">
-      <span>{{user.firstName}} {{user.lastName}}</span>
-      <span class="user-profile__email">{{user.email}}</span>
-      <a [routerLink]="['/', 'search', user.id]" mat-flat-button color="accent">Profile settings</a>
+<ng-template cdkConnectedOverlay
+             (backdropClick)="closeNavigationOverlay()"
+             [cdkConnectedOverlayHasBackdrop]="true"
+             cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+             [cdkConnectedOverlayOrigin]="triggerOrigin"
+             [cdkConnectedOverlayOpen]="isNavigationOverlayOpen">
+  <mat-nav-list [@transformMenu]="isNavigationOverlayOpen ? 'enter' : 'void'">
+    <div class="user-profile">
+      <app-avatar class="user-profile__avatar" src="assets/default-user-avatar.svg"></app-avatar>
+      <div class="user-profile__info">
+        <span>{{user.firstName}} {{user.lastName}}</span>
+        <span class="user-profile__email">{{user.email}}</span>
+        <a [routerLink]="['/', 'search', user.id]"
+           #profileSettings
+           appUserMenuItem
+           mat-flat-button
+           color="accent">Profile settings</a>
+      </div>
     </div>
-  </div>
-
-  <a [routerLink]="['/search']" mat-menu-item>Search</a>
-  <a [routerLink]="['/requests']" mat-menu-item class="relation-requests">
-    <span>Relation requests</span>
-  </a>
-  <button (click)="auth.logout()" mat-menu-item>Logout</button>
-</mat-menu>
+    <a [routerLink]="['/search']" mat-list-item appUserMenuItem>Search</a>
+    <a [routerLink]="['/requests']"
+       mat-list-item
+       appUserMenuItem
+       class="relation-requests">
+      <span>Relation requests</span>
+    </a>
+    <a routerLink="." (click)="auth.logout()" mat-list-item
+       appUserMenuItem>Logout</a>
+  </mat-nav-list>
+</ng-template>

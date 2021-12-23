@@ -32,6 +32,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { HiddenScrollWrapperModule } from '@shared/components/hidden-scroll-wrapper/hidden-scroll-wrapper.module';
 import { NodeHTMLIdPipe } from './search-result-graph/node-html-id.pipe';
 import { OnlyInBrowserModule } from '@shared/directives/only-in-browser/only-in-browser.module';
+import { A11yModule } from '@angular/cdk/a11y';
+import { UserNodeComponent } from './search-result-graph/user-node/user-node.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { OnlyInBrowserModule } from '@shared/directives/only-in-browser/only-in-
     RelationsListDialogComponent,
     CreateRelationDialogComponent,
     NetworkGraphComponent,
-    NodeHTMLIdPipe
+    NodeHTMLIdPipe,
+    UserNodeComponent
   ], imports: [
     CommonModule,
     MatIconModule,
@@ -64,7 +67,8 @@ import { OnlyInBrowserModule } from '@shared/directives/only-in-browser/only-in-
     IsBidirectionalModule,
     OverlayModule,
     HiddenScrollWrapperModule,
-    OnlyInBrowserModule
+    OnlyInBrowserModule,
+    A11yModule
   ],
   exports: [SearchResultListComponent, SearchResultGraphComponent, SearchResultComponent]
 })

@@ -7,49 +7,33 @@
                    [minZoomLevel]=".5"
                    [maxZoomLevel]="1.5" xmlns:svg="http://www.w3.org/2000/svg">
   <ng-template #nodeTemplate let-node>
-    <svg:g class="node"
-           cdkOverlayOrigin
-           [id]="node.id | nodeHTMLId"
-           [class.selected]="node.id === (selectedUserId$ | async)"
-           #nodeOverlayOrigin="cdkOverlayOrigin"
-           (mousedown)="mouseMoveStartPoint = $event"
-           (mousemove)="onNodeMousemove($event)"
-           (click)="onNodeClick($event, node)">
-      <svg:clipPath id="round-clip">
-        <svg:circle [attr.cx]="(node.dimension?.width || 0) / 2"
-                    [attr.cy]="(node.dimension?.height || 0) / 2"
-                    [attr.r]="node.dimension.width / 2"/>
-      </svg:clipPath>
-      <svg:circle class="avatar-backdrop"
-                  [attr.cx]="(node.dimension?.width || 0) / 2"
-                  [attr.cy]="(node.dimension?.height || 0) / 2"
-                  [attr.r]="node.dimension.width / 2"/>
-      <svg:image [attr.href]="DEFAULT_AVATAR_URL"
-                 [attr.x]="node.dimension.height * 0.2 / 2"
-                 [attr.y]="node.dimension.height * 0.2 / 2"
-                 [attr.height]="node.dimension.height * 0.8"
-                 [attr.width]="node.dimension.width * 0.8"
-                 clip-path="url(#round-clip)"/>
+    <svg:g app-user-node
+           [node]="node"
+           [isSelected]="node.id === (selectedUserId$ | async)"
+           (openUserInfo)="openNodeOverlay(node)"
+           #overlayOrigin="cdkOverlayOrigin"
+           cdkOverlayOrigin/>
 
-      <svg:circle *ngIf="node.intermediate"
-                  class="intermediate-overlay"
-                  [attr.cx]="(node.dimension?.width || 0) / 2"
-                  [attr.cy]="(node.dimension?.height || 0) / 2"
-                  [attr.r]="node.dimension.width / 2"/>
-    </svg:g>
-
-    <ng-template #nodeContextMenu
-                 cdkConnectedOverlay
+    <ng-template cdkConnectedOverlay
                  [cdkConnectedOverlayOpen]="nodeWithOverlay?.id === node.id"
-                 [cdkConnectedOverlayOrigin]="nodeOverlayOrigin"
+                 [cdkConnectedOverlayOrigin]="overlayOrigin"
                  (overlayOutsideClick)="hideNodeUserCardIfClickedOutsideNodeOrUserCard($event)">
       <app-user-card @nodeOverlayFade
+                     cdkTrapFocus
+                     cdkTrapFocusAutoCapture
+                     cdkFocusInitial
                      [user]="node"></app-user-card>
     </ng-template>
   </ng-template>
 
   <ng-template #linkTemplate let-link>
-    <svg:g class="edge" (click)="onEdgeClick(link)">
+    <svg:g class="edge"
+           focusable="true"
+           tabindex="0"
+           cdkMonitorElementFocus
+           (keydown.enter)="openRelations(link)"
+           (keydown.space)="openRelations(link)"
+           (click)="openRelations(link)">
       <svg:marker id="arrow_{{link.id}}" viewBox="0 -5 10 10"
                   [attr.refX]="NODE_SIZE / 2 + 10"
                   [attr.refY]="link.refY"

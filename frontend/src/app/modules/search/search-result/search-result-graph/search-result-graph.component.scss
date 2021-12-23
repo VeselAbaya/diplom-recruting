@@ -1,5 +1,3 @@
-@use '~@angular/material' as mat;
-
 :host {
   display: block;
 }
@@ -10,32 +8,12 @@ app-network-graph {
   min-height: 700px;
 }
 
-app-avatar {
-  --size: 40px;
-}
-
-.avatar-backdrop {
-  fill: var(--pn-primary-lighter);
-}
-
-.intermediate-overlay {
-  fill: #fff;
-  opacity: .75;
-}
-
-.node.selected .avatar-backdrop {
-  fill: var(--pn-primary-default);
-}
-
-.node,
-.edge {
+:host ::ng-deep .node,
+:host ::ng-deep .edge {
   cursor: pointer;
-}
+  outline: none;
 
-app-user-card {
-  @include mat.elevation(16, var(--pn-foreground-elevation));
-
-  ::ng-deep .user {
-    margin-bottom: 26px;
+  &.cdk-keyboard-focused {
+    outline: auto;
   }
 }

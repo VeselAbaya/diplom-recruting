@@ -1,0 +1,26 @@
+@use '~@angular/material' as mat;
+
+app-avatar {
+  --size: 40px;
+}
+
+.avatar-backdrop {
+  fill: var(--pn-primary-lighter);
+}
+
+.intermediate-overlay {
+  fill: #fff;
+  opacity: .75;
+}
+
+.node.selected .avatar-backdrop {
+  fill: var(--pn-primary-default);
+}
+
+app-user-card {
+  @include mat.elevation(16, var(--pn-foreground-elevation));
+
+  ::ng-deep .user {
+    margin-bottom: 26px;
+  }
+}

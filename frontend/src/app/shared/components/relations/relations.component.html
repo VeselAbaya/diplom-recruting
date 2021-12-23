@@ -7,19 +7,22 @@
   <app-hidden-scroll-wrapper orientation="vertical">
     <div class="arrows-wrapper" #arrowsWrapper cdkScrollable>
       <ng-container *ngIf="relations.length else requestCreation">
-        <div class="arrow-wrapper" *ngFor="let request of relations; let i = index"
-             #arrowWrapper (click)="onRelationSelect(request, arrowWrapper);">
+        <button class="arrow-wrapper"
+                *ngFor="let request of relations; let i = index"
+                #arrowWrapper
+                (click)="onRelationSelect(request, arrowWrapper)">
           <div class="arrow"
                [class.arrow--selected]="request.id === _selectedRelationId"
                [class.arrow--right]="!(request.type | isBidirectional) && request.fromUserId === fromUser.id"
                [class.arrow--left]="!(request.type | isBidirectional) && request.fromUserId !== fromUser.id">
             <span class="arrow-label">{{request.type | relationType}}</span>
           </div>
-        </div>
+        </button>
       </ng-container>
       <ng-template #requestCreation>
         <div class="arrow-wrapper">
-          <div class="arrow arrow--selected" [class.arrow--right]="form.value.type && !(form.value.type | isBidirectional)">
+          <div class="arrow arrow--selected"
+               [class.arrow--right]="form.value.type && !(form.value.type | isBidirectional)">
             <span class="arrow-label">{{form.value.type ? (form.value.type | relationType) : 'Choose type'}}</span>
           </div>
         </div>

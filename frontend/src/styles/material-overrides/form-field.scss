@@ -24,10 +24,14 @@
   $outline-appearance-label-offset: -0.25em;
 
   // stylelint-disable-next-line selector-max-compound-selectors
-  &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+  &.mat-form-field-can-float.mat-focused .mat-form-field-label,
   .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
     transform: translateY(-$infix-margin-top - $infix-padding) scale($subscript-font-scale);
     width: math.div(100%, $subscript-font-scale);
+  }
+
+  &.mat-form-field-can-float.mat-focused .mat-form-field-outline-gap {
+    border-top-color: transparent;
   }
 
   &:not(.mat-focused):not(.mat-form-field-invalid) .mat-form-field-outline {

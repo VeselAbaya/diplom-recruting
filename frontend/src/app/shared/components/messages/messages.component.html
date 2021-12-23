@@ -5,7 +5,7 @@
         <div class="message" *ngFor="let message of messages.list$ | async"
              [class.message--reverse]="message.fromUserId === currentUser.id"
              #message>
-          <app-avatar [src]="(message.fromUserId !== currentUser.id ? receiverUser : currentUser).avatarSrc"
+          <app-avatar [src]="(message.fromUserId === currentUser.id ? currentUser : receiverUser).avatarSrc"
                       rounded>
           </app-avatar>
           <div class="message-text">{{message.text}}</div>
@@ -14,7 +14,11 @@
     </app-hidden-scroll-wrapper>
 
     <mat-form-field class="message-form pn-no-subscript pn-vertical-align pn-textarea-with-suffix">
-      <textarea matInput rows="3" [(ngModel)]="text" [disabled]="!!(messages.isSending$ | async)" (keypress)="onTextareaKeyPress($event)"></textarea>
+      <textarea matInput rows="3"
+                #messageTextarea
+                [(ngModel)]="text"
+                [disabled]="!!(messages.isSending$ | async)"
+                (keypress)="onTextareaKeyPress($event)"></textarea>
       <button matSuffix
               mat-icon-button
               color="primary"

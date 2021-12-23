@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RelationRequestType } from '@modules/requests/relation-request-type.enum';
 import { HeaderService } from '@modules/header/header.service';
+import { MessagesService } from '@shared/components/messages/messages.service';
 
 @Component({
   selector: 'app-requests',
@@ -10,7 +11,9 @@ import { HeaderService } from '@modules/header/header.service';
 })
 export class RequestsComponent {
   readonly RelationRequestTypeEnum = RelationRequestType;
-  constructor(private readonly header: HeaderService) {
+
+  constructor(public readonly messages: MessagesService,
+              private readonly header: HeaderService) {
     header.setTitle('Relation requests');
   }
 }

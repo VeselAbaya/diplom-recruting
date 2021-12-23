@@ -26,4 +26,4 @@
   <router-outlet></router-outlet>
 </div>
 
-<app-messages></app-messages>
+<app-messages *ngIf="messages.receiverUser$ | async"></app-messages>

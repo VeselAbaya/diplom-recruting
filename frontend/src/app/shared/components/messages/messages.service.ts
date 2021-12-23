@@ -3,7 +3,8 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import {
   distinctUntilChanged,
-  filter, finalize,
+  filter,
+  finalize,
   map,
   pluck,
   switchMap,
@@ -26,11 +27,11 @@ export type IReceiverUser = Pick<IUserDto, 'id' | 'avatarSrc'>;
   providedIn: 'root'
 })
 export class MessagesService extends OnDestroyMixin {
-  private receiverUser = new BehaviorSubject<IReceiverUser | null>(null);
-  receiverUser$ = this.receiverUser.pipe(distinctUntilChanged());
+  private readonly receiverUser = new BehaviorSubject<IReceiverUser | null>(null);
+  readonly receiverUser$ = this.receiverUser.pipe(distinctUntilChanged());
 
-  private list = new BehaviorSubject<IMessageDto[]>([]);
-  list$ = this.list.pipe(distinctUntilChanged());
+  private readonly list = new BehaviorSubject<IMessageDto[]>([]);
+  readonly list$ = this.list.pipe(distinctUntilChanged());
 
   private readonly isSending = new BehaviorSubject(false);
   readonly isSending$ = this.isSending.pipe(distinctUntilChanged());
@@ -58,7 +59,7 @@ export class MessagesService extends OnDestroyMixin {
       switchMapTo(auth.user$),
       isNotNullOrUndefined(),
       pluck('id')
-    ).subscribe(userId => socket.emit('userIsOnline', {userId}));
+    ).subscribe(userId => socket.emit('userIsOnline', { userId }));
 
     socket.fromEvent<IMessageDto>('message').pipe(
       untilComponentDestroyed(this),
@@ -75,9 +76,9 @@ export class MessagesService extends OnDestroyMixin {
       map(user => user?.id),
       withLatestFrom(of(toUserId)),
       isNotNullOrUndefinedArray(),
-      tap(([currentUserId, receiverUserId]) => {
-        this.socket.emit('message', {fromUserId: currentUserId, toUserId: receiverUserId, text: message});
-      }),
+      tap(([currentUserId, receiverUserId]) =>
+        this.socket.emit('message', { fromUserId: currentUserId, toUserId: receiverUserId, text: message })
+      ),
       // TODO Figure out why it is not working without this nested pipe
       switchMap(([currentUserId]) => this.socket.fromEvent<IMessageDto>('message').pipe(
         filter(newMessage => newMessage.fromUserId === currentUserId),
@@ -96,7 +97,7 @@ export class MessagesService extends OnDestroyMixin {
     this.auth.user$.pipe(
       take(1),
       isNotNullOrUndefined(),
-      tap(user => this.socket.emit('messagesOpen', {fromUserId: user.id, toUserId: receiverUser.id})),
+      tap(user => this.socket.emit('messagesOpen', { fromUserId: user.id, toUserId: receiverUser.id })),
       switchMap(user => this.http.get<IMessageDto[]>(Path.messages(user.id, receiverUser.id))),
     ).subscribe(res => this.list.next(res));
   }
