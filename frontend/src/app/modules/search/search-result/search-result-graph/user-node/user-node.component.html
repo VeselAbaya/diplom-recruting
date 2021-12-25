@@ -1,0 +1,34 @@
+<svg:g tabindex="0"
+       focusable="true"
+       cdkMonitorElementFocus
+       xmlns:svg="http://www.w3.org/2000/svg"
+       [id]="node.id | nodeHTMLId"
+       class="node"
+       [class.selected]="isSelected"
+       (mousedown)="mouseMoveStartPoint = $event"
+       (mousemove)="onNodeMousemove($event)"
+       (keydown.enter)="emitOpenUserInfoOnClick(node)"
+       (keydown.space)="emitOpenUserInfoOnClick(node)"
+       (click)="emitOpenUserInfoOnClick(node)">
+  <svg:clipPath id="round-clip">
+    <svg:circle [attr.cx]="(node.dimension?.width || 0) / 2"
+                [attr.cy]="(node.dimension?.height || 0) / 2"
+                [attr.r]="(node.dimension?.width || 0) / 2"/>
+  </svg:clipPath>
+  <svg:circle class="avatar-backdrop"
+              [attr.cx]="(node.dimension?.width || 0) / 2"
+              [attr.cy]="(node.dimension?.height || 0) / 2"
+              [attr.r]="(node.dimension?.width || 0) / 2"/>
+  <svg:image [attr.href]="DEFAULT_AVATAR_URL"
+             [attr.x]="(node.dimension?.height || 0) * 0.2 / 2"
+             [attr.y]="(node.dimension?.height || 0) * 0.2 / 2"
+             [attr.height]="(node.dimension?.height || 0) * 0.8"
+             [attr.width]="(node.dimension?.width || 0) * 0.8"
+             clip-path="url(#round-clip)"/>
+
+  <svg:circle *ngIf="node.intermediate"
+              class="intermediate-overlay"
+              [attr.cx]="(node.dimension?.width || 0) / 2"
+              [attr.cy]="(node.dimension?.height || 0) / 2"
+              [attr.r]="(node.dimension?.width || 0) / 2"/>
+</svg:g>

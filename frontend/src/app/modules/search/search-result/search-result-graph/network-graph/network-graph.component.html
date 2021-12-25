@@ -1,36 +1,36 @@
 <div
-    class="ngx-charts-outer"
-    [style.width.px]="width"
-    [@animationState]="'active'"
-    [@.disabled]="!animations"
-    (mouseWheelUp)="onZoom($event, 'in')"
-    (mouseWheelDown)="onZoom($event, 'out')"
-    mouseWheel
+  class="ngx-charts-outer"
+  [style.width.px]="width"
+  [@animationState]="'active'"
+  [@.disabled]="!animations"
+  (mouseWheelUp)="onZoom($event, 'in')"
+  (mouseWheelDown)="onZoom($event, 'out')"
+  mouseWheel
 >
   <svg class="ngx-charts" [attr.width]="width" [attr.height]="height">
     <g
-        *ngIf="initialized && graph"
-        [attr.transform]="transform"
-        (touchstart)="onTouchStart($event)"
-        (touchend)="onTouchEnd($event)"
-        class="graph chart"
+      *ngIf="initialized && graph"
+      [attr.transform]="transform"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)"
+      class="graph chart"
     >
       <defs>
         <ng-container *ngIf="defsTemplate" [ngTemplateOutlet]="defsTemplate"></ng-container>
         <path
-            class="text-path"
-            *ngFor="let link of graph.edges"
-            [attr.d]="link.textPath"
-            [attr.id]="link.id"
+          class="text-path"
+          *ngFor="let link of graph.edges"
+          [attr.d]="link.textPath"
+          [attr.id]="link.id"
         ></path>
       </defs>
 
       <rect
-          class="panning-rect"
-          [attr.width]="dims.width * 100"
-          [attr.height]="dims.height * 100"
-          [attr.transform]="'translate(' + (-dims.width || 0) * 50 + ',' + (-dims.height || 0) * 50 + ')'"
-          (mousedown)="isPanning = true"
+        class="panning-rect"
+        [attr.width]="dims.width * 100"
+        [attr.height]="dims.height * 100"
+        [attr.transform]="'translate(' + (-dims.width || 0) * 50 + ',' + (-dims.height || 0) * 50 + ')'"
+        (mousedown)="isPanning = true"
       />
 
       <ng-content></ng-content>
@@ -46,15 +46,15 @@
           (click)="onClick(node)"
         >
           <ng-container
-              *ngIf="clusterTemplate"
-              [ngTemplateOutlet]="clusterTemplate"
-              [ngTemplateOutletContext]="{ $implicit: node }"
+            *ngIf="clusterTemplate"
+            [ngTemplateOutlet]="clusterTemplate"
+            [ngTemplateOutletContext]="{ $implicit: node }"
           ></ng-container>
           <g *ngIf="!clusterTemplate" class="node cluster">
             <rect
-                [attr.width]="node.dimension?.width || 0"
-                [attr.height]="node.dimension?.height || 0"
-                [attr.fill]="node.data?.color"
+              [attr.width]="node.dimension?.width || 0"
+              [attr.height]="node.dimension?.height || 0"
+              [attr.fill]="node.data?.color"
             />
             <text alignment-baseline="central" [attr.x]="10" [attr.y]="(node.dimension?.height || 0) / 2">
               {{ node.label }}
@@ -66,11 +66,11 @@
       <g class="links">
         <g #linkElement *ngFor="let link of graph.edges; trackBy: trackLinkBy" class="link-group" id="EDGE{{link.id}}">
           <ng-container
-              *ngIf="linkTemplate"
-              [ngTemplateOutlet]="linkTemplate"
-              [ngTemplateOutletContext]="{ $implicit: link }"
+            *ngIf="linkTemplate"
+            [ngTemplateOutlet]="linkTemplate"
+            [ngTemplateOutletContext]="{ $implicit: link }"
           ></ng-container>
-          <path *ngIf="!linkTemplate" class="edge" [attr.d]="link.line" />
+          <path *ngIf="!linkTemplate" class="edge" [attr.d]="link.line"/>
         </g>
       </g>
 
@@ -86,16 +86,16 @@
           (mousedown)="onNodeMouseDown($event, node)"
         >
           <ng-container
-              *ngIf="nodeTemplate"
-              [ngTemplateOutlet]="nodeTemplate"
-              [ngTemplateOutletContext]="{ $implicit: node }"
+            *ngIf="nodeTemplate"
+            [ngTemplateOutlet]="nodeTemplate"
+            [ngTemplateOutletContext]="{ $implicit: node }"
           ></ng-container>
           <circle
-              *ngIf="!nodeTemplate"
-              r="10"
-              [attr.cx]="(node.dimension?.width || 0) / 2"
-              [attr.cy]="(node.dimension?.height || 0) / 2"
-              [attr.fill]="node.data?.color"
+            *ngIf="!nodeTemplate"
+            r="10"
+            [attr.cx]="(node.dimension?.width || 0) / 2"
+            [attr.cy]="(node.dimension?.height || 0) / 2"
+            [attr.fill]="node.data?.color"
           />
         </g>
       </g>
@@ -103,26 +103,26 @@
 
     <clipPath [attr.id]="minimapClipPathId">
       <rect
-          [attr.width]="graphDims.width / minimapScaleCoefficient"
-          [attr.height]="graphDims.height / minimapScaleCoefficient"
+        [attr.width]="graphDims.width / minimapScaleCoefficient"
+        [attr.height]="graphDims.height / minimapScaleCoefficient"
       ></rect>
     </clipPath>
 
     <g
-        class="minimap"
-        *ngIf="showMiniMap"
-        [attr.transform]="minimapTransform"
-        [attr.clip-path]="'url(#' + minimapClipPathId + ')'"
+      class="minimap"
+      *ngIf="showMiniMap"
+      [attr.transform]="minimapTransform"
+      [attr.clip-path]="'url(#' + minimapClipPathId + ')'"
     >
       <rect
-          class="minimap-background"
-          [attr.width]="graphDims.width / minimapScaleCoefficient"
-          [attr.height]="graphDims.height / minimapScaleCoefficient"
-          (mousedown)="onMinimapPanTo($event)"
+        class="minimap-background"
+        [attr.width]="graphDims.width / minimapScaleCoefficient"
+        [attr.height]="graphDims.height / minimapScaleCoefficient"
+        (mousedown)="onMinimapPanTo($event)"
       ></rect>
 
       <g
-          [style.transform]="
+        [style.transform]="
           'translate(' +
           -minimapOffsetX / minimapScaleCoefficient +
           'px,' +
@@ -140,38 +140,38 @@
             [attr.transform]="node.transform"
           >
             <ng-container
-                *ngIf="miniMapNodeTemplate"
-                [ngTemplateOutlet]="miniMapNodeTemplate"
-                [ngTemplateOutletContext]="{ $implicit: node }"
+              *ngIf="miniMapNodeTemplate"
+              [ngTemplateOutlet]="miniMapNodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
             ></ng-container>
             <ng-container
-                *ngIf="!miniMapNodeTemplate && nodeTemplate"
-                [ngTemplateOutlet]="nodeTemplate"
-                [ngTemplateOutletContext]="{ $implicit: node }"
+              *ngIf="!miniMapNodeTemplate && nodeTemplate"
+              [ngTemplateOutlet]="nodeTemplate"
+              [ngTemplateOutletContext]="{ $implicit: node }"
             ></ng-container>
             <circle
-                *ngIf="!nodeTemplate && !miniMapNodeTemplate"
-                r="10"
-                [attr.cx]="(node.dimension?.width || 0) / 2 / minimapScaleCoefficient"
-                [attr.cy]="(node.dimension?.height || 0) / 2 / minimapScaleCoefficient"
-                [attr.fill]="node.data?.color"
+              *ngIf="!nodeTemplate && !miniMapNodeTemplate"
+              r="10"
+              [attr.cx]="(node.dimension?.width || 0) / 2 / minimapScaleCoefficient"
+              [attr.cy]="(node.dimension?.height || 0) / 2 / minimapScaleCoefficient"
+              [attr.fill]="node.data?.color"
             />
           </g>
         </g>
 
         <rect
-            [attr.transform]="
+          [attr.transform]="
             'translate(' +
             panOffsetX / zoomLevel / -minimapScaleCoefficient +
             ',' +
             panOffsetY / zoomLevel / -minimapScaleCoefficient +
             ')'
           "
-            class="minimap-drag"
-            [class.panning]="isMinimapPanning"
-            [attr.width]="width / minimapScaleCoefficient / zoomLevel"
-            [attr.height]="height / minimapScaleCoefficient / zoomLevel"
-            (mousedown)="onMinimapDragMouseDown()"
+          class="minimap-drag"
+          [class.panning]="isMinimapPanning"
+          [attr.width]="width / minimapScaleCoefficient / zoomLevel"
+          [attr.height]="height / minimapScaleCoefficient / zoomLevel"
+          (mousedown)="onMinimapDragMouseDown()"
         ></rect>
       </g>
     </g>

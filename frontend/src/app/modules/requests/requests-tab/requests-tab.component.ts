@@ -4,7 +4,7 @@ import { RelationRequestType } from '@modules/requests/relation-request-type.enu
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { RequestsService } from '@modules/requests/requests.service';
 import { ErrorsService } from '@core/services/errors.service';
-import { distinctUntilChanged, map, pluck, switchMap, take, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, pluck, switchMap, take } from 'rxjs/operators';
 import { RelationsFacade } from '@shared/components/relations/relations.facade';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
@@ -24,7 +24,7 @@ import { IRelationshipDto } from '@monorepo/types/relationships/relationship.dto
 })
 export class RequestsTabComponent extends OnDestroyMixin {
   readonly RelationRequestTypeEnum = RelationRequestType;
-  @ViewChild(CdkScrollable, {static: true}) relationRequestsContainer: CdkScrollable | null = null;
+  @ViewChild(CdkScrollable, { static: true }) relationRequestsContainer: CdkScrollable | null = null;
   selectedRelationsBlockIndex: number | null = null;
 
   constructor(public readonly route: ActivatedRoute,
@@ -47,7 +47,7 @@ export class RequestsTabComponent extends OnDestroyMixin {
   }
 
   onRelationRequestSelect(relationsBlockIndex: number,
-                          {toUser, fromUser}: IGetRelationRequestsDto,
+                          { toUser, fromUser }: IGetRelationRequestsDto,
                           relation: IRelationshipDto,
                           el: HTMLElement): void {
     this.facade.select(relation);
@@ -60,7 +60,9 @@ export class RequestsTabComponent extends OnDestroyMixin {
       const openedHeight = parseInt(styles.getPropertyValue('--opened-height'), 10);
       const closedHeight = parseInt(styles.getPropertyValue('--closed-height'), 10);
       const openedClosedHeightDelta = openedHeight - closedHeight;
-      const offsetTop = this.selectedRelationsBlockIndex !== null && relationsBlockIndex > this.selectedRelationsBlockIndex ? el.offsetTop - openedClosedHeightDelta : el.offsetTop;
+      const offsetTop = this.selectedRelationsBlockIndex !== null && relationsBlockIndex > this.selectedRelationsBlockIndex
+        ? el.offsetTop - openedClosedHeightDelta
+        : el.offsetTop;
       this.relationRequestsContainer.scrollTo({
         top: offsetTop + openedHeight / 2 - (el.parentElement?.offsetHeight || 0) / 2,
         behavior: 'smooth'
@@ -81,8 +83,8 @@ export class RequestsTabComponent extends OnDestroyMixin {
       switchMap(requestId => this.requests.update(requestId, updateDto)),
     ).subscribe({
       next: () => {
-        this.snackbar.open('Request has been updated', 'Close', {panelClass: 'primary'});
-        this.router.navigate(['.'], {relativeTo: this.route});
+        this.snackbar.open('Request has been updated', 'Close', { panelClass: 'primary' });
+        this.router.navigate(['.'], { relativeTo: this.route });
       },
       error: this.errors.handle
     });
@@ -93,9 +95,9 @@ export class RequestsTabComponent extends OnDestroyMixin {
       switchMap(requestId => this.requests.decline(requestId))
     ).subscribe(({
       next: () => {
-        this.snackbar.open('Request has been declined', 'Close', {panelClass: 'primary'});
+        this.snackbar.open('Request has been declined', 'Close', { panelClass: 'primary' });
         this.selectedRelationsBlockIndex = null;
-        this.router.navigate(['.'], {relativeTo: this.route});
+        this.router.navigate(['.'], { relativeTo: this.route });
       },
       error: this.errors.handle
     }));
@@ -106,8 +108,8 @@ export class RequestsTabComponent extends OnDestroyMixin {
       switchMap(requestId => this.requests.reopen(requestId))
     ).subscribe({
       next: () => {
-        this.snackbar.open('Request has been reopened', 'Close', {panelClass: 'primary'});
-        this.router.navigate(['.'], {relativeTo: this.route});
+        this.snackbar.open('Request has been reopened', 'Close', { panelClass: 'primary' });
+        this.router.navigate(['.'], { relativeTo: this.route });
       },
       error: this.errors.handle
     });
@@ -118,8 +120,8 @@ export class RequestsTabComponent extends OnDestroyMixin {
       switchMap(requestId => this.requests.accept(requestId))
     ).subscribe({
       next: () => {
-        this.snackbar.open('Relationship has been created', 'Close', {panelClass: 'primary'});
-        this.router.navigate(['.'], {relativeTo: this.route});
+        this.snackbar.open('Relationship has been created', 'Close', { panelClass: 'primary' });
+        this.router.navigate(['.'], { relativeTo: this.route });
       },
       error: this.errors.handle
     });

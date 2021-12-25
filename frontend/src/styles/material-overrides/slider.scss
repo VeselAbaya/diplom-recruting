@@ -42,3 +42,7 @@
 .mat-slider.mat-slider-disabled.cdk-focused .mat-slider-thumb-label {
   background-color: var(--pn-foreground-slider-off);
 }
+
+.mat-slider.mat-slider-min-value.mat-slider-thumb-label-showing.cdk-focused .mat-slider-thumb-label {
+  background-color: var(--pn-accent-default);
+}

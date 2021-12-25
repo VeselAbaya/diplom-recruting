@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   QueryList,
   ViewChild,
   ViewChildren
@@ -10,8 +11,12 @@ import { MessagesService } from '@shared/components/messages/messages.service';
 import { AuthService } from '@core/services/auth/auth.service';
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { debounceTime, filter, map, take } from 'rxjs/operators';
+import { debounceTime, filter, map, pairwise, take } from 'rxjs/operators';
 import { merge } from 'rxjs';
+import { FocusMonitor } from '@angular/cdk/a11y';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+
+let isChatOpenedFirstTime = true;
 
 @Component({
   selector: 'app-messages',
@@ -20,17 +25,24 @@ import { merge } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
-  @ViewChildren('message') messagesQuery!: QueryList<HTMLDivElement>;
+  @ViewChildren('message') messagesQuery!: QueryList<ElementRef<HTMLDivElement>>;
   @ViewChild(CdkScrollable) messagesContainer: CdkScrollable | null = null;
+  @ViewChild('messageTextarea') messageTextarea!: ElementRef<HTMLTextAreaElement>;
   text = '';
   private isUserScrolledToBottom = true;
 
   constructor(public readonly auth: AuthService,
-              public readonly messages: MessagesService) {
+              public readonly messages: MessagesService,
+              private readonly focusMonitor: FocusMonitor) {
     super();
   }
 
   ngAfterViewInit(): void {
+    this.initAutoScrollingToBottom();
+    this.initTextFieldAutofocusOnChatOpening();
+  }
+
+  private initAutoScrollingToBottom(): void {
     this.messagesContainer?.elementScrolled().pipe(
       debounceTime(50),
       map(event => event.target as HTMLElement)
@@ -48,6 +60,20 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
     ).subscribe(() => this.scrollBottom());
   }
 
+  private initTextFieldAutofocusOnChatOpening(): void {
+    this.messages.receiverUser$.pipe(
+      isNotNullOrUndefined(),
+      pairwise(),
+      filter(([u1, u2]) => u1.id !== u2.id),
+      untilComponentDestroyed(this),
+    ).subscribe(() => this.focusMessageField());
+
+    if (isChatOpenedFirstTime) {
+      this.focusMessageField();
+      isChatOpenedFirstTime = false;
+    }
+  }
+
   onSendMessage(): void {
     if (this.text.trim() === '') {
       return;
@@ -59,6 +85,10 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
     });
   }
 
+  focusMessageField(): void {
+    this.focusMonitor.focusVia(this.messageTextarea.nativeElement, null);
+  }
+
   onTextareaKeyPress(event: KeyboardEvent): void {
     if (event.code === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -68,9 +98,9 @@ export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
 
   private scrollBottom(): void {
     if (this.messagesContainer) {
-      this.messagesQuery.changes.pipe(take(1)).subscribe(queryList => {
-        this.messagesContainer?.scrollTo({bottom: 0, behavior: 'smooth'});
-      });
+      this.messagesQuery.changes.pipe(
+        take(1)
+      ).subscribe(() => this.messagesContainer?.scrollTo({ bottom: 0, behavior: 'smooth' }));
       setTimeout(() => this.messagesQuery.notifyOnChanges());
     }
   }

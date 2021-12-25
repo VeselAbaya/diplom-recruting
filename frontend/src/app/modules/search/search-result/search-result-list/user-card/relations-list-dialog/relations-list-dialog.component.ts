@@ -7,10 +7,10 @@ import { RelationsComponent } from '@shared/components/relations/relations.compo
 import { combineLatest, Observable } from 'rxjs';
 import { debounceTime, map, switchMap, take, tap } from 'rxjs/operators';
 import { ICreateRelationDto } from '@monorepo/types/relations/create-relation.dto.interface';
-import { FormControl, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { RelationsService } from '@modules/search/relations.service';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
-import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 
 export interface IRelationsListDialogData {
   fromUser: IRelationRequestUserDto;
@@ -27,7 +27,7 @@ export interface IRelationsListDialogData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RelationsListDialogComponent extends OnDestroyMixin implements OnInit, AfterViewInit {
-  @ViewChild(RelationsComponent, {static: true}) relationsComponent!: RelationsComponent;
+  @ViewChild(RelationsComponent, { static: true }) relationsComponent!: RelationsComponent;
   isFormEqualsToInitial$: Observable<boolean> | null = null;
 
   constructor(@Inject(MAT_DIALOG_DATA) public readonly data: IRelationsListDialogData,
@@ -62,7 +62,7 @@ export class RelationsListDialogComponent extends OnDestroyMixin implements OnIn
   }
 
   ngAfterViewInit(): void {
-    this.relationsComponent.form.get('type')?.disable({emitEvent: false});
+    this.relationsComponent.form.get('type')?.disable({ emitEvent: false });
   }
 
   onSubmit(formValue: ICreateRelationDto): void {

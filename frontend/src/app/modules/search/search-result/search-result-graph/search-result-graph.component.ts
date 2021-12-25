@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input } from '@angular/core';
 import { GRAPH, Layout } from '@modules/search/search-result/search-result-graph/layout';
-import { DEFAULT_AVATAR_URL } from '@monorepo/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
 import { pluck, tap } from 'rxjs/operators';
@@ -13,10 +12,11 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { NodeHTMLIdPipe } from '@modules/search/search-result/search-result-graph/node-html-id.pipe';
 import { ProfileService } from '@modules/profile/profile.service';
 import { clone } from 'ramda';
+import { NodeHTMLIdPipe } from '@modules/search/search-result/search-result-graph/node-html-id.pipe';
+import { ESCAPE } from '@angular/cdk/keycodes';
+import { nodeOverlayFade } from '@modules/search/search-result/search-result-graph/node-overlay-fade.animation';
 
 interface INgxGraph extends IGraphDto {
   nodes: (IUserListItem & Node)[];
@@ -28,28 +28,13 @@ interface INgxGraph extends IGraphDto {
   templateUrl: './search-result-graph.component.html',
   styleUrls: ['./search-result-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [trigger('nodeOverlayFade', [
-    transition(':enter', [
-      style({ opacity: 0, transform: 'scale(0.1)' }),
-      animate('150ms cubic-bezier(0, 0, 0.2, 1)', style({ transform: 'none', opacity: 1 }))
-    ]),
-    transition(':leave',
-      animate('75ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ opacity: 0, transform: 'scale(0.7)' }))
-    ),
-  ])],
-  providers: [NodeHTMLIdPipe]
+  providers: [NodeHTMLIdPipe],
+  animations: [nodeOverlayFade]
 })
 export class SearchResultGraphComponent extends OnDestroyMixin {
   readonly layout = new Layout();
   readonly NODE_SIZE = GRAPH.NODE_SIZE;
-  readonly DEFAULT_AVATAR_URL = DEFAULT_AVATAR_URL;
   nodeWithOverlay: IUserListItem | null = null;
-
-  @ViewChild('nodeContextMenu', { static: true, read: TemplateRef }) nodeContextMenuRef!: TemplateRef<void>;
-
-  mouseMoveStartPoint = { x: 0, y: 0 };
-  private mouseMovedDistance = 0;
-
   private _ngxGraph: INgxGraph | null = null;
 
   @Input() set graph(newGraph: IGraphDto | null) {
@@ -72,7 +57,7 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
   }
 
   selectedUserId$ = this.profile.selectedUser$.pipe(
-    tap(() => this.nodeWithOverlay = null),
+    tap(() => this.closeNodeOverlay()),
     isNotNullOrUndefined(),
     pluck('id')
   );
@@ -84,21 +69,7 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
     super();
   }
 
-  onNodeClick(event: MouseEvent, selectedNode: IUserListItem): void {
-    if (this.mouseMovedDistance <= 15 && this.nodeWithOverlay !== selectedNode) {
-      this.nodeWithOverlay = selectedNode;
-    }
-    this.mouseMovedDistance = 0;
-    this.mouseMoveStartPoint = { x: 0, y: 0 };
-  }
-
-  onNodeMousemove(event: MouseEvent): void {
-    const dx = this.mouseMoveStartPoint.x || event.x - event.x;
-    const dy = this.mouseMoveStartPoint.y || event.y - event.y;
-    this.mouseMovedDistance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-  }
-
-  onEdgeClick(selectedEdge: IRelationshipDto): void {
+  openRelations(selectedEdge: IRelationshipDto): void {
     if (!this.ngxGraph) {
       this.showRelationsListOpeningErrorInSnackbar();
       return;
@@ -116,15 +87,31 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
     });
   }
 
+  @HostListener('document:keydown', ['$event.keyCode'])
+  hideNodeInfoOverlayOnEscapeOrTab(keyCode: number): void {
+    if (keyCode === ESCAPE) {
+      this.closeNodeOverlay();
+    }
+  }
+
   hideNodeUserCardIfClickedOutsideNodeOrUserCard(event: MouseEvent): void {
-    const nodeWithOverlayElement = event.composedPath().find(target => this.nodeWithOverlay !== null
-      ? (target as Element).id === this.nodeHTMLId.transform(this.nodeWithOverlay.id)
-      : false
+    const nodeWithOverlayElement = event.composedPath().find(target =>
+      this.nodeWithOverlay !== null
+        ? (target as Element).id === this.nodeHTMLId.transform(this.nodeWithOverlay.id)
+        : false
     );
 
     if (!nodeWithOverlayElement) {
-      this.nodeWithOverlay = null;
+      this.closeNodeOverlay();
     }
+  }
+
+  openNodeOverlay(node: IUserListItem): void {
+    this.nodeWithOverlay = node;
+  }
+
+  closeNodeOverlay(): void {
+    this.nodeWithOverlay = null;
   }
 
   private showRelationsListOpeningErrorInSnackbar(): void {
