@@ -37,9 +37,9 @@ export class RequestsTabComponent extends OnDestroyMixin {
               private readonly snackbar: MatSnackBar) {
     super();
     this.route.params.pipe(
-      untilComponentDestroyed(this),
       map(params => params.requestType),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      untilComponentDestroyed(this)
     ).subscribe(() => {
       this.selectedRelationsBlockIndex = null;
       this.facade.select(null);

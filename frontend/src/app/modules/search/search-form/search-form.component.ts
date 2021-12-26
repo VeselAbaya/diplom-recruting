@@ -39,7 +39,6 @@ export class SearchFormComponent extends OnDestroyMixin {
     this.reset();
 
     this.form.valueChanges.pipe(
-      untilComponentDestroyed(this),
       filter(() => this.form.valid),
       debounceTime(FORM_DEBOUNCE),
       map(formValue => ({
@@ -52,14 +51,15 @@ export class SearchFormComponent extends OnDestroyMixin {
         english: formValue.english,
         workSchedule: formValue.workSchedule,
         workType: formValue.workType
-      }))
+      })),
+      untilComponentDestroyed(this)
     ).subscribe(val => this.searchParams.patch(val));
   }
 
   reset(): void {
     this.form.reset({
       search: '',
-      rateRange: {min: 0, max: null},
+      rateRange: { min: 0, max: null },
       networkSize: 1,
       relationTypes: [],
       experience: 0,

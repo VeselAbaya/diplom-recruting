@@ -45,7 +45,6 @@ export class ProfileFormComponent extends OnDestroyMixin {
               private readonly errors: ErrorsService) {
     super();
     this.form.valueChanges.pipe(
-      untilComponentDestroyed(this),
       skip(1),
       switchMap(() => this.profile.selectedUser$.pipe(take(1))),
       switchMap(user => {
@@ -63,7 +62,8 @@ export class ProfileFormComponent extends OnDestroyMixin {
         } else {
           return of(user);
         }
-      })
+      }),
+      untilComponentDestroyed(this)
     ).subscribe({ error: this.errors.handle });
   }
 

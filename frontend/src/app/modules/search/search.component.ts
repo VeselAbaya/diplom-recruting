@@ -21,8 +21,8 @@ export class SearchComponent extends OnDestroyMixin {
               readonly profile: ProfileService) {
     super();
     router.events.pipe(
-      untilComponentDestroyed(this),
-      filter(e => e instanceof NavigationEnd && router.url === '/search')
+      filter(e => e instanceof NavigationEnd && router.url === '/search'),
+      untilComponentDestroyed(this)
     ).subscribe(() => header.setTitle('Search'));
   }
 }
