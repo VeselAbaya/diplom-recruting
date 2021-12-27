@@ -20,9 +20,9 @@ export class ResettableButtonToggleGroupDirective extends OnDestroyMixin impleme
     merge(...this.buttonToggleGroup._buttonToggles.map(
       buttonToggle => buttonToggle.change.pipe(pluck('value'))
     )).pipe(
-      untilComponentDestroyed(this),
       startWith(this.buttonToggleGroup.value),
-      pairwise()
+      pairwise(),
+      untilComponentDestroyed(this)
     ).subscribe(([prevValue, curValue]) => {
       if (prevValue === curValue) {
         if (isReset) {

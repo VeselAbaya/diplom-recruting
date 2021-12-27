@@ -41,11 +41,11 @@ export class SearchResultComponent extends OnDestroyMixin {
       this.profile.selectedUser$
     ]).pipe(
       debounceTime(0),
-      untilComponentDestroyed(this),
       switchMap(([params, selectedUsed]) => selectedUsed !== null
         ? this.relations.getGraph({ ...params, fromUserId: selectedUsed.id })
         : this.search.getUsers(params)
-      )
+      ),
+      untilComponentDestroyed(this)
     ).subscribe();
   }
 

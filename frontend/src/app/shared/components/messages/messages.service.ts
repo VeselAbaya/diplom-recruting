@@ -47,18 +47,18 @@ export class MessagesService extends OnDestroyMixin {
               @Inject(MESSAGES_SOCKET) private readonly socket: IMessagesSocket) {
     super();
     auth.user$.pipe(
-      untilComponentDestroyed(this),
-      filter(user => !user)
+      filter(user => !user),
+      untilComponentDestroyed(this)
     ).subscribe(() => {
       this.receiverUser.next(null);
       this.list.next([]);
     });
 
     socket.fromEvent('connect').pipe(
-      untilComponentDestroyed(this),
       switchMapTo(auth.user$),
       isNotNullOrUndefined(),
-      pluck('id')
+      pluck('id'),
+      untilComponentDestroyed(this)
     ).subscribe(userId => socket.emit('userIsOnline', { userId }));
 
     socket.fromEvent<IMessageDto>('message').pipe(
