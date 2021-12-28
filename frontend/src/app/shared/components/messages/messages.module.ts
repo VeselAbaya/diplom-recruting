@@ -9,6 +9,7 @@ import { AvatarModule } from '@shared/components/avatar/avatar.module';
 import { HiddenScrollWrapperModule } from '@shared/components/hidden-scroll-wrapper/hidden-scroll-wrapper.module';
 import { CdkScrollableModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
+import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
 
 
 @NgModule({
@@ -25,7 +26,9 @@ import { FormsModule } from '@angular/forms';
     AvatarModule,
     HiddenScrollWrapperModule,
     CdkScrollableModule,
-    FormsModule
+    FormsModule,
+    FullNameModule
   ]
 })
-export class MessagesModule { }
+export class MessagesModule {
+}

@@ -25,7 +25,7 @@ let isChatOpenedFirstTime = true;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessagesComponent extends OnDestroyMixin implements AfterViewInit {
-  @ViewChildren('message') messagesQuery!: QueryList<ElementRef<HTMLDivElement>>;
+  @ViewChildren('messageEl') messagesQuery!: QueryList<ElementRef<HTMLDivElement>>;
   @ViewChild(CdkScrollable) messagesContainer: CdkScrollable | null = null;
   @ViewChild('messageTextarea') messageTextarea!: ElementRef<HTMLTextAreaElement>;
   text = '';

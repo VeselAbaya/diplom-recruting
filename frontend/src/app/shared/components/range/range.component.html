@@ -1,6 +1,7 @@
 <mat-form-field class="pn-no-subscript pn-vertical-align"
                 [class.mat-form-field-invalid]="this._isInvalid">
   <input type="number"
+         aria-label="Minimum value"
          matInput
          [ngModel]="_min"
          name="min"
@@ -14,6 +15,7 @@
                 [class.mat-form-field-invalid]="this._isInvalid">
   <input type="number"
          matInput
+         aria-label="Maximum value"
          [ngModel]="_max"
          name="max"
          (input)="onMaxChange($event)"

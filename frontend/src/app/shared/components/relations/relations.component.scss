@@ -48,24 +48,20 @@ $arrow-width: 135px;
   gap: 6px;
   width: 145px;
   max-height: 168px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .arrow-wrapper {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  height: 30px;
+  height: 28px;
   cursor: pointer;
   background-color: transparent;
   border: 0;
-
-  &:first-child {
-    margin-top: 3px;
-  }
-
-  &:last-child {
-    margin-bottom: 3px;
-  }
 }
 
 .arrow {
@@ -128,7 +124,7 @@ $arrow-width: 135px;
 
 app-hidden-scroll-wrapper {
   --hidden-area-size: 35px;
-  --hidden-area-background: var(--pn-light-background-card);
+  --hidden-area-background: var(--pn-background-card);
 }
 
 .form {

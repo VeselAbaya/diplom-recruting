@@ -34,6 +34,7 @@ import { NodeHTMLIdPipe } from './search-result-graph/node-html-id.pipe';
 import { OnlyInBrowserModule } from '@shared/directives/only-in-browser/only-in-browser.module';
 import { A11yModule } from '@angular/cdk/a11y';
 import { UserNodeComponent } from './search-result-graph/user-node/user-node.component';
+import { NodesByEdgePipe } from './search-result-graph/nodes-by-edge/nodes-by-edge.pipe';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { UserNodeComponent } from './search-result-graph/user-node/user-node.com
     CreateRelationDialogComponent,
     NetworkGraphComponent,
     NodeHTMLIdPipe,
-    UserNodeComponent
+    UserNodeComponent,
+    NodesByEdgePipe
   ], imports: [
     CommonModule,
     MatIconModule,

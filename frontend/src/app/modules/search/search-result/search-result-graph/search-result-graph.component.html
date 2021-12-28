@@ -8,9 +8,11 @@
                    [maxZoomLevel]="1.5" xmlns:svg="http://www.w3.org/2000/svg">
   <ng-template #nodeTemplate let-node>
     <svg:g app-user-node
+           aria-label="Open {{node | fullName}}'s Detailed Information"
+           aria-haspopup="true"
            [node]="node"
            [isSelected]="node.id === (selectedUserId$ | async)"
-           (openUserInfo)="openNodeOverlay(node)"
+           (nodeClick)="openNodeOverlay(node)"
            #overlayOrigin="cdkOverlayOrigin"
            cdkOverlayOrigin/>
 
@@ -26,10 +28,15 @@
     </ng-template>
   </ng-template>
 
-  <ng-template #linkTemplate let-link>
-    <svg:g class="edge"
+  <ng-template #linkTemplate
+               let-link>
+    <svg:g *ngIf="link | nodesByEdge:ngxGraph.nodes as edgeNodes"
+           class="edge"
            focusable="true"
            tabindex="0"
+           role="button"
+           attr.aria-label="Open {{edgeNodes[0] | fullName}} and {{edgeNodes[1] | fullName}} Relations List"
+           aria-haspopup="true"
            cdkMonitorElementFocus
            (keydown.enter)="openRelations(link)"
            (keydown.space)="openRelations(link)"

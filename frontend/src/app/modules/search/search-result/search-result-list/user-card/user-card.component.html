@@ -1,7 +1,7 @@
 <app-hourly *ngIf="user.hourlyRate !== null" [rate]="user.hourlyRate"></app-hourly>
 
 <div class="user">
-  <app-avatar src="assets/default-user-avatar.svg"></app-avatar>
+  <app-avatar src="assets/default-user-avatar.svg" alt="{{user | fullName}}'s avatar"></app-avatar>
   <a [routerLink]="['/', 'search', user.id]" class="user-name">
     {{user | fullName}}
   </a>
@@ -19,11 +19,18 @@
 
 <ng-container *ngIf="auth.user$ | async as authUser">
   <div class="buttons" *ngIf="authUser.id !== user.id else itsCurrentUser">
-    <button mat-stroked-button color="primary" (click)="openCreateRelationDialog()">
+    <button mat-stroked-button color="primary"
+            (click)="openCreateRelationDialog()"
+            aria-haspopup="true">
       Add Relationship
     </button>
-    <button [matBadge]="user.notifications" [matBadgeHidden]="!user.notifications" matBadgeColor="accent"
-            mat-stroked-button mat-icon-button color="primary" class="pn-icon-align"
+    <button [matBadge]="user.notifications"
+            [matBadgeHidden]="!user.notifications"
+            matBadgeColor="accent"
+            mat-stroked-button mat-icon-button
+            color="primary"
+            class="pn-icon-align"
+            [attr.aria-label]="'Open chat with ' + (user | fullName)"
             (click)="messages.openChatWithUser(user)">
       <mat-icon svgIcon="message"></mat-icon>
     </button>
@@ -38,6 +45,8 @@
           *ngIf="user.relationsCount > 0"
           (click)="openEditRelationsDialog()"
           matTooltip="Yours and {{user.firstName}}'s relations"
+          [attr.aria-label]="'Open Yours and ' + user.firstName + '\'s relations'"
+          aria-haspopup="true"
           matTooltipPosition="left"
           color="primary">
     <mat-icon svgIcon="relationship"></mat-icon>
@@ -48,6 +57,8 @@
             *ngIf="!(profileGuard.isMyProfile$ | async) && selectedUser.id !== user.id && user.relationsWithOriginCount !== 0"
             (click)="openRelationsListDialog()"
             matTooltip="{{selectedUser.firstName}}'s and {{user.firstName}}'s relations"
+            [attr.aria-label]="selectedUser.firstName + '\'s and ' + user.firstName + '\'s relations'"
+            aria-haspopup="true"
             matTooltipPosition="left"
             class="pn-icon-align">
       <mat-icon svgIcon="relations-list"></mat-icon>

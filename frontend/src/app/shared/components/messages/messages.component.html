@@ -4,10 +4,13 @@
       <div class="messages" cdkScrollable>
         <div class="message" *ngFor="let message of messages.list$ | async"
              [class.message--reverse]="message.fromUserId === currentUser.id"
-             #message>
-          <app-avatar [src]="(message.fromUserId === currentUser.id ? currentUser : receiverUser).avatarSrc"
-                      rounded>
-          </app-avatar>
+             #messageEl>
+          <ng-container *ngIf="message.fromUserId === currentUser.id ? currentUser : receiverUser as user">
+            <app-avatar [src]="user.avatarSrc"
+                        alt="{{user | fullName}}'s avatar"
+                        rounded>
+            </app-avatar>
+          </ng-container>
           <div class="message-text">{{message.text}}</div>
         </div>
       </div>

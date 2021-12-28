@@ -5,24 +5,25 @@
 
 <form class="search-form" [formGroup]="form">
   <mat-form-field class="pn-no-subscript full-row">
-    <mat-label>Search</mat-label>
-    <input type="text" formControlName="search" matInput>
+    <mat-label id="searchLabel">Search</mat-label>
+    <input type="text" formControlName="search" matInput aria-labelledby="searchLabel">
   </mat-form-field>
 
-  <mat-label>Rate value</mat-label>
-  <app-range formControlName="rateRange"></app-range>
+  <mat-label id="rateValueLabel">Rate value</mat-label>
+  <app-range formControlName="rateRange" aria-labelledby="rateValueLabel"></app-range>
 
   <ng-container *ngIf="(profile.selectedUser$ | async) !== null">
-    <mat-label>Network size</mat-label>
+    <mat-label id="networkSizeLabel">Network size</mat-label>
     <mat-slider formControlName="networkSize"
+                aria-labelledby="networkSizeLabel"
                 [min]="1"
                 [max]="3"
                 [thumbLabel]="true"
                 [tickInterval]="1"></mat-slider>
 
-    <mat-label>Relation types</mat-label>
+    <mat-label id="relationTypesLabel">Relation types</mat-label>
     <mat-form-field class="pn-no-subscript pn-vertical-align">
-      <mat-select formControlName="relationTypes" multiple>
+      <mat-select formControlName="relationTypes" multiple aria-labelledby="relationTypesLabel">
         <mat-option *ngFor="let relationType of relations.userFirstLevelRelationTypes$ | async"
                     [value]="relationType">
           {{relationType | relationType}}
@@ -31,13 +32,14 @@
     </mat-form-field>
   </ng-container>
 
-  <mat-label>Experience</mat-label>
+  <mat-label id="experienceLabel">Experience</mat-label>
   <mat-slider formControlName="experience"
+              aria-labelledby="experienceLabel"
               appExperienceSlider></mat-slider>
 
-  <mat-label>English</mat-label>
+  <mat-label id="englishLabel">English</mat-label>
   <mat-form-field class="pn-no-subscript pn-vertical-align">
-    <mat-select formControlName="english">
+    <mat-select formControlName="english" aria-labelledby="englishLabel">
       <mat-option [value]="EnglishLevel.A1">A1</mat-option>
       <mat-option [value]="EnglishLevel.A2">A2</mat-option>
       <mat-option [value]="EnglishLevel.B1">B1</mat-option>
@@ -47,14 +49,18 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-label>Work schedule</mat-label>
-  <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workSchedule">
+  <mat-label id="workScheduleLabel">Work schedule</mat-label>
+  <mat-button-toggle-group appResettableButtonToggleGroup
+                           formControlName="workSchedule"
+                           aria-labelledby="workScheduleLabel">
     <mat-button-toggle [value]="WorkSchedule.Full">Full</mat-button-toggle>
     <mat-button-toggle [value]="WorkSchedule.Part">Part</mat-button-toggle>
   </mat-button-toggle-group>
 
-  <mat-label>Work</mat-label>
-  <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workType">
+  <mat-label id="workLabel">Work</mat-label>
+  <mat-button-toggle-group appResettableButtonToggleGroup
+                           formControlName="workType"
+                           aria-labelledby="workLabel">
     <mat-button-toggle [value]="WorkType.Office">Office</mat-button-toggle>
     <mat-button-toggle [value]="WorkType.Remote">Remote</mat-button-toggle>
   </mat-button-toggle-group>

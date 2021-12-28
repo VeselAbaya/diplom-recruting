@@ -8,6 +8,7 @@ services:
     container_name: reverse_proxy
     volumes:
       - ./reverse-proxy.conf:/etc/nginx/nginx.conf
+      - ./robots.txt:/www/robots.txt
       - ./ssl/cert.crt:/etc/nginx/cert.crt
       - ./ssl/cert.key:/etc/nginx/cert.key
     depends_on:
