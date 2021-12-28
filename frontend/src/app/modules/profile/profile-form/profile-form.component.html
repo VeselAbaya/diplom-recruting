@@ -1,32 +1,36 @@
 <mat-card [class.edit-hint]="guard.isMyProfile$ | async">
   <ng-container *ngIf="(profileUser$ | async) as user">
     <app-profile-info [avatarSrc]="user.avatarSrc"
-                      [name]="user.firstName + ' ' + user.lastName"
+                      [name]="user | fullName"
                       [hourlyRate]="user.hourlyRate"
                       [email]="user.email"
                       [editable]="!_disabled"
                       (avatarChange)="onAvatarChange($event)"
                       (infoChange)="onProfileInfoChange($event)"></app-profile-info>
     <mat-form-field class="pn-no-subscript about-me" [formGroup]="form">
-      <mat-label>About me</mat-label>
-      <textarea matInput rows="11" formControlName="about"></textarea>
+      <mat-label id="aboutMeLabel">About me</mat-label>
+      <textarea matInput
+                aria-labelledby="aboutMeLabel"
+                rows="11"
+                formControlName="about"></textarea>
     </mat-form-field>
   </ng-container>
 </mat-card>
 
 <form [formGroup]="form">
-  <app-chip-list-control class="pn-no-subscript" formControlName="keywords">
+  <app-chip-list-control class="pn-no-subscript"
+                         formControlName="keywords">
     Keywords
   </app-chip-list-control>
 
   <mat-form-field class="pn-no-subscript">
-    <mat-label>Phone number</mat-label>
-    <input formControlName="phone" matInput>
+    <mat-label id="phoneLabel">Phone number</mat-label>
+    <input formControlName="phone" matInput aria-labelledby="phoneLabel">
   </mat-form-field>
 
   <mat-form-field class="pn-no-subscript">
-    <mat-label>English</mat-label>
-    <mat-select formControlName="english">
+    <mat-label id="English">English</mat-label>
+    <mat-select formControlName="english" aria-labelledby="English">
       <mat-option [value]="EnglishLevel.A1">A1</mat-option>
       <mat-option [value]="EnglishLevel.A2">A2</mat-option>
       <mat-option [value]="EnglishLevel.B1">B1</mat-option>
@@ -37,20 +41,25 @@
   </mat-form-field>
 
   <div class="search-form">
-    <mat-label>Work schedule</mat-label>
-    <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workSchedule">
+    <mat-label id="WorkScheduleLabel">Work schedule</mat-label>
+    <mat-button-toggle-group appResettableButtonToggleGroup
+                             formControlName="workSchedule"
+                             aria-labelledby="WorkScheduleLabel">
       <mat-button-toggle [value]="WorkSchedule.Full">Full</mat-button-toggle>
       <mat-button-toggle [value]="WorkSchedule.Part">Part</mat-button-toggle>
     </mat-button-toggle-group>
 
-    <mat-label>Work</mat-label>
-    <mat-button-toggle-group appResettableButtonToggleGroup formControlName="workType">
+    <mat-label id="WorkLabel">Work</mat-label>
+    <mat-button-toggle-group appResettableButtonToggleGroup
+                             formControlName="workType"
+                             aria-labelledby="WorkLabel">
       <mat-button-toggle [value]="WorkType.Office">Office</mat-button-toggle>
       <mat-button-toggle [value]="WorkType.Remote">Remote</mat-button-toggle>
     </mat-button-toggle-group>
 
-    <mat-label>Experience</mat-label>
+    <mat-label id="ExperienceLabel">Experience</mat-label>
     <mat-slider formControlName="experience"
+                aria-labelledby="ExperienceLabel"
                 appExperienceSlider></mat-slider>
   </div>
 </form>

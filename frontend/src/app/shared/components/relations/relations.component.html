@@ -5,19 +5,20 @@
                     [hourlyRate]="fromUser.hourlyRate"></app-profile-info>
 
   <app-hidden-scroll-wrapper orientation="vertical">
-    <div class="arrows-wrapper" #arrowsWrapper cdkScrollable>
+    <ul class="arrows-wrapper" #arrowsWrapper cdkScrollable>
       <ng-container *ngIf="relations.length else requestCreation">
-        <button class="arrow-wrapper"
-                *ngFor="let request of relations; let i = index"
-                #arrowWrapper
-                (click)="onRelationSelect(request, arrowWrapper)">
-          <div class="arrow"
-               [class.arrow--selected]="request.id === _selectedRelationId"
-               [class.arrow--right]="!(request.type | isBidirectional) && request.fromUserId === fromUser.id"
-               [class.arrow--left]="!(request.type | isBidirectional) && request.fromUserId !== fromUser.id">
+        <li *ngFor="let request of relations; let i = index">
+          <button class="arrow-wrapper"
+                  #arrowWrapper
+                  (click)="onRelationSelect(request, arrowWrapper)">
+          <span class="arrow"
+                [class.arrow--selected]="request.id === _selectedRelationId"
+                [class.arrow--right]="!(request.type | isBidirectional) && request.fromUserId === fromUser.id"
+                [class.arrow--left]="!(request.type | isBidirectional) && request.fromUserId !== fromUser.id">
             <span class="arrow-label">{{request.type | relationType}}</span>
-          </div>
-        </button>
+          </span>
+          </button>
+        </li>
       </ng-container>
       <ng-template #requestCreation>
         <div class="arrow-wrapper">
@@ -27,7 +28,7 @@
           </div>
         </div>
       </ng-template>
-    </div>
+    </ul>
   </app-hidden-scroll-wrapper>
 
   <app-profile-info avatarSrc="assets/default-user-avatar.svg"

@@ -1,15 +1,18 @@
 <svg:g tabindex="0"
        focusable="true"
        cdkMonitorElementFocus
+       role="button"
+       [attr.aria-label]="ariaLabel"
+       [attr.aria-haspopup]="ariaHasPopup"
        xmlns:svg="http://www.w3.org/2000/svg"
        [id]="node.id | nodeHTMLId"
        class="node"
        [class.selected]="isSelected"
        (mousedown)="mouseMoveStartPoint = $event"
        (mousemove)="onNodeMousemove($event)"
-       (keydown.enter)="emitOpenUserInfoOnClick(node)"
-       (keydown.space)="emitOpenUserInfoOnClick(node)"
-       (click)="emitOpenUserInfoOnClick(node)">
+       (keydown.enter)="emitNodeClickIfMouseNotMovedSoFar(node)"
+       (keydown.space)="emitNodeClickIfMouseNotMovedSoFar(node)"
+       (click)="emitNodeClickIfMouseNotMovedSoFar(node)">
   <svg:clipPath id="round-clip">
     <svg:circle [attr.cx]="(node.dimension?.width || 0) / 2"
                 [attr.cy]="(node.dimension?.height || 0) / 2"

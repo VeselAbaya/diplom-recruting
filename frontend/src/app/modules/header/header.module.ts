@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { A11yModule } from '@angular/cdk/a11y';
 import { UserMenuItemDirective } from './user-menu/user-menu-item.directive';
+import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
 
 @NgModule({
   declarations: [HeaderComponent, UserMenuComponent, UserMenuItemDirective],
@@ -28,7 +29,8 @@ import { UserMenuItemDirective } from './user-menu/user-menu-item.directive';
     OverlayModule,
     MatListModule,
     MatMenuModule,
-    A11yModule
+    A11yModule,
+    FullNameModule
   ]
 })
 export class HeaderModule {

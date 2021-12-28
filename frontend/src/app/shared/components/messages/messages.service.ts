@@ -21,7 +21,7 @@ import { IUserDto } from '@monorepo/types/user/user.dto.interface';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { IMessagesSocket, MESSAGES_SOCKET } from '@shared/components/messages/messages-socket.interfacte';
 
-export type IReceiverUser = Pick<IUserDto, 'id' | 'avatarSrc'>;
+export type IReceiverUser = Pick<IUserDto, 'id' | 'avatarSrc' | 'firstName' | 'lastName'>;
 
 @Injectable({
   providedIn: 'root'

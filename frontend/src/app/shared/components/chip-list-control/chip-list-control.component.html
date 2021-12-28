@@ -8,18 +8,21 @@
                   ngControl?.touched ? 'ng-touched' : '',
                   ngControl?.untouched ? 'ng-untouched' : ''
                 ]">
-  <mat-label><ng-content></ng-content></mat-label>
+  <mat-label id="chipListControlLabel">
+    <ng-content></ng-content>
+  </mat-label>
   <mat-chip-list #chipList [disabled]="disabled">
     <mat-chip
-        *ngFor="let item of value, let i = index"
-        [disabled]="disabled"
-        [selectable]="false"
-        [removable]="true"
-        (removed)="remove(i)">
+      *ngFor="let item of value, let i = index"
+      [disabled]="disabled"
+      [selectable]="false"
+      [removable]="true"
+      (removed)="remove(i)">
       {{item}}
-      <mat-icon matChipRemove>cancel</mat-icon>
+      <mat-icon svgIcon="cancel" matChipRemove></mat-icon>
     </mat-chip>
     <input #itemInput
+           aria-labelledby="chipListControlLabel"
            appThinInput
            (blur)="_onTouch()"
            [disabled]="disabled"

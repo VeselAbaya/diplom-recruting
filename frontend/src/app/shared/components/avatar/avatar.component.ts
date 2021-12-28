@@ -8,10 +8,13 @@ import { DEFAULT_AVATAR_URL } from '@monorepo/constants';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarComponent {
+  @Input() alt = 'Some avatar';
   @Input() src = DEFAULT_AVATAR_URL;
+
   @Input() set rounded(_: string) {
     this.renderer.setAttribute(this.elRef.nativeElement, 'rounded', 'true');
   }
 
-  constructor(private readonly elRef: ElementRef, private readonly renderer: Renderer2) {}
+  constructor(private readonly elRef: ElementRef, private readonly renderer: Renderer2) {
+  }
 }

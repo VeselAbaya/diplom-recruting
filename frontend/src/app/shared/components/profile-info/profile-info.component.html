@@ -1,8 +1,11 @@
 <div class="avatar-wrapper">
-  <app-avatar [src]="avatarSrc" rounded></app-avatar>
+  <app-avatar [src]="avatarSrc" alt="{{name}} avatar" rounded></app-avatar>
 
   <ng-container *ngIf="_editable">
-    <input type="file" id="file" (change)="onAvatarFileOpen($any($event.target).files[0])" accept="image/*">
+    <input type="file"
+           id="file"
+           aria-label="Upload your avatar"
+           (change)="onAvatarFileOpen($any($event.target).files[0])" accept="image/*">
     <label for="file">
       <mat-icon svgIcon="upload"></mat-icon>
     </label>

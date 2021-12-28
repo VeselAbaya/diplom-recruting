@@ -13,16 +13,18 @@ import { Node } from '@swimlane/ngx-graph';
 export class UserNodeComponent {
   @Input() node!: IUserListItem & Node;
   @Input() isSelected = false;
+  @Input('aria-label') ariaLabel = '';
+  @Input('aria-haspopup') ariaHasPopup = '';
 
   mouseMoveStartPoint = { x: 0, y: 0 };
   private mouseMovedDistance = 0;
   readonly DEFAULT_AVATAR_URL = DEFAULT_AVATAR_URL;
 
-  @Output() readonly openUserInfo = new EventEmitter<IUserListItem & Node>();
+  @Output() readonly nodeClick = new EventEmitter<IUserListItem & Node>();
 
-  emitOpenUserInfoOnClick(selectedNode: IUserListItem & Node): void {
+  emitNodeClickIfMouseNotMovedSoFar(selectedNode: IUserListItem & Node): void {
     if (this.mouseMovedDistance <= 15) {
-      this.openUserInfo.emit(selectedNode);
+      this.nodeClick.emit(selectedNode);
     }
     this.mouseMovedDistance = 0;
     this.mouseMoveStartPoint = { x: 0, y: 0 };

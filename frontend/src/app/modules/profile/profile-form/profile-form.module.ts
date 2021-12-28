@@ -10,9 +10,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
-import { ResettableButtonToggleGroupModule } from '@shared/directives/resettable-button-toggle-group/resettable-button-toggle-group.module';
+import {
+  ResettableButtonToggleGroupModule
+} from '@shared/directives/resettable-button-toggle-group/resettable-button-toggle-group.module';
 import { ExperienceSliderModule } from '@shared/directives/experience-slider/experience-slider.module';
-
+import { FullNameModule } from '@shared/pipes/full-name/full-name.module';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { ExperienceSliderModule } from '@shared/directives/experience-slider/exp
     MatSliderModule,
     MatSelectModule,
     ResettableButtonToggleGroupModule,
-    ExperienceSliderModule
+    ExperienceSliderModule,
+    FullNameModule
   ]
 })
-export class ProfileFormModule { }
+export class ProfileFormModule {
+}

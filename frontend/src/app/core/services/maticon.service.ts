@@ -43,6 +43,10 @@ export class MatIconService {
     {
       name: 'upload',
       src: 'assets/icons/upload.svg'
+    },
+    {
+      name: 'cancel',
+      src: 'assets/icons/cancel.svg'
     }
   ];
 

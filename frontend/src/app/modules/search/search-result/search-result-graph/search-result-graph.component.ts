@@ -17,6 +17,7 @@ import { clone } from 'ramda';
 import { NodeHTMLIdPipe } from '@modules/search/search-result/search-result-graph/node-html-id.pipe';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { nodeOverlayFade } from '@modules/search/search-result/search-result-graph/node-overlay-fade.animation';
+import { NodesByEdgePipe } from '@modules/search/search-result/search-result-graph/nodes-by-edge/nodes-by-edge.pipe';
 
 interface INgxGraph extends IGraphDto {
   nodes: (IUserListItem & Node)[];
@@ -28,8 +29,8 @@ interface INgxGraph extends IGraphDto {
   templateUrl: './search-result-graph.component.html',
   styleUrls: ['./search-result-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NodeHTMLIdPipe],
-  animations: [nodeOverlayFade]
+  providers: [NodeHTMLIdPipe, NodesByEdgePipe],
+  animations: [nodeOverlayFade],
 })
 export class SearchResultGraphComponent extends OnDestroyMixin {
   readonly layout = new Layout();
@@ -65,6 +66,7 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
   constructor(private readonly dialog: MatDialog,
               private readonly snackbar: MatSnackBar,
               private readonly nodeHTMLId: NodeHTMLIdPipe,
+              private readonly nodesByEdge: NodesByEdgePipe,
               private readonly profile: ProfileService) {
     super();
   }
@@ -75,7 +77,7 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
       return;
     }
 
-    const [fromUser, toUser] = this.findFromAndToNodesByEdge(this.ngxGraph.nodes, selectedEdge);
+    const [fromUser, toUser] = this.nodesByEdge.transform(selectedEdge, this.ngxGraph.nodes);
     const relations = this.findEdgeWithSameUsers(this.ngxGraph.edges, selectedEdge);
     if (!fromUser || !toUser || !relations.length) {
       this.showRelationsListOpeningErrorInSnackbar();
@@ -119,24 +121,6 @@ export class SearchResultGraphComponent extends OnDestroyMixin {
       'Something went wrong: Can not open relations list', 'Close',
       { panelClass: 'pn-warn' }
     );
-  }
-
-  private findFromAndToNodesByEdge = (nodes: IUserListItem[], edge: IRelationshipDto): [IUserListItem | null, IUserListItem | null] => {
-    let fromUser: IUserListItem | null = null;
-    let toUser: IUserListItem | null = null;
-    for (const node of nodes) {
-      if (fromUser && toUser) {
-        break;
-      }
-
-      if (node.id === edge.fromUserId) {
-        fromUser = node;
-      } else if (node.id === edge.toUserId) {
-        toUser = node;
-      }
-    }
-
-    return [fromUser, toUser];
   }
 
   private findEdgeWithSameUsers(edges: IRelationshipDto[], selectedEdge: IRelationshipDto): IRelationshipDto[] {
