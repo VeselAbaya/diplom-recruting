@@ -14,7 +14,8 @@
    127.0.0.1 api.pn-graph.com
    ```
 4. `docker-compose up`
-5. Все, заходи на https://www.pn-graph.com.
+5. Зайди на https://api.pn-graph.com/api/ping и объясни браузеру, что ты доверяешь этому чмошному сертификату
+6. Все, заходи на https://www.pn-graph.com.
 
 Земля тебе пухом, я тот еще девопсер :)
 
