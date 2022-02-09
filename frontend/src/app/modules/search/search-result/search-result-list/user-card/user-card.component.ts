@@ -1,14 +1,18 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RelationsListDialogComponent } from '@modules/search/search-result/search-result-list/user-card/relations-list-dialog/relations-list-dialog.component';
-import { CreateRelationDialogComponent } from '@modules/search/search-result/search-result-list/user-card/create-relation-dialog/create-relation-dialog.component';
+import {
+  RelationsListDialogComponent
+} from '@modules/search/search-result/search-result-list/user-card/relations-list-dialog/relations-list-dialog.component';
+import {
+  CreateRelationDialogComponent
+} from '@modules/search/search-result/search-result-list/user-card/create-relation-dialog/create-relation-dialog.component';
 import { AuthService } from '@core/services/auth/auth.service';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { ProfileGuard } from '@modules/profile/profile.guard';
 import { SearchService } from '@modules/search/search.service';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { RelationsService } from '@modules/search/relations.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
@@ -29,7 +33,8 @@ export class UserCardComponent {
               public readonly search: SearchService,
               public readonly profile: ProfileService,
               private readonly relations: RelationsService,
-              private readonly dialog: MatDialog) {}
+              private readonly dialog: MatDialog) {
+  }
 
   openRelationsListDialog(): void {
     this.openRelationsDialog(this.profile.selectedUser$);
@@ -39,7 +44,7 @@ export class UserCardComponent {
     this.auth.user$.pipe(
       take(1),
       tap(fromUser => this.dialog.open(CreateRelationDialogComponent, {
-        data: {fromUser, toUser: this.user}
+        data: { fromUser, toUser: this.user }
       }))
     ).subscribe();
   }

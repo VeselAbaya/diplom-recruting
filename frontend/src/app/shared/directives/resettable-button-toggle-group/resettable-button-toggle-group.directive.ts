@@ -32,6 +32,8 @@ export class ResettableButtonToggleGroupDirective extends OnDestroyMixin impleme
           this.ngControl.control?.setValue(null);
           isReset = true;
         }
+      } else {
+        isReset = false;
       }
     });
   }

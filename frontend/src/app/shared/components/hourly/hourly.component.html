@@ -7,6 +7,6 @@ Hourly: $
          appThinInput
          placeholder="Your rate"
          [value]="rate"
-         (input)="onInput($event)"
-         (change)="onRateChange($any($event.target).value)">
+         (input)="filterNonNumericInput($event)"
+         (change)="setNewRateAndEmitRateChange($any($event.target).value)">
 </app-thin-input-field>

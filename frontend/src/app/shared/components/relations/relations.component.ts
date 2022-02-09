@@ -2,14 +2,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter, HostBinding,
+  EventEmitter,
+  HostBinding,
   Input,
   Output,
   ViewChild
 } from '@angular/core';
 import { CdkScrollable } from '@angular/cdk/overlay';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { StartDateRequiredIfHasEndDate } from '@shared/components/relations/start-date-required-if-has-end-date.validator';
+import {
+  StartDateRequiredIfHasEndDate
+} from '@shared/components/relations/start-date-required-if-has-end-date.validator';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
 import { Subject } from 'rxjs';
 import { ICreateRelationDto } from '@monorepo/types/relations/create-relation.dto.interface';
@@ -40,6 +43,7 @@ export class RelationsComponent extends OnDestroyMixin {
   @Input() toUser!: IRelationRequestUserDto;
   @Input() @HostBinding('class.show-form') showForm = false;
   @Input() showComment = true;
+
   @Input() set disabled(isDisabled: boolean) {
     if (isDisabled) {
       this.form.disable();
@@ -52,7 +56,6 @@ export class RelationsComponent extends OnDestroyMixin {
   @Input() set selectedRelationId(relationId: string | undefined) {
     this._selectedRelationId = relationId;
     this.updateFormWithSelectedRelation();
-
   }
 
   private _relations: IRelationshipDto[] = [];
@@ -60,6 +63,7 @@ export class RelationsComponent extends OnDestroyMixin {
     this._relations = newRequests;
     this.updateFormWithSelectedRelation();
   }
+
   get relations(): IRelationshipDto[] {
     return this._relations;
   }
@@ -67,14 +71,14 @@ export class RelationsComponent extends OnDestroyMixin {
   @Output() readonly formSubmit = new Subject<ICreateRelationDto>();
   @Output() readonly relationSelect = new EventEmitter<IRelationshipDto>();
 
-  @ViewChild('arrowsWrapper', {read: CdkScrollable, static: true}) arrowsWrapper: CdkScrollable | null = null;
+  @ViewChild('arrowsWrapper', { read: CdkScrollable, static: true }) arrowsWrapper: CdkScrollable | null = null;
 
   constructor(public readonly elRef: ElementRef) {
     super();
   }
 
   onRelationSelect(request: IRelationshipDto, arrowWrapperEl: HTMLElement): void {
-    this.form.reset(request, {emitEvent: false});
+    this.form.reset(request, { emitEvent: false });
     this.relationSelect.next(request);
 
     if (!this.arrowsWrapper) {
@@ -100,7 +104,7 @@ export class RelationsComponent extends OnDestroyMixin {
   private updateFormWithSelectedRelation(): void {
     const selectedRequest = this._relations.find(rel => rel.id === this._selectedRelationId);
     if (selectedRequest) {
-      this.form.reset(selectedRequest, {emitEvent: false});
+      this.form.reset(selectedRequest, { emitEvent: false });
     }
   }
 }

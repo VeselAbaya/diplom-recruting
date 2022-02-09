@@ -9,7 +9,7 @@ import { debounceTime, map, switchMap, take, tap } from 'rxjs/operators';
 import { ICreateRelationDto } from '@monorepo/types/relations/create-relation.dto.interface';
 import { Validators } from '@angular/forms';
 import { RelationsService } from '@modules/search/relations.service';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { OnDestroyMixin } from '@w11k/ngx-componentdestroyed';
 
 export interface IRelationsListDialogData {

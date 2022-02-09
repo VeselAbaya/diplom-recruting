@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener, Input } from '@angular/core';
 import { GRAPH, Layout } from '@modules/search/search-result/search-result-graph/layout';
 import { MatDialog } from '@angular/material/dialog';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { pluck, tap } from 'rxjs/operators';
 import { IRelationshipDto } from '@monorepo/types/relationships/relationship.dto.interface';
 import { IGraphDto } from '@monorepo/types/relations/graph.dto.interface';

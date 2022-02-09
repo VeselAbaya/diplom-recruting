@@ -5,7 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { Path } from '@monorepo/routes';
 import { IRelationRequestDto } from '@monorepo/types/relations/relation-request.dto.interface';
 import { IGetRelationRequestsParamsDto } from '@monorepo/types/relations/get-relation-requests-params.dto.interface';
-import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
+import {
+  getParamsWithoutNilsAndEmptyStringsOrArrays
+} from '@shared/utils/get-params-without-nils-and-empty-strings-or-arrays/get-params-without-nils-and-empty-strings-or-arrays.util';
 import { IGetRelationRequestsDto } from '@monorepo/types/relations/get-relation-requests.dto.interface';
 import { distinctUntilChanged, tap } from 'rxjs/operators';
 import { IUpdateRelationRequestDto } from '@monorepo/types/relations/update-relation-request.dto.interface';
@@ -17,14 +19,15 @@ export class RequestsService {
   private readonly list = new BehaviorSubject<IGetRelationRequestsDto[]>([]);
   readonly list$ = this.list.pipe(distinctUntilChanged());
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {
+  }
 
   createRelationRequest(relationDto: ICreateRelationDto): Observable<IRelationRequestDto> {
     return this.http.post<IRelationRequestDto>(Path.relationRequests(), relationDto);
   }
 
   get(params: IGetRelationRequestsParamsDto): Observable<IGetRelationRequestsDto[]> {
-    return this.http.get<IGetRelationRequestsDto[]>(Path.relationRequests(), {params: prepareGetParams(params)}).pipe(
+    return this.http.get<IGetRelationRequestsDto[]>(Path.relationRequests(), { params: getParamsWithoutNilsAndEmptyStringsOrArrays(params) }).pipe(
       tap(res => this.list.next(res))
     );
   }

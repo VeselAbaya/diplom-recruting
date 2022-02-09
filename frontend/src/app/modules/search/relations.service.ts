@@ -5,7 +5,9 @@ import { IRelationshipDto } from '@monorepo/types/relationships/relationship.dto
 import { Path } from '@monorepo/routes';
 import { IGraphDto } from '@monorepo/types/relations/graph.dto.interface';
 import { distinctUntilChanged, finalize, tap } from 'rxjs/operators';
-import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
+import {
+  getParamsWithoutNilsAndEmptyStringsOrArrays
+} from '@shared/utils/get-params-without-nils-and-empty-strings-or-arrays/get-params-without-nils-and-empty-strings-or-arrays.util';
 import { IGraphSearchParamsDto } from '@monorepo/types/relations/graph-search-params.dto.interface';
 import { RelationType } from '@monorepo/types/relations/relation-type.enum';
 import { IUpdateRelationshipDto } from '@monorepo/types/relationships/update-relationship.dto.interface';
@@ -23,7 +25,8 @@ export class RelationsService {
   private readonly isLoading = new BehaviorSubject<boolean>(false);
   readonly isLoading$ = this.isLoading.pipe(distinctUntilChanged());
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {
+  }
 
   getRelationsBetweenUsers(userId1: string, userId2: string): Observable<IRelationshipDto[]> {
     return this.http.get<IRelationshipDto[]>(Path.relationships.ofUsers(userId1, userId2));
@@ -31,7 +34,7 @@ export class RelationsService {
 
   getGraph(params: IGraphSearchParamsDto): Observable<IGraphDto> {
     this.isLoading.next(true);
-    return this.http.get<IGraphDto>(Path.relationships.graph(), {params: prepareGetParams(params)}).pipe(
+    return this.http.get<IGraphDto>(Path.relationships.graph(), { params: getParamsWithoutNilsAndEmptyStringsOrArrays(params) }).pipe(
       tap(graph => this.result.next(graph)),
       finalize(() => this.isLoading.next(false))
     );
