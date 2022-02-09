@@ -1,17 +1,17 @@
-import { Directive, Inject, Input, OnInit, PLATFORM_ID, TemplateRef, ViewContainerRef } from '@angular/core';
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { Directive, Inject, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { IS_BROWSER } from '@shared/tokens/is-browser.token';
 
 @Directive({
-  selector: '[appOnlyInBrowser]'
+  selector: '[appOnlyInBrowser]',
 })
 export class OnlyInBrowserDirective implements OnInit {
   private _onlyInBrowser: boolean | undefined;
   @Input('appOnlyInBrowser') set onlyInBrowser(mustBeRenderedOnlyInBrowser: unknown) {
     this._onlyInBrowser = coerceBooleanProperty(mustBeRenderedOnlyInBrowser);
-    if (this._onlyInBrowser && isPlatformServer(this.platformId)) {
+    if (this._onlyInBrowser && !this.isBrowser) {
       this.vc.clear();
-    } else if (isPlatformBrowser(this.platformId)) {
+    } else if (this.isBrowser) {
       this.vc.createEmbeddedView(this.t);
     }
   }
@@ -19,7 +19,7 @@ export class OnlyInBrowserDirective implements OnInit {
   constructor(private readonly vc: ViewContainerRef,
               private readonly t: TemplateRef<unknown>,
               // tslint:disable-next-line:ban-types
-              @Inject(PLATFORM_ID) private readonly platformId: Object) {
+              @Inject(IS_BROWSER) private readonly isBrowser: boolean) {
   }
 
   ngOnInit(): void {

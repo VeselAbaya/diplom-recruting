@@ -8,7 +8,7 @@ import { IProfileInfoChangeEvent } from '@shared/components/profile-info/profile
 import { ErrorsService } from '@core/services/errors.service';
 import { Observable, of } from 'rxjs';
 import { ProfileGuard } from '@modules/profile/profile.guard';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
 
 @Component({

@@ -14,7 +14,7 @@ import {
   withLatestFrom
 } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { isNotNullOrUndefined, isNotNullOrUndefinedArray } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { IMessageDto } from '@monorepo/types/message/message.dto.interface';
 import { Path } from '@monorepo/routes';
 import { IUserDto } from '@monorepo/types/user/user.dto.interface';
@@ -36,7 +36,7 @@ export class MessagesService extends OnDestroyMixin {
   private readonly isSending = new BehaviorSubject(false);
   readonly isSending$ = this.isSending.pipe(distinctUntilChanged());
 
-  newMessage$ = this.socket.fromEvent<IMessageDto>('newMessageNotify').pipe(
+  readonly newMessage$ = this.socket.fromEvent<IMessageDto>('newMessageNotify').pipe(
     withLatestFrom(this.receiverUser),
     filter(([message, receiverUser]) => !receiverUser || receiverUser.id !== message.fromUserId),
     map(([message]) => message)
@@ -75,7 +75,7 @@ export class MessagesService extends OnDestroyMixin {
       take(1),
       map(user => user?.id),
       withLatestFrom(of(toUserId)),
-      isNotNullOrUndefinedArray(),
+      isNotNullOrUndefined(),
       tap(([currentUserId, receiverUserId]) =>
         this.socket.emit('message', { fromUserId: currentUserId, toUserId: receiverUserId, text: message })
       ),

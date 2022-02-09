@@ -8,7 +8,7 @@ import { distinctUntilChanged, map, pluck, switchMap, take } from 'rxjs/operator
 import { RelationsFacade } from '@shared/components/relations/relations.facade';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { Observable } from 'rxjs';
 import { IUpdateRelationRequestDto } from '@monorepo/types/relations/update-relation-request.dto.interface';
 import { AuthService } from '@core/services/auth/auth.service';

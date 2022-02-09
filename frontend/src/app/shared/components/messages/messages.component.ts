@@ -14,7 +14,7 @@ import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdest
 import { debounceTime, filter, map, pairwise, take } from 'rxjs/operators';
 import { merge } from 'rxjs';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 
 let isChatOpenedFirstTime = true;
 

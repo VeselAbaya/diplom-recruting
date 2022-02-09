@@ -6,11 +6,13 @@ import { IUserDto } from '@monorepo/types/user/user.dto.interface';
 import { HttpClient } from '@angular/common/http';
 import { Path } from '@monorepo/routes';
 import { IPagination, IPaginationMeta } from '@monorepo/types/pagination/pagination.interface';
-import { prepareGetParams } from '@shared/utils/prepare-get-params.util';
+import {
+  getParamsWithoutNilsAndEmptyStringsOrArrays
+} from '@shared/utils/get-params-without-nils-and-empty-strings-or-arrays/get-params-without-nils-and-empty-strings-or-arrays.util';
 import { IUserListItem } from '@monorepo/types/user/user-list-item.dto.interface';
 import { MessagesService } from '@shared/components/messages/messages.service';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { clone } from 'ramda';
 import { DEFAULT_SEARCH_PARAMS } from '@modules/search/search-params/default-search-params';
 
@@ -54,7 +56,7 @@ export class SearchService extends OnDestroyMixin {
 
   getUsers(params: ISearchParamsDto): Observable<IPagination<IUserListItem>> {
     this.usersLoading.next(true);
-    return this.http.get<IPagination<IUserListItem>>(Path.users(), { params: prepareGetParams(params) }).pipe(
+    return this.http.get<IPagination<IUserListItem>>(Path.users(), { params: getParamsWithoutNilsAndEmptyStringsOrArrays(params) }).pipe(
       tap(({ items, ...pagination }) => {
         this.result.next(items);
         this.pagination.next(pagination);

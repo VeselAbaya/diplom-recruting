@@ -5,7 +5,7 @@ import { RelationType } from '@monorepo/types/relations/relation-type.enum';
   name: 'relationType'
 })
 export class RelationTypePipe implements PipeTransform {
-  private relationTypeMap = {
+  private readonly relationTypeMap = {
     [RelationType.WorksWith]: 'Works with',
     [RelationType.StudiedWith]: 'Studied with',
     [RelationType.Teammates]: 'Teammates',

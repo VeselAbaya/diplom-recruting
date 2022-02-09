@@ -10,7 +10,7 @@ import { asyncScheduler, merge, Subject } from 'rxjs';
 import { CdkScrollable, ViewportRuler } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
+import { distinctUntilChanged, startWith, throttleTime } from 'rxjs/operators';
 import { ContentObserver } from '@angular/cdk/observers';
 
 @Component({
@@ -43,12 +43,13 @@ export class HiddenScrollWrapperComponent extends OnDestroyMixin implements Afte
       return;
     }
 
-    const throttleScroll = throttleTime(100, asyncScheduler, {leading: true, trailing: true});
+    const throttleScroll = throttleTime(100, asyncScheduler, { leading: true, trailing: true });
     merge(
       this.scrollable.elementScrolled().pipe(throttleScroll),
       this.viewportRuler.change().pipe(throttleScroll),
       this.contentObserver.observe(this.scrollable.getElementRef().nativeElement)
     ).pipe(
+      startWith(null), // in case of static content
       untilComponentDestroyed(this)
     ).subscribe(() => {
       this.hasScroll.next(this.scrollSize > this.offsetSize);
@@ -63,13 +64,13 @@ export class HiddenScrollWrapperComponent extends OnDestroyMixin implements Afte
   get scrollSize(): number {
     return this.scrollable?.getElementRef().nativeElement[
       this.orientation === 'vertical' ? 'scrollHeight' : 'scrollWidth'
-    ] || 0;
+      ] || 0;
   }
 
   get offsetSize(): number {
     return this.scrollable?.getElementRef().nativeElement[
       this.orientation === 'vertical' ? 'offsetHeight' : 'offsetWidth'
-    ] || 0;
+      ] || 0;
   }
 
   get scrollOffsetFromBegin(): number {

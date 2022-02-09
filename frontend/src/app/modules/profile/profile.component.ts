@@ -6,7 +6,7 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { SearchService } from '@modules/search/search.service';
 import { ProfileGuard } from '@modules/profile/profile.guard';
-import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined';
+import { isNotNullOrUndefined } from '@shared/utils/is-not-null-or-undefined/is-not-null-or-undefined';
 import { FullNamePipe } from '@shared/pipes/full-name/full-name.pipe';
 import { ProfileService } from '@modules/profile/profile.service';
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DEFAULT_AVATAR_URL } from '@monorepo/constants';
 
 @Component({
@@ -10,11 +10,4 @@ import { DEFAULT_AVATAR_URL } from '@monorepo/constants';
 export class AvatarComponent {
   @Input() alt = 'Some avatar';
   @Input() src = DEFAULT_AVATAR_URL;
-
-  @Input() set rounded(_: string) {
-    this.renderer.setAttribute(this.elRef.nativeElement, 'rounded', 'true');
-  }
-
-  constructor(private readonly elRef: ElementRef, private readonly renderer: Renderer2) {
-  }
 }

@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MESSAGES_SOCKET } from '@shared/components/messages/messages-socket.interfacte';
 import { APP_DOMAIN } from '@shared/tokens/app-domain.token';
 import { API_BASE_URL } from '@shared/tokens/api-base-url.token';
+import { IS_BROWSER } from '@shared/tokens/is-browser.token';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { API_BASE_URL } from '@shared/tokens/api-base-url.token';
   providers: [
     { provide: API_BASE_URL, useValue: environment.baseApiUrl },
     { provide: APP_DOMAIN, useValue: '' },
-    { provide: MESSAGES_SOCKET, useExisting: Socket }
+    { provide: MESSAGES_SOCKET, useExisting: Socket },
+    { provide: IS_BROWSER, useValue: true }
   ],
   bootstrap: [AppComponent]
 })

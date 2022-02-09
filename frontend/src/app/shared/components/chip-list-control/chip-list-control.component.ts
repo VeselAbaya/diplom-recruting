@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter, forwardRef, HostBinding, HostListener,
+  EventEmitter,
   Input,
   Optional,
   Output,
@@ -29,29 +29,36 @@ export class ChipListControlComponent implements AfterViewInit, ControlValueAcce
 
   // tslint:disable-next-line:no-input-rename
   @Input('items') allItems: string[] = [];
+  @Input() disabled = false;
   @Output() readonly added = new EventEmitter<string>();
   @Output() readonly removed = new EventEmitter<number>();
 
   // @ts-ignore
-  @ViewChild('itemInput', {static: true}) itemInput: ElementRef<HTMLInputElement>;
+  @ViewChild('itemInput', { static: true }) itemInput: ElementRef<HTMLInputElement>;
 
-  _value: string[] = [];
-  @Input() disabled = false;
   _transitionState = '';
 
-  _onChange: (val?: unknown) => unknown = identity;
-  _onTouch: (val?: unknown) => unknown = identity;
-  registerOnChange(fn: (val?: unknown) => unknown): void { this._onChange = fn; }
-  registerOnTouched(fn: (val?: unknown) => unknown): void { this._onTouch = fn; }
-
+  _value: string[] = [];
   get value(): string[] {
     return this._value;
   }
+
   set value(v: string[]) {
     if (v !== this._value) {
       this._value = v;
       this._onChange(v);
     }
+  }
+
+  _onChange: (val?: unknown) => unknown = identity;
+  _onTouch: (val?: unknown) => unknown = identity;
+
+  registerOnChange(fn: (val?: unknown) => unknown): void {
+    this._onChange = fn;
+  }
+
+  registerOnTouched(fn: (val?: unknown) => unknown): void {
+    this._onTouch = fn;
   }
 
   writeValue(value: string[]): void {
@@ -89,17 +96,14 @@ export class ChipListControlComponent implements AfterViewInit, ControlValueAcce
     const input = event.input;
     const value = event.value;
 
-    // Add our fruit
     if ((value || '').trim()) {
       this.value = this.value ? this.value.concat(value.trim()) : [value.trim()];
       this.added.emit(value.trim());
     }
 
-    // Reset the input value
     if (input) {
       input.value = '';
     }
-
     this._resetInputValue();
   }
 

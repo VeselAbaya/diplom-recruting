@@ -6,7 +6,7 @@ export enum RelationType {
   SubordinateTo = 'SUBORDINATE_TO',
 }
 
-// This map object purpose is to show user not only selected relation type (e.g. Supervised)
+// This map object' purpose is to show user not only selected relation type (e.g. Supervised)
 // but also opposite (e.g. SubordinateTo) 'cause it can be useful for user
 export const OppositeRelationType = Object.freeze({
   [RelationType.WorksWith]: RelationType.WorksWith,
