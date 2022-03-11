@@ -7,17 +7,20 @@
     <form class="auth-card__form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field class="auth-card__form-field">
         <mat-label id="firstNameLabel">First name</mat-label>
-        <input matInput required formControlName="firstName" type="text" aria-labelledby="firstNameLabel">
+        <input matInput required formControlName="firstName" type="text" aria-labelledby="firstNameLabel"
+               data-qa="first-name-input">
       </mat-form-field>
 
       <mat-form-field class="auth-card__form-field">
         <mat-label id="lastNameLabel">Last name</mat-label>
-        <input matInput required formControlName="lastName" type="text" aria-labelledby="lastNameLabel">
+        <input matInput required formControlName="lastName" type="text" aria-labelledby="lastNameLabel"
+               data-qa="last-name-input">
       </mat-form-field>
 
       <mat-form-field class="auth-card__form-field">
         <mat-label id="emailLabel">Email</mat-label>
-        <input matInput required formControlName="email" type="email" aria-labelledby="emailLabel">
+        <input matInput required formControlName="email" type="email" aria-labelledby="emailLabel"
+               data-qa="email-input">
         <mat-error *ngIf="form.controls.email.errors?.pattern">
           Must be an email
         </mat-error>
@@ -25,11 +28,13 @@
 
       <mat-form-field class="auth-card__form-field">
         <mat-label id="passwordLabel">Password</mat-label>
-        <input matInput required formControlName="password" type="password" aria-labelledby="passwordLabel">
+        <input matInput required formControlName="password" type="password" aria-labelledby="passwordLabel"
+               data-qa="password-input">
       </mat-form-field>
 
       <div class="auth-card__form-actions">
-        <button type="submit" class="auth-card__form-submit" mat-flat-button tabindex="0" color="primary">
+        <button type="submit" class="auth-card__form-submit" mat-flat-button tabindex="0" color="primary"
+                data-qa="submit-button">
           SIGN UP
         </button>
       </div>
