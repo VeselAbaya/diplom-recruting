@@ -11,13 +11,4 @@ describe('Search smoke test', () => {
       .type('asd@2341random text as');
     cy.contains('No users satisfying the request');
   });
-
-  it('should open signin page from search', () => {
-    cy.visit('/');
-    cy.contains('Sign in')
-      .should('exist')
-      .click();
-
-    cy.url().should('include', 'signin');
-  });
 });

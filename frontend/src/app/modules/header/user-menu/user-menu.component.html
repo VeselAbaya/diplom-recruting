@@ -2,6 +2,7 @@
         #triggerOrigin="cdkOverlayOrigin"
         (click)="openNavigationOverlay()"
         cdkMonitorElementFocus
+        data-qa="user-menu-trigger"
         (cdkFocusChange)="openNavigationOverlayIfFocusViaTab($event)">
   <span class="user-name">{{user | fullName}}</span>
   <app-avatar src="assets/default-user-avatar.svg" alt="{{user | fullName}}'s avatar"
@@ -14,7 +15,7 @@
              cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
              [cdkConnectedOverlayOrigin]="triggerOrigin"
              [cdkConnectedOverlayOpen]="isNavigationOverlayOpen">
-  <mat-nav-list [@transformMenu]="isNavigationOverlayOpen ? 'enter' : 'void'">
+  <mat-nav-list [@transformMenu]="isNavigationOverlayOpen ? 'enter' : 'void'" data-qa="user-menu-overlay">
     <div class="user-profile">
       <app-avatar class="user-profile__avatar"
                   src="assets/default-user-avatar.svg"
@@ -26,17 +27,21 @@
            #profileSettings
            appUserMenuItem
            mat-flat-button
+           data-qa="profile-link"
            color="accent">Profile settings</a>
       </div>
     </div>
-    <a [routerLink]="['/search']" mat-list-item appUserMenuItem>Search</a>
+    <a [routerLink]="['/search']" mat-list-item appUserMenuItem
+       data-qa="search-link">Search</a>
     <a [routerLink]="['/requests']"
        mat-list-item
        appUserMenuItem
-       class="relation-requests">
+       class="relation-requests"
+       data-qa="relations-link">
       <span>Relation requests</span>
     </a>
     <a routerLink="." (click)="auth.logout()" mat-list-item
+       data-qa="logout-link"
        appUserMenuItem>Logout</a>
   </mat-nav-list>
 </ng-template>
