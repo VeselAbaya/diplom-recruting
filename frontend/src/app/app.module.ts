@@ -21,6 +21,8 @@ import { LIMITS } from '@monorepo/types/pagination/limits';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TransferHttpCacheModule } from '@nguniversal/common';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,10 @@ import { TransferHttpCacheModule } from '@nguniversal/common';
     HeaderModule,
     MatSnackBarModule,
     MatDialogModule,
-    TransferHttpCacheModule
+    TransferHttpCacheModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    })
   ],
   providers: [
     {
