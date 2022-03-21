@@ -18,6 +18,7 @@
          aria-label="Maximum value"
          [ngModel]="_max"
          name="max"
+         data-qa="range--max-input"
          (input)="onMaxChange($event)"
          step="0.01"
          [min]="_min ?? -Infinity">

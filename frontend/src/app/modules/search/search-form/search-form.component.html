@@ -3,7 +3,8 @@
   <button mat-button color="primary" class="reset-button" (click)="reset()">Reset</button>
 </div>
 
-<form class="search-form" [formGroup]="form">
+<form class="search-form" [formGroup]="form"
+      data-qa="search-form">
   <mat-form-field class="pn-no-subscript full-row">
     <mat-label id="searchLabel">Search</mat-label>
     <input type="text" formControlName="search" matInput aria-labelledby="searchLabel" data-qa="search-input">
@@ -35,11 +36,13 @@
   <mat-label id="experienceLabel">Experience</mat-label>
   <mat-slider formControlName="experience"
               aria-labelledby="experienceLabel"
+              data-qa="experience-slider"
               appExperienceSlider></mat-slider>
 
   <mat-label id="englishLabel">English</mat-label>
   <mat-form-field class="pn-no-subscript pn-vertical-align">
-    <mat-select formControlName="english" aria-labelledby="englishLabel">
+    <mat-select formControlName="english" aria-labelledby="englishLabel"
+                data-qa="english-select">
       <mat-option [value]="EnglishLevel.A1">A1</mat-option>
       <mat-option [value]="EnglishLevel.A2">A2</mat-option>
       <mat-option [value]="EnglishLevel.B1">B1</mat-option>
@@ -52,6 +55,7 @@
   <mat-label id="workScheduleLabel">Work schedule</mat-label>
   <mat-button-toggle-group appResettableButtonToggleGroup
                            formControlName="workSchedule"
+                           data-qa="work-schedule-toggles"
                            aria-labelledby="workScheduleLabel">
     <mat-button-toggle [value]="WorkSchedule.Full">Full</mat-button-toggle>
     <mat-button-toggle [value]="WorkSchedule.Part">Part</mat-button-toggle>

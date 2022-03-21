@@ -12,6 +12,8 @@ declare namespace Cypress {
     getByQA<K extends keyof HTMLElementTagNameMap>(selector: string): Chainable<JQuery<HTMLElementTagNameMap[K]>>;
 
     getByQALike<K extends keyof HTMLElementTagNameMap>(selector: string): Chainable<JQuery<HTMLElementTagNameMap[K]>>;
+
+    selectValueFromMatSelect(qaSelector: string, optionText: string): void;
   }
 }
 //
@@ -55,5 +57,16 @@ Cypress.Commands.add('login', (email = 'AntayJuskovets@gmail.com', password = '1
   cy.getByQA('submit-button').click();
 });
 
+// TODO upgrade these command to be able to chain them
 Cypress.Commands.add('getByQA', (selector: string) => cy.get(`[data-qa="${selector}"]`));
 Cypress.Commands.add('getByQALike', (selector: string) => cy.get(`[data-qa*="${selector}"]`));
+
+Cypress.Commands.add('selectValueFromMatSelect', (qaSelector: string, optionText: string) => {
+  cy.getByQA(qaSelector)
+    .should('be.visible')
+    .click();
+  cy.get('.mat-option')
+    .contains(optionText)
+    .should('be.visible')
+    .click();
+});

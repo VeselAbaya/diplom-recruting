@@ -9,6 +9,7 @@ describe('Signin', () => {
 
   it('fields should became invalid after sign in button clicked', () => {
     cy.getByQA('submit-button')
+      .should('exist')
       .click();
 
     cy.getByQALike('-input')

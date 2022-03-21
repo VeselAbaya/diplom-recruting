@@ -4,7 +4,11 @@
                [toUser]="data.toUser"
                (formSubmit)="onSubmit($event)"
                #relations>
-  <button class="save-button" mat-stroked-button color="primary" [disabled]="relations.form.invalid">
+  <button class="save-button"
+          mat-stroked-button
+          data-qa="create-relation-button"
+          color="primary"
+          [disabled]="relations.form.invalid">
     <mat-icon svgIcon="relationship" class="pn-icon-align"></mat-icon>
     Create Relation
   </button>

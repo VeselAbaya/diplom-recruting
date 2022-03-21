@@ -11,7 +11,8 @@
                         rounded>
             </app-avatar>
           </ng-container>
-          <div class="message-text">{{message.text}}</div>
+          <div class="message-text"
+               data-qa="message-text">{{message.text}}</div>
         </div>
       </div>
     </app-hidden-scroll-wrapper>
@@ -20,12 +21,14 @@
       <textarea matInput rows="3"
                 #messageTextarea
                 [(ngModel)]="text"
+                data-qa="message-input"
                 [disabled]="!!(messages.isSending$ | async)"
                 (keypress)="onTextareaKeyPress($event)"></textarea>
       <button matSuffix
               mat-icon-button
               color="primary"
               [disabled]="messages.isSending$ | async"
+              data-qa="send-message-button"
               (click)="onSendMessage()">
         <mat-icon *ngIf="(messages.isSending$ | async) === false; else spinner" svgIcon="send"></mat-icon>
         <ng-template #spinner>

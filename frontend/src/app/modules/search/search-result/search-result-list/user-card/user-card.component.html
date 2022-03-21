@@ -2,12 +2,14 @@
 
 <div class="user">
   <app-avatar src="assets/default-user-avatar.svg" alt="{{user | fullName}}'s avatar"></app-avatar>
-  <a [routerLink]="['/', 'search', user.id]" class="user-name">
+  <a [routerLink]="['/', 'search', user.id]"
+     class="user-name"
+     data-qa="user-info--link">
     {{user | fullName}}
   </a>
 </div>
 
-<div class="user-info">
+<div class="user-info" data-qa="user-info--email">
   <mat-icon svgIcon="message"></mat-icon>
   {{user.email}}
 </div>
@@ -20,6 +22,7 @@
 <ng-container *ngIf="auth.user$ | async as authUser">
   <div class="buttons" *ngIf="authUser.id !== user.id else itsCurrentUser">
     <button mat-stroked-button color="primary"
+            data-qa="user-info--add-relation-button"
             (click)="openCreateRelationDialog()"
             aria-haspopup="true">
       Add Relationship
@@ -30,6 +33,7 @@
             mat-stroked-button mat-icon-button
             color="primary"
             class="pn-icon-align"
+            data-qa="user-card--message-button"
             [attr.aria-label]="'Open chat with ' + (user | fullName)"
             (click)="messages.openChatWithUser(user)">
       <mat-icon svgIcon="message"></mat-icon>

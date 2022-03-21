@@ -40,7 +40,8 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" @fadeInOut *ngIf="showForm">
   <mat-form-field class="small-field pn-no-subscript">
     <mat-label>Relation type</mat-label>
-    <mat-select formControlName="type">
+    <mat-select formControlName="type"
+                data-qa="relation-type-select">
       <mat-option *ngFor="let entry of RelationType | keyvalue"
                   [value]="entry.value">
         {{entry.value | relationType}}
@@ -53,7 +54,7 @@
                   [class.mat-form-field-invalid]="matFormField._control.errorState || form.errors?.startDateRequiredIfHasEndDate">
     <mat-label>Dates</mat-label>
     <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate formControlName="startAt" placeholder="Start date">
+      <input matStartDate formControlName="startAt" placeholder="Start date" data-qa="relation-start-date-input">
       <input matEndDate formControlName="endAt" placeholder="To present">
     </mat-date-range-input>
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -62,14 +63,16 @@
 
   <mat-form-field class="pn-no-subscript">
     <mat-label>Description</mat-label>
-    <textarea matInput formControlName="description" class="description-textarea" rows="8"></textarea>
+    <textarea matInput formControlName="description" class="description-textarea" rows="8"
+              data-qa="relation-description-input"></textarea>
   </mat-form-field>
 
   <div class="comment-block">
     <div @fadeInOut *ngIf="showComment">
       <mat-form-field class="comment-form-field pn-no-subscript">
         <mat-label>Comment</mat-label>
-        <textarea matInput formControlName="comment" class="description-textarea" rows="5"></textarea>
+        <textarea matInput formControlName="comment" class="description-textarea" rows="5"
+                  data-qa="relation-comment-input"></textarea>
         <mat-error>
           <ng-content select="[comment-error]"></ng-content>
         </mat-error>

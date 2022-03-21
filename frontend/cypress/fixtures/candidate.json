@@ -1,0 +1,11 @@
+{
+  "maxRateValue": 100,
+  "english": "B2",
+  "workSchedule": "Full",
+  "experience": 3,
+  "message": "Hello :){shift+enter}What do you think about or vacancy on https://www.example.com?",
+  "relation": {
+    "startDate": "2/2/2022",
+    "type": "Studied with"
+  }
+}
